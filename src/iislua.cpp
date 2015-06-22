@@ -6,28 +6,29 @@
 
 static const struct luaL_Reg iis [] =
 {
-    { "exit", iis_http_exit },
-    { "headers_sent", iis_http_headers_sent },
-    { "map_path", iis_http_map_path },
-    { "print", iis_http_print },
-    { "redirect", iis_http_redirect },
+    { "debug", iis_lua_debug },
+    { "exit", iis_lua_exit },
+    { "headers_sent", iis_lua_headers_sent },
+    { "map_path", iis_lua_map_path },
+    { "print", iis_lua_print },
+    { "redirect", iis_lua_redirect },
     { NULL, NULL }
 };
 
 static const struct luaL_Reg iis_req [] =
 {
-    { "get_headers", iis_http_req_get_headers },
-    { "get_method", iis_http_req_get_method },
-    { "http_version", iis_http_req_http_version },
-    { "set_method", iis_http_req_set_method },
-    { "set_url", iis_http_req_set_url },
+    { "get_headers", iis_lua_req_get_headers },
+    { "get_method", iis_lua_req_get_method },
+    { "http_version", iis_lua_req_http_version },
+    { "set_method", iis_lua_req_set_method },
+    { "set_url", iis_lua_req_set_url },
     { NULL, NULL }
 };
 
 static const struct luaL_Reg iis_resp [] =
 {
-    { "get_headers", iis_http_resp_get_headers },
-    { "set_status", iis_http_resp_set_status },
+    { "get_headers", iis_lua_resp_get_headers },
+    { "set_status", iis_lua_resp_set_status },
     { NULL, NULL }
 };
 
@@ -72,7 +73,8 @@ public:
 
     REQUEST_NOTIFICATION_STATUS OnBeginRequest(IN IHttpContext *pHttpContext, IN OUT IHttpEventProvider *pProvider)
     {
-        iis_set_http_ctx(L, pHttpContext);
+        iis_lua_set_http_ctx(L, pHttpContext);
+        iis_lua_set_handled(L, FALSE);
 
         lua_getglobal(L, "onBeginRequest");
 
@@ -81,6 +83,11 @@ public:
             auto text = lua_tostring(L, -1);
 
             OutputDebugStringA(text);
+        }
+
+        if (iis_lua_get_handled(L))
+        {
+            return RQ_NOTIFICATION_FINISH_REQUEST;
         }
 
         return RQ_NOTIFICATION_CONTINUE;
