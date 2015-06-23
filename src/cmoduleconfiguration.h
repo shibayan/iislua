@@ -6,11 +6,16 @@ class IHttpContext;
 class CModuleConfiguration : public IHttpStoredContext
 {
 private:
-    char beginRequest[MAX_PATH];
+    PCSTR beginRequest;
+
+    PCSTR GetString(IAppHostElement *section, PCWSTR name);
 public:
+    CModuleConfiguration();
+    ~CModuleConfiguration();
+
     HRESULT Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer);
 
     VOID CleanupStoredContext(VOID);
 
-    const char *GetBeginRequest() const;
+    PCSTR GetBeginRequest() const;
 };
