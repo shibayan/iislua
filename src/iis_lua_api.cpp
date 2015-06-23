@@ -42,8 +42,8 @@ IIS_LUA_API int iis_lua_debug(lua_State *L)
 {
     auto message = luaL_checkstring(L, 1);
 
-    OutputDebugStringA(message);
-    OutputDebugStringA("\n");
+    OutputDebugString(message);
+    OutputDebugString("\n");
 
     return 0;
 }

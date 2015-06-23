@@ -39,7 +39,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
     {
         auto text = lua_tostring(L, -1);
 
-        OutputDebugStringA(text);
+        OutputDebugString(text);
     }
 
     if (iis_lua_get_handled(L))
