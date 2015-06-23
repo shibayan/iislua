@@ -89,6 +89,15 @@ IIS_LUA_API int iis_lua_print(lua_State *L)
 
     auto message = luaL_checkstring(L, 1);
 
+    DWORD sent;
+    HTTP_DATA_CHUNK dataChunk;
+
+    dataChunk.DataChunkType = HttpDataChunkFromMemory;
+    dataChunk.FromMemory.pBuffer = const_cast<char *>(message);
+    dataChunk.FromMemory.BufferLength = strlen(message);
+
+    ctx->GetResponse()->WriteEntityChunks(&dataChunk, 1, FALSE, TRUE, &sent);
+
     return 0;
 }
 
@@ -213,6 +222,18 @@ IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
         lua_pushlstring(L, headers.pUnknownHeaders[i].pRawValue, headers.pUnknownHeaders[i].RawValueLength);
         lua_settable(L, -3);
     }
+
+    return 0;
+}
+
+IIS_LUA_API int iis_lua_resp_get_status(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    USHORT status;
+    ctx->GetResponse()->GetStatus(&status);
+
+    lua_pushinteger(L, status);
 
     return 0;
 }
