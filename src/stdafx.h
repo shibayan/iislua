@@ -1,20 +1,18 @@
-// stdafx.h : 標準のシステム インクルード ファイルのインクルード ファイル、または
-// 参照回数が多く、かつあまり変更されない、プロジェクト専用のインクルード ファイル
-// を記述します。
-//
-
 #pragma once
 
 #include "targetver.h"
 
-#define WIN32_LEAN_AND_MEAN             // Windows ヘッダーから使用されていない部分を除外します。
-// Windows ヘッダー ファイル:
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
-
-
-// TODO: プログラムに必要な追加ヘッダーをここで参照してください。
 #include <httpserv.h>
 #include <lua.hpp>
 
+#include "iis_lua_const.h"
+#include "iis_lua_util.h"
+
 #include "iis_lua_api.h"
+
+#include "cmoduleconfiguration.h"
+#include "cluahttpmodule.h"
+#include "cluamodulefactory.h"

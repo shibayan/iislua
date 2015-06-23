@@ -1,4 +1,3 @@
-
 #pragma once
 
 struct lua_State;
@@ -31,49 +30,31 @@ IIS_LUA_API int iis_lua_resp_set_status(lua_State *);
 
 IIS_LUA_API int iis_lua_server_get_variables(lua_State *);
 
-static const char *iis_lua_util_get_status_reason(int status);
-
-static const char* http_header_id_to_name [] =
+const struct luaL_Reg iis [] =
 {
-    "Cache-Control",
-    "Connection",
-    "Date",
-    "Keep-Alive",
-    "Pragma",
-    "Trailer",
-    "Transfer-Encoding",
-    "Upgrade",
-    "Via",
-    "Warning",
-    "Allow",
-    "Content-Length",
-    "Content-Type",
-    "Content-Encoding",
-    "Content-Language",
-    "Content-Location",
-    "Content-MD5",
-    "Content-Range",
-    "Expires",
-    "Last-Modified",
-    "Accept",
-    "Accept-Charset",
-    "Accept-Encoding",
-    "Accept-Language",
-    "Authorization",
-    "Cookie",
-    "Expect",
-    "From",
-    "Host",
-    "If-Match",
-    "If-Modified-Since",
-    "If-None-Match",
-    "If-Range",
-    "If-Unmodified-Since",
-    "Max-Forwards",
-    "Proxy-Authorization",
-    "Referer",
-    "Range",
-    "Te",
-    "Translate",
-    "User-Agent"
+    { "debug", iis_lua_debug },
+    { "exit", iis_lua_exit },
+    { "headers_sent", iis_lua_headers_sent },
+    { "map_path", iis_lua_map_path },
+    { "print", iis_lua_print },
+    { "redirect", iis_lua_redirect },
+    { NULL, NULL }
+};
+
+const struct luaL_Reg iis_req [] =
+{
+    { "get_headers", iis_lua_req_get_headers },
+    { "get_method", iis_lua_req_get_method },
+    { "http_version", iis_lua_req_http_version },
+    { "set_method", iis_lua_req_set_method },
+    { "set_url", iis_lua_req_set_url },
+    { NULL, NULL }
+};
+
+const struct luaL_Reg iis_resp [] =
+{
+    { "get_headers", iis_lua_resp_get_headers },
+    { "set_header", iis_lua_resp_set_header },
+    { "set_status", iis_lua_resp_set_status },
+    { NULL, NULL }
 };

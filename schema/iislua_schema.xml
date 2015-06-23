@@ -1,0 +1,5 @@
+<configSchema>
+  <sectionSchema name="system.webServer/iislua">
+    <attribute name="beginRequest" type="string" defaultValue=""/>
+  </sectionSchema>
+</configSchema>

@@ -1,9 +1,8 @@
 
 #include "stdafx.h"
 
-
-#define iis_lua_ctx_key "__iis_lua_ctx"
-#define iis_lua_handled_key "__iis_lua_handled"
+static const PCSTR iis_lua_ctx_key = "__iis_lua_ctx";
+static const PCSTR iis_lua_handled_key = "__iis_lua_handled";
 
 IIS_LUA_API inline IHttpContext *iis_lua_get_http_ctx(lua_State *L)
 {
@@ -53,7 +52,7 @@ IIS_LUA_API int iis_lua_exit(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
-    int status = luaL_checkinteger(L, 1);
+    auto status = static_cast<USHORT>(luaL_checkinteger(L, 1));
 
     ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
     
@@ -179,7 +178,7 @@ IIS_LUA_API int iis_lua_req_set_url(lua_State *L)
 
     auto url = luaL_checkstring(L, 1);
 
-    ctx->GetRequest()->SetUrl(url, strlen(url), TRUE);
+    ctx->GetRequest()->SetUrl(url, static_cast<DWORD>(strlen(url)), TRUE);
 
     return 0;
 }
@@ -225,7 +224,7 @@ IIS_LUA_API int iis_lua_resp_set_header(lua_State *L)
     auto name = luaL_checkstring(L, 1);
     auto value = luaL_checkstring(L, 2);
 
-    ctx->GetResponse()->SetHeader(name, value, strlen(value), TRUE);
+    ctx->GetResponse()->SetHeader(name, value, static_cast<USHORT>(strlen(value)), TRUE);
 
     return 0;
 }
@@ -234,7 +233,7 @@ IIS_LUA_API int iis_lua_resp_set_status(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
-    int status = luaL_checkinteger(L, 1);
+    auto status = static_cast<USHORT>(luaL_checkinteger(L, 1));
 
     ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
 
@@ -255,45 +254,4 @@ IIS_LUA_API int iis_lua_server_get_variables(lua_State *L)
     lua_pushlstring(L, value, length);
 
     return 1;
-}
-
-static const char *iis_lua_util_get_status_reason(int status)
-{
-    switch (status)
-    {
-    case 200:
-        return "OK";
-    case 201:
-        return "Created";
-    case 204:
-        return "No Content";
-    case 301:
-        return "Moved Permanently";
-    case 302:
-        return "Found";
-    case 303:
-        return "See Other";
-    case 304:
-        return "Not Modified";
-    case 400:
-        return "Bad Request";
-    case 401:
-        return "Unauthorized";
-    case 403:
-        return "Forbidden";
-    case 404:
-        return "Not Found";
-    case 405:
-        return "Method Not Allowed";
-    case 500:
-        return "Internal Server Error";
-    case 501:
-        return "Not Implemented";
-    case 502:
-        return "Bad Gateway";
-    case 503:
-        return "Service Unavailable";
-    default:
-        return "Unknown Reason";
-    }
 }
