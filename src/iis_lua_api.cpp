@@ -9,7 +9,7 @@ IIS_LUA_API inline IHttpContext *iis_lua_get_http_ctx(lua_State *L)
 {
     lua_getglobal(L, iis_lua_ctx_key);
 
-    auto *ctx = reinterpret_cast<IHttpContext *>(lua_touserdata(L, -1));
+    auto ctx = reinterpret_cast<IHttpContext *>(lua_touserdata(L, -1));
 
     lua_pop(L, 1);
 
@@ -51,7 +51,7 @@ IIS_LUA_API int iis_lua_debug(lua_State *L)
 
 IIS_LUA_API int iis_lua_exit(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     int status = luaL_checkinteger(L, 1);
 
@@ -84,7 +84,7 @@ IIS_LUA_API int iis_lua_exit(lua_State *L)
 
 IIS_LUA_API int iis_lua_headers_sent(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     lua_pushboolean(L, ctx->GetResponseHeadersSent());
 
@@ -93,7 +93,7 @@ IIS_LUA_API int iis_lua_headers_sent(lua_State *L)
 
 IIS_LUA_API int iis_lua_map_path(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     auto url = luaL_checkstring(L, 1);
 
@@ -115,7 +115,7 @@ IIS_LUA_API int iis_lua_print(lua_State *L)
 
 IIS_LUA_API int iis_lua_redirect(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     auto url = luaL_checkstring(L, 1);
 
@@ -128,7 +128,7 @@ IIS_LUA_API int iis_lua_redirect(lua_State *L)
 
 IIS_LUA_API int iis_lua_req_get_headers(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     auto headers = ctx->GetRequest()->GetRawHttpRequest()->Headers;
 
@@ -158,7 +158,7 @@ IIS_LUA_API int iis_lua_req_get_headers(lua_State *L)
 
 IIS_LUA_API int iis_lua_req_get_method(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     lua_pushstring(L, ctx->GetRequest()->GetHttpMethod());
 
@@ -167,7 +167,7 @@ IIS_LUA_API int iis_lua_req_get_method(lua_State *L)
 
 IIS_LUA_API int iis_lua_req_http_version(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     USHORT major, minor;
 
@@ -184,7 +184,7 @@ IIS_LUA_API int iis_lua_req_http_version(lua_State *L)
 
 IIS_LUA_API int iis_lua_req_set_method(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     auto method = luaL_checkstring(L, 1);
 
@@ -195,7 +195,7 @@ IIS_LUA_API int iis_lua_req_set_method(lua_State *L)
 
 IIS_LUA_API int iis_lua_req_set_url(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     auto url = luaL_checkstring(L, 1);
 
@@ -206,7 +206,7 @@ IIS_LUA_API int iis_lua_req_set_url(lua_State *L)
 
 IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     auto headers = ctx->GetResponse()->GetRawHttpResponse()->Headers;
 
@@ -238,9 +238,21 @@ IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
     return 0;
 }
 
+IIS_LUA_API int iis_lua_resp_set_header(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    auto name = luaL_checkstring(L, 1);
+    auto value = luaL_checkstring(L, 2);
+
+    ctx->GetResponse()->SetHeader(name, value, strlen(value), TRUE);
+
+    return 0;
+}
+
 IIS_LUA_API int iis_lua_resp_set_status(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     int status = luaL_checkinteger(L, 1);
 
@@ -251,7 +263,7 @@ IIS_LUA_API int iis_lua_resp_set_status(lua_State *L)
 
 IIS_LUA_API int iis_lua_server_get_variables(lua_State *L)
 {
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iis_lua_get_http_ctx(L);
 
     auto name = luaL_checkstring(L, 1);
 

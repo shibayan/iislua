@@ -28,9 +28,96 @@ static const struct luaL_Reg iis_req [] =
 static const struct luaL_Reg iis_resp [] =
 {
     { "get_headers", iis_lua_resp_get_headers },
+    { "set_header", iis_lua_resp_set_header },
     { "set_status", iis_lua_resp_set_status },
     { NULL, NULL }
 };
+
+static HTTP_MODULE_ID g_pModuleContext;
+static IHttpServer *g_pHttpServer;
+
+class CLuaHttpModuleConfiguration : public IHttpStoredContext
+{
+private:
+    char beginRequest[MAX_PATH];
+public:
+    HRESULT Initialize(IN IHttpContext *pHttpContext)
+    {
+        // Get IAppHostElement
+        IAppHostElement *section;
+
+        auto path = SysAllocString(pHttpContext->GetMetadata()->GetMetaPath());
+        auto elementName = SysAllocString(L"system.webServer/iislua");
+
+        g_pHttpServer->GetAdminManager()->GetAdminSection(elementName, path, &section);
+
+        SysFreeString(elementName);
+        SysFreeString(path);
+
+        // Get IAppHostProperty
+        IAppHostProperty *prop;
+        BSTR propertyValue;
+
+        auto propertyName = SysAllocString(L"beginRequest");
+
+        section->GetPropertyByName(propertyName, &prop);
+
+        prop->get_StringValue(&propertyValue);
+
+        // wchar_t to char
+        size_t i;
+        wcstombs_s(&i, beginRequest, propertyValue, MAX_PATH);
+
+        SysFreeString(propertyValue);
+        SysFreeString(propertyName);
+
+        // Release
+        prop->Release();
+
+        section->Release();
+
+        return S_OK;
+    }
+
+    VOID CleanupStoredContext(VOID)
+    {
+        delete this;
+    }
+
+    const char *GetBeginRequest() const
+    {
+        return beginRequest;
+    }
+};
+
+static CLuaHttpModuleConfiguration *iis_lua_get_config(IHttpContext *pHttpContext)
+{
+    auto pModuleContextContainer = pHttpContext->GetMetadata()->GetModuleContextContainer();
+    auto pModuleConfig = reinterpret_cast<CLuaHttpModuleConfiguration *>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
+
+    if (pModuleConfig != NULL)
+    {
+        return pModuleConfig;
+    }
+
+    pModuleConfig = new CLuaHttpModuleConfiguration();
+
+    if (FAILED(pModuleConfig->Initialize(pHttpContext)))
+    {
+        pModuleConfig->CleanupStoredContext();
+
+        return NULL;
+    }
+
+    if (FAILED(pModuleContextContainer->SetModuleContext(pModuleConfig, g_pModuleContext)))
+    {
+        pModuleConfig->CleanupStoredContext();
+
+        return NULL;
+    }
+
+    return pModuleConfig;
+}
 
 class CLuaHttpModule : public CHttpModule
 {
@@ -56,14 +143,6 @@ public:
 
         // register iis
         lua_setglobal(L, "iis");
-
-        // TODO: load scriptpath from configuration file (ex. web.config)
-        if (luaL_dofile(L, "C:\\inetpub\\script.lua"))
-        {
-            auto text = lua_tostring(L, -1);
-
-            OutputDebugStringA(text);
-        }
     }
 
     ~CLuaHttpModule()
@@ -73,12 +152,12 @@ public:
 
     REQUEST_NOTIFICATION_STATUS OnBeginRequest(IN IHttpContext *pHttpContext, IN OUT IHttpEventProvider *pProvider)
     {
+        auto config = iis_lua_get_config(pHttpContext);
+
         iis_lua_set_http_ctx(L, pHttpContext);
         iis_lua_set_handled(L, FALSE);
 
-        lua_getglobal(L, "onBeginRequest");
-
-        if (lua_pcall(L, 0, 0, 0) != 0)
+        if (luaL_dofile(L, config->GetBeginRequest()))
         {
             auto text = lua_tostring(L, -1);
 
@@ -112,5 +191,8 @@ public:
 
 HRESULT WINAPI RegisterModule(DWORD dwServerVersion, IHttpModuleRegistrationInfo *pModuleInfo, IHttpServer *pHttpServer)
 {
+    g_pModuleContext = pModuleInfo->GetId();
+    g_pHttpServer = pHttpServer;
+
     return pModuleInfo->SetRequestNotifications(new CLuaHttpModuleFactory(), RQ_BEGIN_REQUEST, 0);
 }
