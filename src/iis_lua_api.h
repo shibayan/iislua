@@ -27,6 +27,8 @@ IIS_LUA_API int iis_lua_req_set_header(lua_State *);
 IIS_LUA_API int iis_lua_req_set_method(lua_State *);
 IIS_LUA_API int iis_lua_req_set_url(lua_State *);
 
+IIS_LUA_API int iis_lua_resp_clear(lua_State *);
+IIS_LUA_API int iis_lua_resp_clear_headers(lua_State *);
 IIS_LUA_API int iis_lua_resp_get_headers(lua_State *);
 IIS_LUA_API int iis_lua_resp_get_status(lua_State *);
 IIS_LUA_API int iis_lua_resp_set_header(lua_State *);
@@ -60,6 +62,8 @@ const struct luaL_Reg iis_req [] =
 
 const struct luaL_Reg iis_resp [] =
 {
+    { "clear", iis_lua_resp_clear },
+    { "clear_headers", iis_lua_resp_clear_headers },
     { "get_headers", iis_lua_resp_get_headers },
     { "get_status", iis_lua_resp_get_status },
     { "set_header", iis_lua_resp_set_header },

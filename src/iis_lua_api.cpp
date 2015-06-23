@@ -219,6 +219,24 @@ IIS_LUA_API int iis_lua_req_set_url(lua_State *L)
     return 0;
 }
 
+IIS_LUA_API int iis_lua_resp_clear(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    ctx->GetResponse()->Clear();
+
+    return 0;
+}
+
+IIS_LUA_API int iis_lua_resp_clear_headers(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    ctx->GetResponse()->ClearHeaders();
+
+    return 0;
+}
+
 IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);

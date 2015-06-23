@@ -3,6 +3,19 @@ lua-iis-module
 
 It brings the power of Lua scripting in your IIS.
 
+## Configuration
+
+### Sample Web.config
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <system.webServer>
+    <iislua beginRequest="C:\inetpub\script.lua" />
+  </system.webServer>
+</configuration>
+```
+
 ## Usage
 
 ### Return status code
