@@ -14,6 +14,12 @@ CModuleConfiguration::~CModuleConfiguration()
         delete [] beginRequest;
         beginRequest = NULL;
     }
+
+    if (mapPath != NULL)
+    {
+        delete [] mapPath;
+        mapPath = NULL;
+    }
 }
 
 HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer)
@@ -31,6 +37,7 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
 
     // Get Configuration
     beginRequest = GetString(section, L"beginRequest");
+    mapPath = GetString(section, L"mapPath");
 
     section->Release();
 
@@ -45,6 +52,11 @@ VOID CModuleConfiguration::CleanupStoredContext(VOID)
 PCSTR CModuleConfiguration::GetBeginRequest() const
 {
     return beginRequest;
+}
+
+PCSTR CModuleConfiguration::GetMapPath() const
+{
+    return mapPath;
 }
 
 PCSTR CModuleConfiguration::GetString(IAppHostElement *section, PCWSTR name)

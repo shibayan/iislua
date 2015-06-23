@@ -11,5 +11,5 @@ HRESULT APIENTRY RegisterModule(DWORD dwServerVersion, IHttpModuleRegistrationIn
     g_pModuleContext = pModuleInfo->GetId();
     g_pHttpServer = pHttpServer;
 
-    return pModuleInfo->SetRequestNotifications(new CLuaModuleFactory(), RQ_BEGIN_REQUEST, 0);
+    return pModuleInfo->SetRequestNotifications(new CLuaModuleFactory(), RQ_BEGIN_REQUEST | RQ_MAP_PATH, 0);
 }

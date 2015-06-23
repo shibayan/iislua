@@ -5,12 +5,8 @@ class CHttpModule;
 
 class CLuaHttpModule : public CHttpModule
 {
-private:
-    lua_State *L;
-
 public:
-    CLuaHttpModule();
-    ~CLuaHttpModule();
-
-    REQUEST_NOTIFICATION_STATUS OnBeginRequest(IN IHttpContext *pHttpContext, IN OUT IHttpEventProvider *pProvider);
+    REQUEST_NOTIFICATION_STATUS OnBeginRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider);
+    REQUEST_NOTIFICATION_STATUS OnMapPath(IN IHttpContext *pHttpContext, IN IMapPathProvider *pProvider);
+    REQUEST_NOTIFICATION_STATUS OnAsyncCompletion(IN IHttpContext *pHttpContext, IN DWORD dwNotification, IN BOOL fPostNotification, IN IHttpEventProvider *pProvider, IN IHttpCompletionInfo *pCompletionInfo);
 };

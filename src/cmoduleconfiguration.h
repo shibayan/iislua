@@ -7,6 +7,7 @@ class CModuleConfiguration : public IHttpStoredContext
 {
 private:
     PCSTR beginRequest;
+    PCSTR mapPath;
 
     PCSTR GetString(IAppHostElement *section, PCWSTR name);
 public:
@@ -18,4 +19,5 @@ public:
     VOID CleanupStoredContext(VOID);
 
     PCSTR GetBeginRequest() const;
+    PCSTR GetMapPath() const;
 };
