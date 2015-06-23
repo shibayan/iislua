@@ -55,27 +55,7 @@ IIS_LUA_API int iis_lua_exit(lua_State *L)
 
     int status = luaL_checkinteger(L, 1);
 
-    PCSTR reason;
-
-    switch (status)
-    {
-    case 200:
-        reason = "OK";
-        break;
-    case 204:
-        reason = "Created";
-        break;
-    case 400:
-        reason = "Bad Request";
-        break;
-    case 500:
-        reason = "Internal Server Error";
-        break;
-    default:
-        return 0;
-    }
-
-    ctx->GetResponse()->SetStatus(status, reason);
+    ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
     
     iis_lua_set_handled(L);
 
@@ -256,7 +236,7 @@ IIS_LUA_API int iis_lua_resp_set_status(lua_State *L)
 
     int status = luaL_checkinteger(L, 1);
 
-    ctx->GetResponse()->SetStatus(status, "OK");
+    ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
 
     return 0;
 }
@@ -275,4 +255,45 @@ IIS_LUA_API int iis_lua_server_get_variables(lua_State *L)
     lua_pushlstring(L, value, length);
 
     return 1;
+}
+
+static const char *iis_lua_util_get_status_reason(int status)
+{
+    switch (status)
+    {
+    case 200:
+        return "OK";
+    case 201:
+        return "Created";
+    case 204:
+        return "No Content";
+    case 301:
+        return "Moved Permanently";
+    case 302:
+        return "Found";
+    case 303:
+        return "See Other";
+    case 304:
+        return "Not Modified";
+    case 400:
+        return "Bad Request";
+    case 401:
+        return "Unauthorized";
+    case 403:
+        return "Forbidden";
+    case 404:
+        return "Not Found";
+    case 405:
+        return "Method Not Allowed";
+    case 500:
+        return "Internal Server Error";
+    case 501:
+        return "Not Implemented";
+    case 502:
+        return "Bad Gateway";
+    case 503:
+        return "Service Unavailable";
+    default:
+        return "Unknown Reason";
+    }
 }

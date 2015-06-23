@@ -31,6 +31,8 @@ IIS_LUA_API int iis_lua_resp_set_status(lua_State *);
 
 IIS_LUA_API int iis_lua_server_get_variables(lua_State *);
 
+static const char *iis_lua_util_get_status_reason(int status);
+
 static const char* http_header_id_to_name [] =
 {
     "Cache-Control",
