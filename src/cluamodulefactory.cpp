@@ -5,7 +5,14 @@ HRESULT CLuaModuleFactory::GetHttpModule(OUT CHttpModule **ppModule, IN IModuleA
 {
     UNREFERENCED_PARAMETER(pAllocator);
 
-    *ppModule = new CLuaHttpModule();
+    auto pModule = new CLuaHttpModule();
+
+    if (!pModule)
+    {
+        return HRESULT_FROM_WIN32(ERROR_NOT_ENOUGH_MEMORY);
+    }
+
+    *ppModule = pModule;
 
     return S_OK;
 }

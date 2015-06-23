@@ -48,6 +48,11 @@ IIS_LUA_API int iis_lua_debug(lua_State *L)
     return 0;
 }
 
+IIS_LUA_API int iis_lua_exec(lua_State *L)
+{
+    return 0;
+}
+
 IIS_LUA_API int iis_lua_exit(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
@@ -57,6 +62,17 @@ IIS_LUA_API int iis_lua_exit(lua_State *L)
     ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
     
     iis_lua_set_handled(L);
+
+    return 0;
+}
+
+IIS_LUA_API int iis_lua_flush(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    DWORD sent;
+
+    ctx->GetResponse()->Flush(FALSE, TRUE, &sent);
 
     return 0;
 }
@@ -94,7 +110,7 @@ IIS_LUA_API int iis_lua_print(lua_State *L)
 
     dataChunk.DataChunkType = HttpDataChunkFromMemory;
     dataChunk.FromMemory.pBuffer = const_cast<char *>(message);
-    dataChunk.FromMemory.BufferLength = strlen(message);
+    dataChunk.FromMemory.BufferLength = static_cast<ULONG>(strlen(message));
 
     ctx->GetResponse()->WriteEntityChunks(&dataChunk, 1, FALSE, TRUE, &sent);
 
@@ -127,7 +143,7 @@ IIS_LUA_API int iis_lua_req_get_headers(lua_State *L)
     {
         if (headers.KnownHeaders[i].pRawValue != NULL)
         {
-            lua_pushstring(L, http_header_id_to_name[i]);
+            lua_pushstring(L, http_header_id_to_req_name[i]);
             lua_pushlstring(L, headers.KnownHeaders[i].pRawValue, headers.KnownHeaders[i].RawValueLength);
             lua_settable(L, -3);
         }
@@ -158,16 +174,27 @@ IIS_LUA_API int iis_lua_req_http_version(lua_State *L)
     auto ctx = iis_lua_get_http_ctx(L);
 
     USHORT major, minor;
+    char version[4];
 
     ctx->GetRequest()->GetHttpVersion(&major, &minor);
-
-    char version[4];
 
     sprintf_s(version, "%d.%d", major, minor);
 
     lua_pushstring(L, version);
 
     return 1;
+}
+
+IIS_LUA_API int iis_lua_req_set_header(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    auto name = luaL_checkstring(L, 1);
+    auto value = luaL_checkstring(L, 2);
+
+    ctx->GetRequest()->SetHeader(name, value, static_cast<USHORT>(strlen(value)), TRUE);
+
+    return 0;
 }
 
 IIS_LUA_API int iis_lua_req_set_method(lua_State *L)
@@ -201,15 +228,11 @@ IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
     lua_createtable(L, 0, headers.UnknownHeaderCount);
 
     // Append Known Headers
-    for (size_t i = 0; i < HttpHeaderRequestMaximum; i++)
+    for (size_t i = 0; i < HttpHeaderResponseMaximum; i++)
     {
         if (headers.KnownHeaders[i].pRawValue != NULL)
         {
-            // TODO: HTTP_HEADER_ID to HeaderName
-            char szTemp[5];
-            sprintf_s(szTemp, "H_%d", i);
-
-            lua_pushstring(L, szTemp);
+            lua_pushstring(L, http_header_id_to_resp_name[i]);
             lua_pushlstring(L, headers.KnownHeaders[i].pRawValue, headers.KnownHeaders[i].RawValueLength);
             lua_settable(L, -3);
         }
@@ -223,7 +246,7 @@ IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
         lua_settable(L, -3);
     }
 
-    return 0;
+    return 1;
 }
 
 IIS_LUA_API int iis_lua_resp_get_status(lua_State *L)

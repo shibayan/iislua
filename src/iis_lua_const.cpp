@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-const char* http_header_id_to_name [] =
+const char* http_header_id_to_req_name [] =
 {
     "Cache-Control",
     "Connection",
@@ -44,4 +44,38 @@ const char* http_header_id_to_name [] =
     "Te",
     "Translate",
     "User-Agent"
+};
+
+const char* http_header_id_to_resp_name [] =
+{
+    "Cache-Control",
+    "Connection",
+    "Date",
+    "Keep-Alive",
+    "Pragma",
+    "Trailer",
+    "Transfer-Encoding",
+    "Upgrade",
+    "Via",
+    "Warning",
+    "Allow",
+    "Content-Length",
+    "Content-Type",
+    "Content-Encoding",
+    "Content-Language",
+    "Content-Location",
+    "Content-MD5",
+    "Content-Range",
+    "Expires",
+    "Last-Modified",
+    "Accept-Ranges",
+    "Age",
+    "ETag",
+    "Location",
+    "Proxy-Authenticate",
+    "Retry-After",
+    "Server",
+    "Set-Cookie",
+    "Vary",
+    "WWW-Authenticate"
 };
