@@ -1,4 +1,13 @@
 
+// exec appcmd
+var shell = new ActiveXObject("Shell.Application");
+var wshell = new ActiveXObject("WScript.Shell");
+
+var appcmd = wshell.ExpandEnvironmentStrings("%windir%\\system32\\inetsrv\\appcmd.exe");
+
+shell.ShellExecute(appcmd, "install module /name:iislua /image:\"%programfiles%\\iislua\\iislua.dll\" /commit:apphost");
+
+// modify apphost.config
 var adminManager = new ActiveXObject("Microsoft.ApplicationHost.WritableAdminManager");
 var configManager = adminManager.ConfigManager;
 

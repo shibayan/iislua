@@ -103,6 +103,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_194218D6F8E14BA29C6AA23917C73299"
+            {
+            "Name" = "8:install.js"
+            "Condition" = "8:"
+            "Object" = "8:_C7E1091D96E7479594EDEEB434819BE6"
+            "FileType" = "3:3"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_27505BB9_C3B0_4BA0_B384_A3323302C667"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_3DAF07B2E7F6400D98AD825F64A97B70"
             {
             "Name" = "8:uninstall.js"
@@ -117,17 +131,17 @@
             "InstallerClass" = "11:FALSE"
             "CustomActionData" = "8:"
             }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_A952819D99F0414D8C3C035BE81A32F6"
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_D0FF6B0A720E4E5F81B8D92928137471"
             {
-            "Name" = "8:install.js"
+            "Name" = "8:uninstall.js"
             "Condition" = "8:"
-            "Object" = "8:_C7E1091D96E7479594EDEEB434819BE6"
+            "Object" = "8:_6B4F75EE5D154549864BE1C3862FF05F"
             "FileType" = "3:3"
-            "InstallAction" = "3:1"
+            "InstallAction" = "3:3"
             "Arguments" = "8:"
             "EntryPoint" = "8:"
             "Sequence" = "3:1"
-            "Identifier" = "8:_27505BB9_C3B0_4BA0_B384_A3323302C667"
+            "Identifier" = "8:_699299F0_25AD_4E4D_BDF0_A196BB4D3D63"
             "InstallerClass" = "11:FALSE"
             "CustomActionData" = "8:"
             }
@@ -285,7 +299,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:iislua"
         "ProductCode" = "8:{2FA287DC-DD66-4847-AD7E-22A6D53B6468}"
-        "PackageCode" = "8:{53D5C15C-DC38-4451-AB0D-927C59FD46F6}"
+        "PackageCode" = "8:{48F7B479-DE16-4476-8F92-01EC36C5D990}"
         "UpgradeCode" = "8:{1A16A4EB-F3C5-4C41-B2E0-21727DF396C9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
