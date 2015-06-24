@@ -8,10 +8,13 @@ It brings the power of Lua scripting in your IIS.
 ### Sample Web.config
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <configuration>
   <system.webServer>
-    <iislua beginRequest="C:\inetpub\beginrequest.lua" mapPath="C:\inetpub\mappath.lua" />
+    <iislua>
+      <beginRequest scriptPath="C:\inetpub\beginrequest.lua" />
+      <mapPath scriptPath="C:\inetpub\mappath.lua" />
+    </iislua>
   </system.webServer>
 </configuration>
 ```
