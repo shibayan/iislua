@@ -7,7 +7,7 @@ It brings the power of Lua scripting in your IIS.
 
 ### Sample Web.config
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <system.webServer>
@@ -20,19 +20,19 @@ It brings the power of Lua scripting in your IIS.
 
 ### Return status code
 
-```
+```lua
 iis.exit(404)
 ```
 
 ### Redirect
 
-```
+```lua
 iis.redirect("http://buchizo.wordpress.com/")
 ```
 
 ### Refuse http method
 
-```
+```lua
 if iis.req.http_method() ~= "POST" then
     iis.exit(405)
 end
@@ -40,7 +40,7 @@ end
 
 ### Cross domain access control
 
-```
+```lua
 req_headers = iis.req.get_headers()
 
 if req_headers["Origin"] ~= nil then
@@ -50,7 +50,7 @@ end
 
 ### Rewrite to other url
 
-```
+```lua
 if iis.req.get_url() == "/" then
    iis.exec("/iisstart.htm")
 end
