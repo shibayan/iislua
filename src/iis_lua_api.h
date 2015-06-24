@@ -40,4 +40,5 @@ IIS_LUA_API int iis_lua_resp_get_status(lua_State *);
 IIS_LUA_API int iis_lua_resp_set_header(lua_State *);
 IIS_LUA_API int iis_lua_resp_set_status(lua_State *);
 
-IIS_LUA_API int iis_lua_server_get_variables(lua_State *);
+IIS_LUA_API int iis_lua_srv_get_variable(lua_State *);
+IIS_LUA_API int iis_lua_srv_set_variable(lua_State *);

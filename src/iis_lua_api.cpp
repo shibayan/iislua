@@ -42,6 +42,13 @@ static const struct luaL_Reg iis_resp [] =
     { NULL, NULL }
 };
 
+static const struct luaL_Reg iis_srv[] =
+{
+    { "get_variable", iis_lua_srv_get_variable },
+    { "set_variable", iis_lua_srv_set_variable },
+    { NULL, NULL }
+};
+
 IIS_LUA_API inline lua_State *iis_lua_newstate()
 {
     auto L = luaL_newstate();
@@ -57,6 +64,10 @@ IIS_LUA_API inline lua_State *iis_lua_newstate()
     // create iis.resp
     luaL_newlib(L, iis_resp);
     lua_setfield(L, -2, "resp");
+
+    // create iis.srv
+    luaL_newlib(L, iis_srv);
+    lua_setfield(L, -2, "srv");
 
     // register iis
     lua_setglobal(L, "iis");
@@ -462,7 +473,7 @@ IIS_LUA_API int iis_lua_resp_set_status(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_server_get_variables(lua_State *L)
+IIS_LUA_API int iis_lua_srv_get_variable(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -476,4 +487,18 @@ IIS_LUA_API int iis_lua_server_get_variables(lua_State *L)
     lua_pushlstring(L, value, length);
 
     return 1;
+}
+
+IIS_LUA_API int iis_lua_srv_set_variable(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    auto name = luaL_checkstring(L, 1);
+    auto value = iis_lua_str_to_wstr(luaL_checkstring(L, 2));
+
+    ctx->SetServerVariable(name, value);
+
+    delete [] value;
+
+    return 0;
 }
