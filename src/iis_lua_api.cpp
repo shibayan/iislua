@@ -23,6 +23,7 @@ static const struct luaL_Reg iis_req [] =
     { "get_headers", iis_lua_req_get_headers },
     { "get_method", iis_lua_req_get_method },
     { "get_url", iis_lua_req_get_url },
+    { "get_url_args", iis_lua_req_get_url_args },
     { "http_version", iis_lua_req_http_version },
     { "set_header", iis_lua_req_set_header },
     { "set_method", iis_lua_req_set_method },
@@ -239,6 +240,13 @@ IIS_LUA_API int iis_lua_redirect(lua_State *L)
     auto url = luaL_checkstring(L, 1);
 
     ctx->GetResponse()->Redirect(url);
+
+    if (lua_gettop(L) == 2)
+    {
+        auto status = static_cast<USHORT>(luaL_checkinteger(L, 2));
+
+        ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
+    }
 
     iis_lua_set_result(L);
 
