@@ -11,9 +11,6 @@ IIS_LUA_API inline lua_State *iis_lua_newstate();
 IIS_LUA_API inline IHttpContext *iis_lua_get_http_ctx(lua_State *);
 IIS_LUA_API inline void iis_lua_set_http_ctx(lua_State *, IHttpContext *);
 
-IIS_LUA_API inline IHttpContext *iis_lua_get_child_http_ctx(lua_State *);
-IIS_LUA_API inline void iis_lua_set_child_http_ctx(lua_State *, IHttpContext *);
-
 IIS_LUA_API inline REQUEST_NOTIFICATION_STATUS iis_lua_get_result(lua_State *);
 IIS_LUA_API inline void iis_lua_set_result(lua_State *, REQUEST_NOTIFICATION_STATUS);
 

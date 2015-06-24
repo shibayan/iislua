@@ -2,7 +2,6 @@
 #include "stdafx.h"
 
 static const PCSTR iis_lua_ctx_key = "__iis_lua_ctx";
-static const PCSTR iis_lua_child_ctx_key = "__iis_lua_child_ctx";
 static const PCSTR iis_lua_result_key = "__iis_lua_result";
 
 static const struct luaL_Reg iis [] =
@@ -81,23 +80,6 @@ IIS_LUA_API inline void iis_lua_set_http_ctx(lua_State *L, IHttpContext *ctx)
     lua_setglobal(L, iis_lua_ctx_key);
 }
 
-IIS_LUA_API inline IHttpContext *iis_lua_get_child_http_ctx(lua_State *L)
-{
-    lua_getglobal(L, iis_lua_child_ctx_key);
-
-    auto ctx = reinterpret_cast<IHttpContext *>(lua_touserdata(L, -1));
-
-    lua_pop(L, 1);
-
-    return ctx;
-}
-
-IIS_LUA_API inline void iis_lua_set_child_http_ctx(lua_State *L, IHttpContext *ctx)
-{
-    lua_pushlightuserdata(L, ctx);
-    lua_setglobal(L, iis_lua_child_ctx_key);
-}
-
 IIS_LUA_API inline REQUEST_NOTIFICATION_STATUS iis_lua_get_result(lua_State *L)
 {
     lua_getglobal(L, iis_lua_result_key);
@@ -136,14 +118,13 @@ IIS_LUA_API int iis_lua_exec(lua_State *L)
 
     ctx->CloneContext(CLONE_FLAG_BASICS | CLONE_FLAG_ENTITY | CLONE_FLAG_HEADERS, &childCtx);
 
-    iis_lua_set_child_http_ctx(L, childCtx);
-
     childCtx->GetRequest()->SetUrl(url, static_cast<DWORD>(strlen(url)), FALSE);
 
     ctx->ExecuteRequest(TRUE, childCtx, 0, ctx->GetUser(), &completionExpected);
 
     if (completionExpected)
     {
+        // FIX: async completion 
         iis_lua_set_result(L, RQ_NOTIFICATION_PENDING);
 
         return 0;

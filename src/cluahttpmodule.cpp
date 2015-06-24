@@ -14,9 +14,13 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
 
     if (luaL_dofile(L, config->GetBeginRequest()))
     {
-        auto text = lua_tostring(L, -1);
+        auto error = lua_tostring(L, -1);
 
-        OutputDebugString(text);
+        OutputDebugString(error);
+
+        pHttpContext->GetResponse()->SetStatus(500, "Internal Server Error");
+
+        return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
     auto result = iis_lua_get_result(L);
@@ -30,12 +34,6 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
 {
     UNREFERENCED_PARAMETER(pProvider);
 
-    // FIX: recursive call
-    if (pHttpContext->GetParentContext() != NULL)
-    {
-        return RQ_NOTIFICATION_CONTINUE;
-    }
-
     auto config = iis_lua_get_config(pHttpContext);
 
     auto L = iis_lua_newstate();
@@ -45,9 +43,13 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
 
     if (luaL_dofile(L, config->GetMapPath()))
     {
-        auto text = lua_tostring(L, -1);
+        auto error = lua_tostring(L, -1);
 
-        OutputDebugString(text);
+        OutputDebugString(error);
+
+        pHttpContext->GetResponse()->SetStatus(500, "Internal Server Error");
+
+        return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
     auto result = iis_lua_get_result(L);
