@@ -21,6 +21,7 @@ static const struct luaL_Reg iis_req [] =
 {
     { "get_headers", iis_lua_req_get_headers },
     { "get_method", iis_lua_req_get_method },
+    { "get_remote_addr", iis_lua_req_get_remote_addr },
     { "get_url", iis_lua_req_get_url },
     { "get_url_args", iis_lua_req_get_url_args },
     { "http_version", iis_lua_req_http_version },
@@ -273,6 +274,21 @@ IIS_LUA_API int iis_lua_req_get_method(lua_State *L)
     auto ctx = iis_lua_get_http_ctx(L);
 
     lua_pushstring(L, ctx->GetRequest()->GetHttpMethod());
+
+    return 1;
+}
+
+IIS_LUA_API int iis_lua_req_get_remote_addr(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    auto remoteAddr = ctx->GetRequest()->GetRemoteAddress();
+
+    char ipAddress[INET6_ADDRSTRLEN];
+
+    inet_ntop(remoteAddr->sa_family, remoteAddr->sa_data, ipAddress, sizeof(ipAddress));
+
+    lua_pushstring(L, ipAddress);
 
     return 1;
 }
