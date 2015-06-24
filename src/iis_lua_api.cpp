@@ -113,24 +113,28 @@ IIS_LUA_API int iis_lua_exec(lua_State *L)
 
     auto url = luaL_checkstring(L, 1);
 
-    IHttpContext *childCtx;
+    IHttpContext *childContext;
     BOOL completionExpected;
 
-    ctx->CloneContext(CLONE_FLAG_BASICS | CLONE_FLAG_ENTITY | CLONE_FLAG_HEADERS, &childCtx);
+    ctx->CloneContext(CLONE_FLAG_BASICS | CLONE_FLAG_ENTITY | CLONE_FLAG_HEADERS, &childContext);
 
-    childCtx->GetRequest()->SetUrl(url, static_cast<DWORD>(strlen(url)), FALSE);
+    childContext->GetRequest()->SetUrl(url, static_cast<DWORD>(strlen(url)), FALSE);
 
-    ctx->ExecuteRequest(TRUE, childCtx, 0, ctx->GetUser(), &completionExpected);
+    ctx->ExecuteRequest(TRUE, childContext, 0, ctx->GetUser(), &completionExpected);
 
     if (completionExpected)
     {
-        // FIX: async completion 
+        // for async operation
+        auto storedContext = iis_lua_get_stored_context(ctx);
+
+        storedContext->SetChildContext(childContext);
+
         iis_lua_set_result(L, RQ_NOTIFICATION_PENDING);
 
         return 0;
     }
 
-    childCtx->ReleaseClonedContext();
+    childContext->ReleaseClonedContext();
 
     return 0;
 }

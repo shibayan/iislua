@@ -4,6 +4,28 @@
 extern HTTP_MODULE_ID g_pModuleContext;
 extern IHttpServer *g_pHttpServer;
 
+CLuaHttpStoredContext *iis_lua_get_stored_context(IHttpContext *pHttpContext)
+{
+    auto pModuleContextContainer = pHttpContext->GetModuleContextContainer();
+    auto pHttpStoredContext = reinterpret_cast<CLuaHttpStoredContext *>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
+
+    if (pHttpStoredContext != NULL)
+    {
+        return pHttpStoredContext;
+    }
+
+    pHttpStoredContext = new CLuaHttpStoredContext();
+
+    if (FAILED(pModuleContextContainer->SetModuleContext(pHttpStoredContext, g_pModuleContext)))
+    {
+        pHttpStoredContext->CleanupStoredContext();
+
+        return NULL;
+    }
+
+    return pHttpStoredContext;
+}
+
 const CModuleConfiguration *iis_lua_get_config(IHttpContext *pHttpContext)
 {
     auto pModuleContextContainer = pHttpContext->GetMetadata()->GetModuleContextContainer();

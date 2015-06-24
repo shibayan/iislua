@@ -67,7 +67,10 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAsyncCompletion(IN IHttpContext *p
     UNREFERENCED_PARAMETER(pProvider);
     UNREFERENCED_PARAMETER(pCompletionInfo);
 
-    // FIX: Not Implemented
+    auto storedContext = iis_lua_get_stored_context(pHttpContext);
+
+    storedContext->GetChildContext()->ReleaseClonedContext();
+    storedContext->SetChildContext(NULL);
 
     return RQ_NOTIFICATION_CONTINUE;
 }

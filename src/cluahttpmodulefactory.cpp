@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-HRESULT CLuaModuleFactory::GetHttpModule(OUT CHttpModule **ppModule, IN IModuleAllocator *pAllocator)
+HRESULT CLuaHttpModuleFactory::GetHttpModule(OUT CHttpModule **ppModule, IN IModuleAllocator *pAllocator)
 {
     UNREFERENCED_PARAMETER(pAllocator);
 
@@ -17,7 +17,7 @@ HRESULT CLuaModuleFactory::GetHttpModule(OUT CHttpModule **ppModule, IN IModuleA
     return S_OK;
 }
 
-void CLuaModuleFactory::Terminate()
+void CLuaHttpModuleFactory::Terminate()
 {
     delete this;
 }

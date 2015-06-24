@@ -15,4 +15,5 @@
 
 #include "cmoduleconfiguration.h"
 #include "cluahttpmodule.h"
-#include "cluamodulefactory.h"
+#include "cluahttpmodulefactory.h"
+#include "cluahttpstoredcontext.h"

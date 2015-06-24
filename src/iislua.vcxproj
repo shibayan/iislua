@@ -156,7 +156,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="cluahttpmodule.h" />
-    <ClInclude Include="cluamodulefactory.h" />
+    <ClInclude Include="cluahttpmodulefactory.h" />
+    <ClInclude Include="cluahttpstoredcontext.h" />
     <ClInclude Include="cmoduleconfiguration.h" />
     <ClInclude Include="iis_lua_api.h" />
     <ClInclude Include="iis_lua_const.h" />
@@ -167,7 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cluahttpmodule.cpp" />
-    <ClCompile Include="cluamodulefactory.cpp" />
+    <ClCompile Include="cluahttpmodulefactory.cpp" />
+    <ClCompile Include="cluahttpstoredcontext.cpp" />
     <ClCompile Include="cmoduleconfiguration.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="iis_lua_api.cpp" />

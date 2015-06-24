@@ -1,8 +1,5 @@
 #pragma once
 
-class IHttpStoredContext;
-class IHttpContext;
-
 class CModuleConfiguration : public IHttpStoredContext
 {
 private:
