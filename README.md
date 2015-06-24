@@ -11,7 +11,7 @@ It brings the power of Lua scripting in your IIS.
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <system.webServer>
-    <iislua beginRequest="C:\inetpub\script.lua" />
+    <iislua beginRequest="C:\inetpub\beginrequest.lua" mapPath="C:\inetpub\mappath.lua" />
   </system.webServer>
 </configuration>
 ```
@@ -45,5 +45,13 @@ req_headers = iis.req.get_headers()
 
 if req_headers["Origin"] ~= nil then
     iis.resp.set_header("Access-Control-Allow-Origin", req_headers["Origin"])
+end
+```
+
+### Rewrite to other url
+
+```
+if iis.req.get_url() == "/" then
+   iis.exec("/iisstart.htm")
 end
 ```
