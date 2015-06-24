@@ -105,7 +105,7 @@
         {
             "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_3DAF07B2E7F6400D98AD825F64A97B70"
             {
-            "Name" = "8:unsintall.js"
+            "Name" = "8:uninstall.js"
             "Condition" = "8:"
             "Object" = "8:_6B4F75EE5D154549864BE1C3862FF05F"
             "FileType" = "3:3"
@@ -168,8 +168,8 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6B4F75EE5D154549864BE1C3862FF05F"
             {
-            "SourcePath" = "8:unsintall.js"
-            "TargetName" = "8:unsintall.js"
+            "SourcePath" = "8:uninstall.js"
+            "TargetName" = "8:uninstall.js"
             "Tag" = "8:"
             "Folder" = "8:_068BCEF92D56425B8464D2F051F74660"
             "Condition" = "8:"
