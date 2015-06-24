@@ -3,9 +3,25 @@ lua-iis-module
 
 It brings the power of Lua scripting in your IIS.
 
+## Install
+
+install iislua module.
+
+```
+appcmd install module /name:iislua /image:C:\..\iislua.dll /add:true /lock:true
+```
+
+modify applicationHost.config
+
+```xml
+<sectionGroup name="system.webServer">
+  <section name="iislua" overrideModeDefault="Allow" />
+</sectionGroup>
+```
+
 ## Configuration
 
-### Sample Web.config
+### Web.config
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
