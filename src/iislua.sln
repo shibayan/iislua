@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iislua", "iislua.vcxproj", "{28A38A86-5E73-4252-9CE0-EFD34490E8B4}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "..\Installer\Installer.vdproj", "{3E408930-C6EE-406D-9AFB-2FCB6F661E49}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,14 @@ Global
 		{28A38A86-5E73-4252-9CE0-EFD34490E8B4}.Release|Win32.Build.0 = Release|Win32
 		{28A38A86-5E73-4252-9CE0-EFD34490E8B4}.Release|x64.ActiveCfg = Release|x64
 		{28A38A86-5E73-4252-9CE0-EFD34490E8B4}.Release|x64.Build.0 = Release|x64
+		{3E408930-C6EE-406D-9AFB-2FCB6F661E49}.Debug|Win32.ActiveCfg = Debug
+		{3E408930-C6EE-406D-9AFB-2FCB6F661E49}.Debug|Win32.Build.0 = Debug
+		{3E408930-C6EE-406D-9AFB-2FCB6F661E49}.Debug|x64.ActiveCfg = Debug
+		{3E408930-C6EE-406D-9AFB-2FCB6F661E49}.Debug|x64.Build.0 = Debug
+		{3E408930-C6EE-406D-9AFB-2FCB6F661E49}.Release|Win32.ActiveCfg = Release
+		{3E408930-C6EE-406D-9AFB-2FCB6F661E49}.Release|Win32.Build.0 = Release
+		{3E408930-C6EE-406D-9AFB-2FCB6F661E49}.Release|x64.ActiveCfg = Release
+		{3E408930-C6EE-406D-9AFB-2FCB6F661E49}.Release|x64.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
