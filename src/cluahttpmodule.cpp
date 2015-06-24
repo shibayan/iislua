@@ -7,6 +7,11 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
 
     auto config = iis_lua_get_config(pHttpContext);
 
+    if (config->GetBeginRequest() == NULL)
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
+
     auto L = iis_lua_newstate();
 
     iis_lua_set_http_ctx(L, pHttpContext);
@@ -35,6 +40,11 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
     UNREFERENCED_PARAMETER(pProvider);
 
     auto config = iis_lua_get_config(pHttpContext);
+
+    if (config->GetMapPath() == NULL)
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
 
     auto L = iis_lua_newstate();
 
