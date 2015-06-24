@@ -4,9 +4,9 @@
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
 "ProjectName" = "8:Installer"
-"LanguageId" = "3:1041"
-"CodePage" = "3:932"
-"UILanguageId" = "3:1041"
+"LanguageId" = "3:1033"
+"CodePage" = "3:1252"
+"UILanguageId" = "3:1033"
 "SccProjectName" = "8:"
 "SccLocalPath" = "8:"
 "SccAuxPath" = "8:"
@@ -16,12 +16,6 @@
         "Entry"
         {
         "MsmKey" = "8:_13A6CC5387234F6F8687D0C7E1B1EDFC"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_3D286EB1CE334FF5B2DC3B5A7EE937F2"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -43,6 +37,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
+            }
         }
         "Release"
         {
@@ -59,6 +69,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -85,7 +111,7 @@
             "SourcePath" = "8:..\\schema\\iislua_schema.xml"
             "TargetName" = "8:iislua_schema.xml"
             "Tag" = "8:"
-            "Folder" = "8:_7A5193A8CAD64B6DBE45EC860A69FDC8"
+            "Folder" = "8:_00A00073EFEE4F0E8736A97EFFA6780F"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -108,7 +134,7 @@
         {
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_068BCEF92D56425B8464D2F051F74660"
             {
-            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFiles64Folder][ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -118,59 +144,48 @@
                 {
                 }
             }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_9028B2FB40DA421B899909F1AF4C05F8"
+            "{1525181F-901A-416C-8A58-119130FE478E}:_18D08878B1D640848F48A83FF910703E"
             {
-            "Name" = "8:#1916"
+            "Name" = "8:#1936"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
-            "Property" = "8:DesktopFolder"
+            "Property" = "8:System64Folder"
                 "Folders"
                 {
-                }
-            }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_E2FAF41E79224AA69D4D89E41700798F"
-            {
-            "Name" = "8:#1912"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:ProgramFilesFolder"
-                "Folders"
-                {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_E18B9223EAE642D3A2ED3C7ABDB1171C"
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_7D084727D5644575B5A63F86D8045F0A"
                     {
-                    "Name" = "8:Shibayan"
-                    "AlwaysCreate" = "11:TRUE"
+                    "Name" = "8:inetsrv"
+                    "AlwaysCreate" = "11:FALSE"
                     "Condition" = "8:"
                     "Transitive" = "11:FALSE"
-                    "Property" = "8:_914DCCA0857247E7A0A6DE66979705AF"
+                    "Property" = "8:_9FF7F098659C46D88FDBB0F632CD3652"
                         "Folders"
                         {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_7A5193A8CAD64B6DBE45EC860A69FDC8"
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_1E49F051568F491E9BF9D08FF6DEE37F"
                             {
-                            "Name" = "8:iis-lua module"
-                            "AlwaysCreate" = "11:TRUE"
+                            "Name" = "8:config"
+                            "AlwaysCreate" = "11:FALSE"
                             "Condition" = "8:"
                             "Transitive" = "11:FALSE"
-                            "Property" = "8:_3B71B37485B84B029FB7B9FD9EE823F9"
+                            "Property" = "8:_2D9F1D48B4C64DC28A4EA42AAE9864AB"
                                 "Folders"
                                 {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_00A00073EFEE4F0E8736A97EFFA6780F"
+                                    {
+                                    "Name" = "8:schema"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_2FFF9919F90B4D51B9A1FBD2665A462F"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            }
-            "{1525181F-901A-416C-8A58-119130FE478E}:_E37EE7DE39A745F1849A5A80C18A350B"
-            {
-            "Name" = "8:#1919"
-            "AlwaysCreate" = "11:FALSE"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Property" = "8:ProgramMenuFolder"
-                "Folders"
-                {
                 }
             }
         }
@@ -182,28 +197,28 @@
         }
         "MsiBootstrapper"
         {
-        "LangId" = "3:1041"
+        "LangId" = "3:1033"
         "RequiresElevation" = "11:FALSE"
         }
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:lua-iis module"
-        "ProductCode" = "8:{102D6E69-DB6F-45A6-8EA0-FB7795EFF06E}"
-        "PackageCode" = "8:{17468738-2965-450D-B906-2586D37652F4}"
+        "ProductName" = "8:iislua"
+        "ProductCode" = "8:{2FA287DC-DD66-4847-AD7E-22A6D53B6468}"
+        "PackageCode" = "8:{53D5C15C-DC38-4451-AB0D-927C59FD46F6}"
         "UpgradeCode" = "8:{1A16A4EB-F3C5-4C41-B2E0-21727DF396C9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.0"
-        "Manufacturer" = "8:Shibayan"
+        "ProductVersion" = "8:0.3.0"
+        "Manufacturer" = "8:shibayan"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:lua IIS module Installer"
+        "Title" = "8:iislua"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Shibayan"
+        "ARPCONTACT" = "8:shibayan"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -211,7 +226,7 @@
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
-        "TargetPlatform" = "3:0"
+        "TargetPlatform" = "3:1"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
@@ -222,68 +237,12 @@
             {
                 "Keys"
                 {
-                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_CC67E11BFC524A5C9124CED1F0C6AD7A"
-                    {
-                    "Name" = "8:Software"
-                    "Condition" = "8:"
-                    "AlwaysCreate" = "11:FALSE"
-                    "DeleteAtUninstall" = "11:FALSE"
-                    "Transitive" = "11:FALSE"
-                        "Keys"
-                        {
-                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_728F53D083114ABC8370912059D0339F"
-                            {
-                            "Name" = "8:[Manufacturer]"
-                            "Condition" = "8:"
-                            "AlwaysCreate" = "11:FALSE"
-                            "DeleteAtUninstall" = "11:FALSE"
-                            "Transitive" = "11:FALSE"
-                                "Keys"
-                                {
-                                }
-                                "Values"
-                                {
-                                }
-                            }
-                        }
-                        "Values"
-                        {
-                        }
-                    }
                 }
             }
             "HKCU"
             {
                 "Keys"
                 {
-                    "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_CD85967BA502424DBE078DC46DBADA2D"
-                    {
-                    "Name" = "8:Software"
-                    "Condition" = "8:"
-                    "AlwaysCreate" = "11:FALSE"
-                    "DeleteAtUninstall" = "11:FALSE"
-                    "Transitive" = "11:FALSE"
-                        "Keys"
-                        {
-                            "{60EA8692-D2D5-43EB-80DC-7906BF13D6EF}:_4B34EE894C3E48C8A2D7E1566D8575F8"
-                            {
-                            "Name" = "8:[Manufacturer]"
-                            "Condition" = "8:"
-                            "AlwaysCreate" = "11:FALSE"
-                            "DeleteAtUninstall" = "11:FALSE"
-                            "Transitive" = "11:FALSE"
-                                "Keys"
-                                {
-                                }
-                                "Values"
-                                {
-                                }
-                            }
-                        }
-                        "Values"
-                        {
-                        }
-                    }
                 }
             }
             "HKCR"
@@ -709,12 +668,12 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3D286EB1CE334FF5B2DC3B5A7EE937F2"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D2E7D27971524BE4AC20491C5F4ECBF6"
             {
-            "SourcePath" = "8:..\\src\\Release\\iislua.dll"
+            "SourcePath" = "8:..\\src\\x64\\Release\\iislua.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_7A5193A8CAD64B6DBE45EC860A69FDC8"
+            "Folder" = "8:_068BCEF92D56425B8464D2F051F74660"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -729,7 +688,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:Release|Win32"
+            "OutputConfiguration" = "8:Release|x64"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{28A38A86-5E73-4252-9CE0-EFD34490E8B4}"
             "ShowKeyOutput" = "11:TRUE"
