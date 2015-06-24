@@ -1,10 +1,10 @@
 <configSchema>
   <sectionSchema name="system.webServer/iislua">
     <element name="beginRequest">
-      <attribute name="scriptPath" type="string" required="true" />
+      <attribute name="scriptPath" type="string" />
     </element>
     <element name="mapPath">
-      <attribute name="scriptPath" type="string" required="true" />
+      <attribute name="scriptPath" type="string" />
     </element>
   </sectionSchema>
 </configSchema>

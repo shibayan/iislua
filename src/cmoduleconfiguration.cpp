@@ -46,25 +46,19 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
 
     // beginRequest element
     auto beginRequest = GetElement(section, L"beginRequest");
-    
-    if (beginRequest != NULL)
-    {
-        this->beginRequest = GetString(beginRequest, L"scriptPath");
 
-        beginRequest->Release();
-        beginRequest = NULL;
-    }
+    this->beginRequest = GetString(beginRequest, L"scriptPath");
+
+    beginRequest->Release();
+    beginRequest = NULL;
 
     // mapPath element
     auto mapPath = GetElement(section, L"mapPath");
 
-    if (mapPath != NULL)
-    {
-        this->mapPath = GetString(mapPath, L"scriptPath");
+    this->mapPath = GetString(mapPath, L"scriptPath");
 
-        mapPath->Release();
-        mapPath = NULL;
-    }
+    mapPath->Release();
+    mapPath = NULL;
 
     section->Release();
     section = NULL;
@@ -90,7 +84,7 @@ PCSTR CModuleConfiguration::GetMapPath() const
 IAppHostElement *CModuleConfiguration::GetElement(IAppHostElement *section, PCWSTR name)
 {
     IAppHostElement *element = NULL;
-    
+
     auto elementName = SysAllocString(name);
 
     section->GetElementByName(elementName, &element);

@@ -7,7 +7,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
 
     auto config = iis_lua_get_config(pHttpContext);
 
-    if (config->GetBeginRequest() == NULL)
+    if (strlen(config->GetBeginRequest()) == 0)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
@@ -41,7 +41,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
 
     auto config = iis_lua_get_config(pHttpContext);
 
-    if (config->GetMapPath() == NULL)
+    if (strlen(config->GetMapPath()) == 0)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
