@@ -1,5 +1,6 @@
 <configSchema>
   <sectionSchema name="system.webServer/iislua">
     <attribute name="beginRequest" type="string" defaultValue=""/>
+    <attribute name="mapPath" type="string" defaultValue=""/>
   </sectionSchema>
 </configSchema>
