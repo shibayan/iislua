@@ -286,7 +286,14 @@ IIS_LUA_API int iis_lua_req_get_remote_addr(lua_State *L)
 
     char ipAddress[INET6_ADDRSTRLEN];
 
-    inet_ntop(remoteAddr->sa_family, remoteAddr->sa_data, ipAddress, sizeof(ipAddress));
+    if (remoteAddr->sa_family == AF_INET)
+    {
+        inet_ntop(AF_INET, &reinterpret_cast<SOCKADDR_IN *>(remoteAddr)->sin_addr, ipAddress, sizeof(ipAddress));
+    }
+    else
+    {
+        inet_ntop(AF_INET6, &reinterpret_cast<SOCKADDR_IN6 *>(remoteAddr)->sin6_addr, ipAddress, sizeof(ipAddress));
+    }
 
     lua_pushstring(L, ipAddress);
 
