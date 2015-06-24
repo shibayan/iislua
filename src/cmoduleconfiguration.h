@@ -6,6 +6,7 @@ private:
     PCSTR beginRequest;
     PCSTR mapPath;
 
+    IAppHostElement *GetElement(IAppHostElement *section, PCWSTR name);
     PCSTR GetString(IAppHostElement *section, PCWSTR name);
 public:
     CModuleConfiguration();
@@ -13,7 +14,7 @@ public:
 
     HRESULT Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer);
 
-    VOID CleanupStoredContext(VOID);
+    void CleanupStoredContext();
 
     PCSTR GetBeginRequest() const;
     PCSTR GetMapPath() const;

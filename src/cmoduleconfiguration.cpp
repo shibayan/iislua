@@ -4,6 +4,7 @@
 static const PCWSTR sectionPath = L"system.webServer/iislua";
 
 CModuleConfiguration::CModuleConfiguration()
+    : beginRequest(NULL), mapPath(NULL)
 {
 }
 
@@ -25,26 +26,53 @@ CModuleConfiguration::~CModuleConfiguration()
 HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer)
 {
     // Get IAppHostElement
-    IAppHostElement *section;
+    IAppHostElement *section = NULL;
 
     auto path = SysAllocString(pHttpContext->GetMetadata()->GetMetaPath());
-    auto elementName = SysAllocString(sectionPath);
+    auto sectionName = SysAllocString(sectionPath);
 
-    pHttpServer->GetAdminManager()->GetAdminSection(elementName, path, &section);
+    pHttpServer->GetAdminManager()->GetAdminSection(sectionName, path, &section);
 
-    SysFreeString(elementName);
+    SysFreeString(sectionName);
     SysFreeString(path);
 
-    // Get Configuration
-    beginRequest = GetString(section, L"beginRequest");
-    mapPath = GetString(section, L"mapPath");
+    sectionName = NULL;
+    path = NULL;
+
+    if (section == NULL)
+    {
+        return S_OK;
+    }
+
+    // beginRequest element
+    auto beginRequest = GetElement(section, L"beginRequest");
+    
+    if (beginRequest != NULL)
+    {
+        this->beginRequest = GetString(beginRequest, L"scriptPath");
+
+        beginRequest->Release();
+        beginRequest = NULL;
+    }
+
+    // mapPath element
+    auto mapPath = GetElement(section, L"mapPath");
+
+    if (mapPath != NULL)
+    {
+        this->mapPath = GetString(mapPath, L"scriptPath");
+
+        mapPath->Release();
+        mapPath = NULL;
+    }
 
     section->Release();
+    section = NULL;
 
     return S_OK;
 }
 
-VOID CModuleConfiguration::CleanupStoredContext(VOID)
+void CModuleConfiguration::CleanupStoredContext()
 {
     delete this;
 }
@@ -59,10 +87,24 @@ PCSTR CModuleConfiguration::GetMapPath() const
     return mapPath;
 }
 
+IAppHostElement *CModuleConfiguration::GetElement(IAppHostElement *section, PCWSTR name)
+{
+    IAppHostElement *element = NULL;
+    
+    auto elementName = SysAllocString(name);
+
+    section->GetElementByName(elementName, &element);
+
+    SysFreeString(elementName);
+    elementName = NULL;
+
+    return element;
+}
+
 PCSTR CModuleConfiguration::GetString(IAppHostElement *section, PCWSTR name)
 {
-    IAppHostProperty *prop;
-    BSTR propertyValue;
+    IAppHostProperty *prop = NULL;
+    BSTR propertyValue = NULL;
 
     auto propertyName = SysAllocString(name);
 
