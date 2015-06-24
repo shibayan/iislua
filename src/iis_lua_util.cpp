@@ -33,7 +33,7 @@ const CModuleConfiguration *iis_lua_get_config(IHttpContext *pHttpContext)
     return pModuleConfig;
 }
 
-const PCSTR iis_lua_util_get_status_reason(USHORT status)
+PCSTR iis_lua_util_get_status_reason(USHORT status)
 {
     switch (status)
     {
@@ -72,4 +72,28 @@ const PCSTR iis_lua_util_get_status_reason(USHORT status)
     default:
         return "Unknown Reason";
     }
+}
+
+PSTR iis_lua_wstr_to_str(PCWSTR wstr)
+{
+    auto len = wcslen(wstr);
+
+    size_t i;
+    PSTR str = new CHAR[len * 2 + 1];
+
+    wcstombs_s(&i, str, len * 2 + 1, wstr, len);
+
+    return str;
+}
+
+PWSTR iis_lua_str_to_wstr(PCSTR str)
+{
+    auto len = strlen(str);
+
+    size_t i;
+    auto wstr = new WCHAR[len + 1];
+
+    mbstowcs_s(&i, wstr, len + 1, str, len);
+
+    return wstr;
 }

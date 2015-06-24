@@ -22,6 +22,7 @@ static const struct luaL_Reg iis_req [] =
 {
     { "get_headers", iis_lua_req_get_headers },
     { "get_method", iis_lua_req_get_method },
+    { "get_url", iis_lua_req_get_url },
     { "http_version", iis_lua_req_http_version },
     { "set_header", iis_lua_req_set_header },
     { "set_method", iis_lua_req_set_method },
@@ -189,11 +190,26 @@ IIS_LUA_API int iis_lua_map_path(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
-    auto url = luaL_checkstring(L, 1);
+    auto url = iis_lua_str_to_wstr(luaL_checkstring(L, 1));
 
-    //ctx->MapPath(url, NULL, NULL);
+    DWORD length = 0;
 
-    lua_pushstring(L, "");
+    // calculate size
+    ctx->MapPath(url, NULL, &length);
+
+    auto physicalPath = new WCHAR[length + 1];
+
+    // convert path
+    ctx->MapPath(url, physicalPath, &length);
+
+    auto path = iis_lua_wstr_to_str(physicalPath);
+
+    lua_pushstring(L, path);
+
+    // clean up
+    delete [] path;
+    delete [] physicalPath;
+    delete [] url;
 
     return 1;
 }
@@ -264,6 +280,35 @@ IIS_LUA_API int iis_lua_req_get_method(lua_State *L)
     auto ctx = iis_lua_get_http_ctx(L);
 
     lua_pushstring(L, ctx->GetRequest()->GetHttpMethod());
+
+    return 1;
+}
+
+IIS_LUA_API int iis_lua_req_get_url(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    auto url = iis_lua_wstr_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pAbsPath);
+
+    lua_pushstring(L, url);
+
+    delete [] url;
+
+    return 1;
+}
+
+IIS_LUA_API int iis_lua_req_get_url_args(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    lua_createtable(L, 0, 0);
+
+    if (ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pQueryString != NULL)
+    {
+        auto queryString = iis_lua_wstr_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pQueryString);
+
+        delete [] queryString;
+    }
 
     return 1;
 }

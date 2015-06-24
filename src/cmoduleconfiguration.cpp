@@ -70,11 +70,7 @@ PCSTR CModuleConfiguration::GetString(IAppHostElement *section, PCWSTR name)
 
     prop->get_StringValue(&propertyValue);
 
-    // wchar_t to char
-    size_t i;
-    PSTR value = new CHAR[256];
-
-    wcstombs_s(&i, value, 256, propertyValue, 256);
+    auto value = iis_lua_wstr_to_str(propertyValue);
 
     SysFreeString(propertyValue);
     SysFreeString(propertyName);

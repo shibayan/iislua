@@ -30,7 +30,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
 {
     UNREFERENCED_PARAMETER(pProvider);
 
-    // correct?
+    // FIX: recursive call
     if (pHttpContext->GetParentContext() != NULL)
     {
         return RQ_NOTIFICATION_CONTINUE;
@@ -65,7 +65,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAsyncCompletion(IN IHttpContext *p
     UNREFERENCED_PARAMETER(pProvider);
     UNREFERENCED_PARAMETER(pCompletionInfo);
 
-    // TODO: Not Implemented
+    // FIX: Not Implemented
 
     return RQ_NOTIFICATION_CONTINUE;
 }

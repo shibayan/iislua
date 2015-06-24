@@ -28,6 +28,8 @@ IIS_LUA_API int iis_lua_redirect(lua_State *);
 
 IIS_LUA_API int iis_lua_req_get_headers(lua_State *);
 IIS_LUA_API int iis_lua_req_get_method(lua_State *);
+IIS_LUA_API int iis_lua_req_get_url(lua_State *);
+IIS_LUA_API int iis_lua_req_get_url_args(lua_State *);
 IIS_LUA_API int iis_lua_req_http_version(lua_State *);
 IIS_LUA_API int iis_lua_req_set_header(lua_State *);
 IIS_LUA_API int iis_lua_req_set_method(lua_State *);
