@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-static PCSTR http_header_id_to_req_name [] =
+static PCSTR iis_lua_http_header_id_to_req_name [] =
 {
     "Cache-Control",
     "Connection",
@@ -46,7 +46,7 @@ static PCSTR http_header_id_to_req_name [] =
     "User-Agent"
 };
 
-static PCSTR http_header_id_to_resp_name [] =
+static PCSTR iis_lua_http_header_id_to_resp_name [] =
 {
     "Cache-Control",
     "Connection",
@@ -82,10 +82,10 @@ static PCSTR http_header_id_to_resp_name [] =
 
 IISLUA_INLINE_API PCSTR iis_lua_util_get_http_req_header(USHORT id)
 {
-    return http_header_id_to_req_name[id];
+    return iis_lua_http_header_id_to_req_name[id];
 }
 
 IISLUA_INLINE_API PCSTR iis_lua_util_get_http_resp_header(USHORT id)
 {
-    return http_header_id_to_resp_name[id];
+    return iis_lua_http_header_id_to_resp_name[id];
 }

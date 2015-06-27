@@ -53,6 +53,12 @@ static const luaL_Reg iis_srv [] =
     { NULL, NULL }
 };
 
+static const luaL_Reg iis_user [] =
+{
+    { "get_name", iis_lua_user_get_name },
+    { NULL, NULL }
+};
+
 lua_State *iis_lua_newstate(IHttpContext *ctx)
 {
     auto L = luaL_newstate();
@@ -72,6 +78,10 @@ lua_State *iis_lua_newstate(IHttpContext *ctx)
     // create iis.srv
     luaL_newlib(L, iis_srv);
     lua_setfield(L, -2, "srv");
+
+    // create iis.user
+    luaL_newlib(L, iis_user);
+    lua_setfield(L, -2, "usr");
 
     // register iis
     lua_setglobal(L, "iis");

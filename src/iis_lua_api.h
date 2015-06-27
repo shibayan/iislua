@@ -33,3 +33,7 @@ IISLUA_API int iis_lua_resp_set_status(lua_State *L);
 // iis.srv module
 IISLUA_API int iis_lua_srv_get_variable(lua_State *L);
 IISLUA_API int iis_lua_srv_set_variable(lua_State *L);
+
+// iis.user module
+IISLUA_API int iis_lua_user_get_name(lua_State *L);
+IISLUA_API int iis_lua_user_get_type(lua_State *L);

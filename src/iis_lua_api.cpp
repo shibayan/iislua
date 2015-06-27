@@ -412,3 +412,29 @@ int iis_lua_srv_set_variable(lua_State *L)
 
     return 0;
 }
+
+int iis_lua_user_get_name(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    auto name = iis_lua_wstr_to_str(ctx->GetUser()->GetUserName());
+
+    lua_pushstring(L, name);
+
+    delete [] name;
+
+    return 1;
+}
+
+int iis_lua_user_get_Type(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    auto name = iis_lua_wstr_to_str(ctx->GetUser()->GetAuthenticationType());
+
+    lua_pushstring(L, name);
+
+    delete [] name;
+
+    return 1;
+}

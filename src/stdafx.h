@@ -4,6 +4,11 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <comdef.h>
+#include <comutil.h>
+
+#include <string>
+#include <memory>
 
 #include <httpserv.h>
 #include <lua.hpp>

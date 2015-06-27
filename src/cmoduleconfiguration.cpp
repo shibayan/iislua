@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-static const PCWSTR sectionPath = L"system.webServer/iislua";
+static const _bstr_t sectionPath = L"system.webServer/iislua";
 
 CModuleConfiguration::CModuleConfiguration()
     : beginRequest(NULL), authenticateRequest(NULL), authorizeRequest(NULL), logRequest(NULL), mapPath(NULL)
@@ -43,19 +43,11 @@ CModuleConfiguration::~CModuleConfiguration()
 
 HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer)
 {
-    // Get IAppHostElement
-    IAppHostElement *section = NULL;
+    IAppHostElementPtr section;
 
-    auto path = SysAllocString(pHttpContext->GetMetadata()->GetMetaPath());
-    auto sectionName = SysAllocString(sectionPath);
+    _bstr_t path = pHttpContext->GetMetadata()->GetMetaPath();
 
-    pHttpServer->GetAdminManager()->GetAdminSection(sectionName, path, &section);
-
-    SysFreeString(sectionName);
-    SysFreeString(path);
-
-    sectionName = NULL;
-    path = NULL;
+    pHttpServer->GetAdminManager()->GetAdminSection(sectionPath, path, &section);
 
     if (section == NULL)
     {
@@ -63,48 +55,24 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     }
 
     // beginRequest element
-    auto beginRequest = GetElement(section, L"beginRequest");
-
-    this->beginRequest = GetString(beginRequest, L"scriptPath");
-
-    beginRequest->Release();
-    beginRequest = NULL;
+    auto beginRequestElement = GetElement(section, L"beginRequest");
+    this->beginRequest = GetString(beginRequestElement, L"scriptPath");
 
     // authenticateRequest element
-    auto authenticateRequest = GetElement(section, L"authenticateRequest");
-
-    this->authenticateRequest = GetString(authenticateRequest, L"scriptPath");
-
-    authenticateRequest->Release();
-    authenticateRequest = NULL;
+    auto authenticateRequestElement = GetElement(section, L"authenticateRequest");
+    this->authenticateRequest = GetString(authenticateRequestElement, L"scriptPath");
 
     // authorizeRequest element
-    auto authorizeRequest = GetElement(section, L"authorizeRequest");
-
-    this->authorizeRequest = GetString(authorizeRequest, L"scriptPath");
-
-    authorizeRequest->Release();
-    authorizeRequest = NULL;
+    auto authorizeRequestElement = GetElement(section, L"authorizeRequest");
+    this->authorizeRequest = GetString(authorizeRequestElement, L"scriptPath");
 
     // logRequest element
-    auto logRequest = GetElement(section, L"logRequest");
-
-    this->logRequest = GetString(logRequest, L"scriptPath");
-
-    logRequest->Release();
-    logRequest = NULL;
+    auto logRequestElement = GetElement(section, L"logRequest");
+    this->logRequest = GetString(logRequestElement, L"scriptPath");
 
     // mapPath element
-    auto mapPath = GetElement(section, L"mapPath");
-
-    this->mapPath = GetString(mapPath, L"scriptPath");
-
-    mapPath->Release();
-    mapPath = NULL;
-
-    // release
-    section->Release();
-    section = NULL;
+    auto mapPathElement = GetElement(section, L"mapPath");
+    this->mapPath = GetString(mapPathElement, L"scriptPath");
 
     return S_OK;
 }
@@ -139,38 +107,28 @@ PCSTR CModuleConfiguration::GetMapPath() const
     return mapPath;
 }
 
-IAppHostElement *CModuleConfiguration::GetElement(IAppHostElement *section, PCWSTR name)
+IAppHostElementPtr &CModuleConfiguration::GetElement(IAppHostElementPtr &section, _bstr_t elementName)
 {
-    IAppHostElement *element = NULL;
-
-    auto elementName = SysAllocString(name);
+    IAppHostElementPtr element;
 
     section->GetElementByName(elementName, &element);
-
-    SysFreeString(elementName);
-
-    elementName = NULL;
 
     return element;
 }
 
-PCSTR CModuleConfiguration::GetString(IAppHostElement *section, PCWSTR name)
+PCSTR CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t propertyName)
 {
-    IAppHostProperty *prop = NULL;
-    BSTR propertyValue = NULL;
-
-    auto propertyName = SysAllocString(name);
+    IAppHostPropertyPtr prop;
 
     section->GetPropertyByName(propertyName, &prop);
+
+    BSTR propertyValue = NULL;
 
     prop->get_StringValue(&propertyValue);
 
     auto value = iis_lua_wstr_to_str(propertyValue);
 
     SysFreeString(propertyValue);
-    SysFreeString(propertyName);
-
-    prop->Release();
 
     return value;
 }

@@ -1,5 +1,8 @@
 #pragma once
 
+_COM_SMARTPTR_TYPEDEF(IAppHostElement, __uuidof(IAppHostElement));
+_COM_SMARTPTR_TYPEDEF(IAppHostProperty, __uuidof(IAppHostProperty));
+
 class CModuleConfiguration : public IHttpStoredContext
 {
 private:
@@ -9,8 +12,8 @@ private:
     PCSTR logRequest;
     PCSTR mapPath;
 
-    IAppHostElement *GetElement(IAppHostElement *section, PCWSTR name);
-    PCSTR GetString(IAppHostElement *section, PCWSTR name);
+    IAppHostElementPtr &GetElement(IAppHostElementPtr &section, _bstr_t elementName);
+    PCSTR GetString(IAppHostElementPtr &section, _bstr_t propertyName);
 public:
     CModuleConfiguration();
     ~CModuleConfiguration();
