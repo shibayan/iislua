@@ -53,9 +53,6 @@
     <ClCompile Include="iis_lua_api.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="iis_lua_const.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="iis_lua_util.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -72,6 +69,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="cluahttpstoredcontext.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="iis_lua_const.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

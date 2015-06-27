@@ -1,4 +1,4 @@
 #pragma once
 
-const char* http_header_id_to_req_name [];
-const char* http_header_id_to_resp_name [];
+IISLUA_INLINE_API PCSTR iis_lua_util_get_http_req_header(USHORT id);
+IISLUA_INLINE_API PCSTR iis_lua_util_get_http_resp_header(USHORT id);

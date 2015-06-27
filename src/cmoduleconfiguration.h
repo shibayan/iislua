@@ -4,6 +4,9 @@ class CModuleConfiguration : public IHttpStoredContext
 {
 private:
     PCSTR beginRequest;
+    PCSTR authenticateRequest;
+    PCSTR authorizeRequest;
+    PCSTR logRequest;
     PCSTR mapPath;
 
     IAppHostElement *GetElement(IAppHostElement *section, PCWSTR name);
@@ -17,5 +20,8 @@ public:
     void CleanupStoredContext();
 
     PCSTR GetBeginRequest() const;
+    PCSTR GetAuthenticateRequest() const;
+    PCSTR GetAuthorizeRequest() const;
+    PCSTR GetLogRequest() const;
     PCSTR GetMapPath() const;
 };

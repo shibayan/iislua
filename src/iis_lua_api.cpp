@@ -1,115 +1,7 @@
 
 #include "stdafx.h"
 
-static const PCSTR iis_lua_ctx_key = "__iis_lua_ctx";
-static const PCSTR iis_lua_result_key = "__iis_lua_result";
-
-static const struct luaL_Reg iis [] =
-{
-    { "debug", iis_lua_debug },
-    { "exec", iis_lua_exec },
-    { "exit", iis_lua_exit },
-    { "flush", iis_lua_flush },
-    { "headers_sent", iis_lua_headers_sent },
-    { "map_path", iis_lua_map_path },
-    { "print", iis_lua_print },
-    { "redirect", iis_lua_redirect },
-    { NULL, NULL }
-};
-
-static const struct luaL_Reg iis_req [] =
-{
-    { "get_headers", iis_lua_req_get_headers },
-    { "get_method", iis_lua_req_get_method },
-    { "get_remote_addr", iis_lua_req_get_remote_addr },
-    { "get_url", iis_lua_req_get_url },
-    { "get_url_args", iis_lua_req_get_url_args },
-    { "http_version", iis_lua_req_http_version },
-    { "set_header", iis_lua_req_set_header },
-    { "set_method", iis_lua_req_set_method },
-    { "set_url", iis_lua_req_set_url },
-    { NULL, NULL }
-};
-
-static const struct luaL_Reg iis_resp [] =
-{
-    { "clear", iis_lua_resp_clear },
-    { "clear_headers", iis_lua_resp_clear_headers },
-    { "get_headers", iis_lua_resp_get_headers },
-    { "get_status", iis_lua_resp_get_status },
-    { "set_header", iis_lua_resp_set_header },
-    { "set_status", iis_lua_resp_set_status },
-    { NULL, NULL }
-};
-
-static const struct luaL_Reg iis_srv[] =
-{
-    { "get_variable", iis_lua_srv_get_variable },
-    { "set_variable", iis_lua_srv_set_variable },
-    { NULL, NULL }
-};
-
-IIS_LUA_API inline lua_State *iis_lua_newstate()
-{
-    auto L = luaL_newstate();
-
-    luaL_openlibs(L);
-
-    luaL_newlib(L, iis);
-
-    // create iis.req
-    luaL_newlib(L, iis_req);
-    lua_setfield(L, -2, "req");
-
-    // create iis.resp
-    luaL_newlib(L, iis_resp);
-    lua_setfield(L, -2, "resp");
-
-    // create iis.srv
-    luaL_newlib(L, iis_srv);
-    lua_setfield(L, -2, "srv");
-
-    // register iis
-    lua_setglobal(L, "iis");
-
-    return L;
-}
-
-IIS_LUA_API inline IHttpContext *iis_lua_get_http_ctx(lua_State *L)
-{
-    lua_getglobal(L, iis_lua_ctx_key);
-
-    auto ctx = reinterpret_cast<IHttpContext *>(lua_touserdata(L, -1));
-
-    lua_pop(L, 1);
-
-    return ctx;
-}
-
-IIS_LUA_API inline void iis_lua_set_http_ctx(lua_State *L, IHttpContext *ctx)
-{
-    lua_pushlightuserdata(L, ctx);
-    lua_setglobal(L, iis_lua_ctx_key);
-}
-
-IIS_LUA_API inline REQUEST_NOTIFICATION_STATUS iis_lua_get_result(lua_State *L)
-{
-    lua_getglobal(L, iis_lua_result_key);
-
-    auto result = static_cast<REQUEST_NOTIFICATION_STATUS>(lua_tointeger(L, -1));
-
-    lua_pop(L, 1);
-
-    return result;
-}
-
-IIS_LUA_API inline void iis_lua_set_result(lua_State *L, REQUEST_NOTIFICATION_STATUS result = RQ_NOTIFICATION_FINISH_REQUEST)
-{
-    lua_pushinteger(L, result);
-    lua_setglobal(L, iis_lua_result_key);
-}
-
-IIS_LUA_API int iis_lua_debug(lua_State *L)
+int iis_lua_debug(lua_State *L)
 {
     auto message = luaL_checkstring(L, 1);
 
@@ -119,7 +11,7 @@ IIS_LUA_API int iis_lua_debug(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_exec(lua_State *L)
+int iis_lua_exec(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -151,7 +43,7 @@ IIS_LUA_API int iis_lua_exec(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_exit(lua_State *L)
+int iis_lua_exit(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -164,7 +56,7 @@ IIS_LUA_API int iis_lua_exit(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_flush(lua_State *L)
+int iis_lua_flush(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -175,7 +67,7 @@ IIS_LUA_API int iis_lua_flush(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_headers_sent(lua_State *L)
+int iis_lua_headers_sent(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -184,7 +76,7 @@ IIS_LUA_API int iis_lua_headers_sent(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_map_path(lua_State *L)
+int iis_lua_map_path(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -212,7 +104,7 @@ IIS_LUA_API int iis_lua_map_path(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_print(lua_State *L)
+int iis_lua_print(lua_State *L)
 {
     auto *ctx = iis_lua_get_http_ctx(L);
 
@@ -230,7 +122,7 @@ IIS_LUA_API int iis_lua_print(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_redirect(lua_State *L)
+int iis_lua_redirect(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -250,7 +142,29 @@ IIS_LUA_API int iis_lua_redirect(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_req_get_headers(lua_State *L)
+int iis_lua_say(lua_State *L)
+{
+    auto *ctx = iis_lua_get_http_ctx(L);
+
+    auto message = luaL_checkstring(L, 1);
+
+    DWORD sent;
+    HTTP_DATA_CHUNK dataChunk[2];
+
+    dataChunk[0].DataChunkType = HttpDataChunkFromMemory;
+    dataChunk[0].FromMemory.pBuffer = const_cast<char *>(message);
+    dataChunk[0].FromMemory.BufferLength = static_cast<ULONG>(strlen(message));
+
+    dataChunk[1].DataChunkType = HttpDataChunkFromMemory;
+    dataChunk[1].FromMemory.pBuffer = "\r\n";
+    dataChunk[1].FromMemory.BufferLength = 2;
+
+    ctx->GetResponse()->WriteEntityChunks(dataChunk, 2, FALSE, TRUE, &sent);
+
+    return 0;
+}
+
+int iis_lua_req_get_headers(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -258,19 +172,17 @@ IIS_LUA_API int iis_lua_req_get_headers(lua_State *L)
 
     lua_createtable(L, 0, headers.UnknownHeaderCount);
 
-    // Append Known Headers
-    for (size_t i = 0; i < HttpHeaderRequestMaximum; i++)
+    for (USHORT i = 0; i < HttpHeaderRequestMaximum; i++)
     {
         if (headers.KnownHeaders[i].pRawValue != NULL)
         {
-            lua_pushstring(L, http_header_id_to_req_name[i]);
+            lua_pushstring(L, iis_lua_util_get_http_req_header(i));
             lua_pushlstring(L, headers.KnownHeaders[i].pRawValue, headers.KnownHeaders[i].RawValueLength);
             lua_settable(L, -3);
         }
     }
 
-    // Append Unknown Headers
-    for (size_t i = 0; i < headers.UnknownHeaderCount; i++)
+    for (USHORT i = 0; i < headers.UnknownHeaderCount; i++)
     {
         lua_pushlstring(L, headers.pUnknownHeaders[i].pName, headers.pUnknownHeaders[i].NameLength);
         lua_pushlstring(L, headers.pUnknownHeaders[i].pRawValue, headers.pUnknownHeaders[i].RawValueLength);
@@ -280,7 +192,7 @@ IIS_LUA_API int iis_lua_req_get_headers(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_req_get_method(lua_State *L)
+int iis_lua_req_get_method(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -289,7 +201,7 @@ IIS_LUA_API int iis_lua_req_get_method(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_req_get_remote_addr(lua_State *L)
+int iis_lua_req_get_remote_addr(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -311,7 +223,7 @@ IIS_LUA_API int iis_lua_req_get_remote_addr(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_req_get_url(lua_State *L)
+int iis_lua_req_get_url(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -324,7 +236,7 @@ IIS_LUA_API int iis_lua_req_get_url(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_req_get_url_args(lua_State *L)
+int iis_lua_req_get_url_args(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -340,7 +252,7 @@ IIS_LUA_API int iis_lua_req_get_url_args(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_req_http_version(lua_State *L)
+int iis_lua_req_http_version(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -356,7 +268,7 @@ IIS_LUA_API int iis_lua_req_http_version(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_req_set_header(lua_State *L)
+int iis_lua_req_set_header(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -368,7 +280,7 @@ IIS_LUA_API int iis_lua_req_set_header(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_req_set_method(lua_State *L)
+int iis_lua_req_set_method(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -379,7 +291,7 @@ IIS_LUA_API int iis_lua_req_set_method(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_req_set_url(lua_State *L)
+int iis_lua_req_set_url(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -390,7 +302,7 @@ IIS_LUA_API int iis_lua_req_set_url(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_resp_clear(lua_State *L)
+int iis_lua_resp_clear(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -399,7 +311,7 @@ IIS_LUA_API int iis_lua_resp_clear(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_resp_clear_headers(lua_State *L)
+int iis_lua_resp_clear_headers(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -408,7 +320,7 @@ IIS_LUA_API int iis_lua_resp_clear_headers(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
+int iis_lua_resp_get_headers(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -416,19 +328,17 @@ IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
 
     lua_createtable(L, 0, headers.UnknownHeaderCount);
 
-    // Append Known Headers
-    for (size_t i = 0; i < HttpHeaderResponseMaximum; i++)
+    for (USHORT i = 0; i < HttpHeaderResponseMaximum; i++)
     {
         if (headers.KnownHeaders[i].pRawValue != NULL)
         {
-            lua_pushstring(L, http_header_id_to_resp_name[i]);
+            lua_pushstring(L, iis_lua_util_get_http_resp_header(i));
             lua_pushlstring(L, headers.KnownHeaders[i].pRawValue, headers.KnownHeaders[i].RawValueLength);
             lua_settable(L, -3);
         }
     }
 
-    // Append Unknown Headers
-    for (size_t i = 0; i < headers.UnknownHeaderCount; i++)
+    for (USHORT i = 0; i < headers.UnknownHeaderCount; i++)
     {
         lua_pushlstring(L, headers.pUnknownHeaders[i].pName, headers.pUnknownHeaders[i].NameLength);
         lua_pushlstring(L, headers.pUnknownHeaders[i].pRawValue, headers.pUnknownHeaders[i].RawValueLength);
@@ -438,7 +348,7 @@ IIS_LUA_API int iis_lua_resp_get_headers(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_resp_get_status(lua_State *L)
+int iis_lua_resp_get_status(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -450,7 +360,7 @@ IIS_LUA_API int iis_lua_resp_get_status(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_resp_set_header(lua_State *L)
+int iis_lua_resp_set_header(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -462,7 +372,7 @@ IIS_LUA_API int iis_lua_resp_set_header(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_resp_set_status(lua_State *L)
+int iis_lua_resp_set_status(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -473,7 +383,7 @@ IIS_LUA_API int iis_lua_resp_set_status(lua_State *L)
     return 0;
 }
 
-IIS_LUA_API int iis_lua_srv_get_variable(lua_State *L)
+int iis_lua_srv_get_variable(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
@@ -489,7 +399,7 @@ IIS_LUA_API int iis_lua_srv_get_variable(lua_State *L)
     return 1;
 }
 
-IIS_LUA_API int iis_lua_srv_set_variable(lua_State *L)
+int iis_lua_srv_set_variable(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 

@@ -1,7 +1,5 @@
 #pragma once
 
-class IHttpModuleFactory;
-
 class CLuaHttpModuleFactory : public IHttpModuleFactory
 {
 public:

@@ -3,6 +3,15 @@
     <element name="beginRequest">
       <attribute name="scriptPath" type="string" />
     </element>
+    <element name="authenticateRequest">
+      <attribute name="scriptPath" type="string" />
+    </element>
+    <element name="authorizeRequest">
+      <attribute name="scriptPath" type="string" />
+    </element>
+    <element name="logRequest">
+      <attribute name="scriptPath" type="string" />
+    </element>
     <element name="mapPath">
       <attribute name="scriptPath" type="string" />
     </element>

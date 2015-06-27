@@ -12,10 +12,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate();
-
-    iis_lua_set_http_ctx(L, pHttpContext);
-    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+    auto L = iis_lua_newstate(pHttpContext);
 
     if (luaL_dofile(L, config->GetBeginRequest()))
     {
@@ -28,11 +25,88 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    auto result = iis_lua_get_result(L);
+    return iis_lua_close(L);
+}
 
-    lua_close(L);
+REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthenticateRequest(IN IHttpContext *pHttpContext, IN IAuthenticationProvider *pProvider)
+{
+    UNREFERENCED_PARAMETER(pProvider);
 
-    return result;
+    auto config = iis_lua_get_config(pHttpContext);
+
+    if (strlen(config->GetAuthenticateRequest()) == 0)
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
+
+    auto L = iis_lua_newstate(pHttpContext);
+
+    if (luaL_dofile(L, config->GetAuthenticateRequest()))
+    {
+        auto error = lua_tostring(L, -1);
+
+        OutputDebugString(error);
+
+        pHttpContext->GetResponse()->SetStatus(500, "Internal Server Error");
+
+        return RQ_NOTIFICATION_FINISH_REQUEST;
+    }
+
+    return iis_lua_close(L);
+}
+
+REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthorizeRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
+{
+    UNREFERENCED_PARAMETER(pProvider);
+
+    auto config = iis_lua_get_config(pHttpContext);
+
+    if (strlen(config->GetAuthorizeRequest()) == 0)
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
+
+    auto L = iis_lua_newstate(pHttpContext);
+
+    if (luaL_dofile(L, config->GetAuthorizeRequest()))
+    {
+        auto error = lua_tostring(L, -1);
+
+        OutputDebugString(error);
+
+        pHttpContext->GetResponse()->SetStatus(500, "Internal Server Error");
+
+        return RQ_NOTIFICATION_FINISH_REQUEST;
+    }
+
+    return iis_lua_close(L);
+}
+
+REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnLogRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
+{
+    UNREFERENCED_PARAMETER(pProvider);
+
+    auto config = iis_lua_get_config(pHttpContext);
+
+    if (strlen(config->GetLogRequest()) == 0)
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
+
+    auto L = iis_lua_newstate(pHttpContext);
+
+    if (luaL_dofile(L, config->GetLogRequest()))
+    {
+        auto error = lua_tostring(L, -1);
+
+        OutputDebugString(error);
+
+        pHttpContext->GetResponse()->SetStatus(500, "Internal Server Error");
+
+        return RQ_NOTIFICATION_FINISH_REQUEST;
+    }
+
+    return iis_lua_close(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpContext, IN IMapPathProvider *pProvider)
@@ -46,10 +120,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate();
-
-    iis_lua_set_http_ctx(L, pHttpContext);
-    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+    auto L = iis_lua_newstate(pHttpContext);
 
     if (luaL_dofile(L, config->GetMapPath()))
     {
@@ -62,11 +133,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    auto result = iis_lua_get_result(L);
-
-    lua_close(L);
-
-    return result;
+    return iis_lua_close(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAsyncCompletion(IN IHttpContext *pHttpContext, IN DWORD dwNotification, IN BOOL fPostNotification, IN IHttpEventProvider *pProvider, IN IHttpCompletionInfo *pCompletionInfo)

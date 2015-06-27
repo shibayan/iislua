@@ -171,9 +171,9 @@
     <ClCompile Include="cluahttpmodulefactory.cpp" />
     <ClCompile Include="cluahttpstoredcontext.cpp" />
     <ClCompile Include="cmoduleconfiguration.cpp" />
+    <ClCompile Include="iis_lua_const.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="iis_lua_api.cpp" />
-    <ClCompile Include="iis_lua_const.cpp" />
     <ClCompile Include="iis_lua_util.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
