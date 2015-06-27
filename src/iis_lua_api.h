@@ -1,5 +1,7 @@
 #pragma once
 
+#define IISLUA_API extern "C"
+
 // iis module
 IISLUA_API int iis_lua_debug(lua_State *L);
 IISLUA_API int iis_lua_exec(lua_State *L);

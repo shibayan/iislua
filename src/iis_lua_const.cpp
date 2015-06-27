@@ -80,12 +80,12 @@ static PCSTR iis_lua_http_header_id_to_resp_name [] =
     "WWW-Authenticate"
 };
 
-IISLUA_INLINE_API PCSTR iis_lua_util_get_http_req_header(USHORT id)
+PCSTR iis_lua_util_get_http_req_header(USHORT id)
 {
     return iis_lua_http_header_id_to_req_name[id];
 }
 
-IISLUA_INLINE_API PCSTR iis_lua_util_get_http_resp_header(USHORT id)
+PCSTR iis_lua_util_get_http_resp_header(USHORT id)
 {
     return iis_lua_http_header_id_to_resp_name[id];
 }

@@ -7,14 +7,14 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
 
     auto config = iis_lua_get_config(pHttpContext);
 
-    if (strlen(config->GetBeginRequest()) == 0)
+    if (config->GetBeginRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
     auto L = iis_lua_newstate(pHttpContext);
 
-    if (luaL_dofile(L, config->GetBeginRequest()))
+    if (luaL_dofile(L, config->GetBeginRequest().c_str()))
     {
         auto error = lua_tostring(L, -1);
 
@@ -34,14 +34,14 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthenticateRequest(IN IHttpContex
 
     auto config = iis_lua_get_config(pHttpContext);
 
-    if (strlen(config->GetAuthenticateRequest()) == 0)
+    if (config->GetAuthenticateRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
     auto L = iis_lua_newstate(pHttpContext);
 
-    if (luaL_dofile(L, config->GetAuthenticateRequest()))
+    if (luaL_dofile(L, config->GetAuthenticateRequest().c_str()))
     {
         auto error = lua_tostring(L, -1);
 
@@ -61,14 +61,14 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthorizeRequest(IN IHttpContext *
 
     auto config = iis_lua_get_config(pHttpContext);
 
-    if (strlen(config->GetAuthorizeRequest()) == 0)
+    if (config->GetAuthorizeRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
     auto L = iis_lua_newstate(pHttpContext);
 
-    if (luaL_dofile(L, config->GetAuthorizeRequest()))
+    if (luaL_dofile(L, config->GetAuthorizeRequest().c_str()))
     {
         auto error = lua_tostring(L, -1);
 
@@ -88,14 +88,14 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnLogRequest(IN IHttpContext *pHttpC
 
     auto config = iis_lua_get_config(pHttpContext);
 
-    if (strlen(config->GetLogRequest()) == 0)
+    if (config->GetLogRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
     auto L = iis_lua_newstate(pHttpContext);
 
-    if (luaL_dofile(L, config->GetLogRequest()))
+    if (luaL_dofile(L, config->GetLogRequest().c_str()))
     {
         auto error = lua_tostring(L, -1);
 
@@ -115,14 +115,14 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
 
     auto config = iis_lua_get_config(pHttpContext);
 
-    if (strlen(config->GetMapPath()) == 0)
+    if (config->GetMapPath().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
     auto L = iis_lua_newstate(pHttpContext);
 
-    if (luaL_dofile(L, config->GetMapPath()))
+    if (luaL_dofile(L, config->GetMapPath().c_str()))
     {
         auto error = lua_tostring(L, -1);
 

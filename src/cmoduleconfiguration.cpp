@@ -3,44 +3,6 @@
 
 static const _bstr_t sectionPath = L"system.webServer/iislua";
 
-CModuleConfiguration::CModuleConfiguration()
-    : beginRequest(NULL), authenticateRequest(NULL), authorizeRequest(NULL), logRequest(NULL), mapPath(NULL)
-{
-}
-
-CModuleConfiguration::~CModuleConfiguration()
-{
-    if (beginRequest != NULL)
-    {
-        delete [] beginRequest;
-        beginRequest = NULL;
-    }
-
-    if (authenticateRequest != NULL)
-    {
-        delete [] authenticateRequest;
-        authenticateRequest = NULL;
-    }
-
-    if (authorizeRequest != NULL)
-    {
-        delete [] authorizeRequest;
-        authorizeRequest = NULL;
-    }
-
-    if (logRequest != NULL)
-    {
-        delete [] logRequest;
-        logRequest = NULL;
-    }
-
-    if (mapPath != NULL)
-    {
-        delete [] mapPath;
-        mapPath = NULL;
-    }
-}
-
 HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer)
 {
     IAppHostElementPtr section;
@@ -82,32 +44,7 @@ void CModuleConfiguration::CleanupStoredContext()
     delete this;
 }
 
-PCSTR CModuleConfiguration::GetBeginRequest() const
-{
-    return beginRequest;
-}
-
-PCSTR CModuleConfiguration::GetAuthenticateRequest() const
-{
-    return authenticateRequest;
-}
-
-PCSTR CModuleConfiguration::GetAuthorizeRequest() const
-{
-    return authorizeRequest;
-}
-
-PCSTR CModuleConfiguration::GetLogRequest() const
-{
-    return logRequest;
-}
-
-PCSTR CModuleConfiguration::GetMapPath() const
-{
-    return mapPath;
-}
-
-IAppHostElementPtr &CModuleConfiguration::GetElement(IAppHostElementPtr &section, _bstr_t elementName)
+IAppHostElementPtr CModuleConfiguration::GetElement(IAppHostElementPtr &section, _bstr_t elementName)
 {
     IAppHostElementPtr element;
 
@@ -116,19 +53,15 @@ IAppHostElementPtr &CModuleConfiguration::GetElement(IAppHostElementPtr &section
     return element;
 }
 
-PCSTR CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t propertyName)
+std::string CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t propertyName)
 {
-    IAppHostPropertyPtr prop;
+    IAppHostPropertyPtr property;
 
-    section->GetPropertyByName(propertyName, &prop);
+    section->GetPropertyByName(propertyName, &property);
 
-    BSTR propertyValue = NULL;
+    _bstr_t propertyValue;
 
-    prop->get_StringValue(&propertyValue);
+    property->get_StringValue(&propertyValue.GetBSTR());
 
-    auto value = iis_lua_wstr_to_str(propertyValue);
-
-    SysFreeString(propertyValue);
-
-    return value;
+    return iis_lua_wstr_to_str(propertyValue);
 }

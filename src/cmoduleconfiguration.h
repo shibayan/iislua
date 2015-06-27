@@ -6,25 +6,37 @@ _COM_SMARTPTR_TYPEDEF(IAppHostProperty, __uuidof(IAppHostProperty));
 class CModuleConfiguration : public IHttpStoredContext
 {
 private:
-    PCSTR beginRequest;
-    PCSTR authenticateRequest;
-    PCSTR authorizeRequest;
-    PCSTR logRequest;
-    PCSTR mapPath;
+    std::string beginRequest;
+    std::string authenticateRequest;
+    std::string authorizeRequest;
+    std::string logRequest;
+    std::string mapPath;
 
-    IAppHostElementPtr &GetElement(IAppHostElementPtr &section, _bstr_t elementName);
-    PCSTR GetString(IAppHostElementPtr &section, _bstr_t propertyName);
+    IAppHostElementPtr GetElement(IAppHostElementPtr &section, _bstr_t elementName);
+    std::string GetString(IAppHostElementPtr &section, _bstr_t propertyName);
 public:
-    CModuleConfiguration();
-    ~CModuleConfiguration();
-
     HRESULT Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer);
 
     void CleanupStoredContext();
 
-    PCSTR GetBeginRequest() const;
-    PCSTR GetAuthenticateRequest() const;
-    PCSTR GetAuthorizeRequest() const;
-    PCSTR GetLogRequest() const;
-    PCSTR GetMapPath() const;
+    inline const std::string& GetBeginRequest() const
+    {
+        return beginRequest;
+    };
+    inline const std::string& GetAuthenticateRequest() const
+    {
+        return authenticateRequest;
+    };
+    inline const std::string& GetAuthorizeRequest() const
+    {
+        return authorizeRequest;
+    };
+    inline const std::string& GetLogRequest() const
+    {
+        return logRequest;
+    };
+    inline const std::string& GetMapPath() const
+    {
+        return mapPath;
+    };
 };

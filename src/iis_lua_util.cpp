@@ -254,26 +254,26 @@ PCSTR iis_lua_util_get_status_reason(USHORT status)
     }
 }
 
-PSTR iis_lua_wstr_to_str(PCWSTR wstr)
+std::string iis_lua_wstr_to_str(PCWSTR wstr)
 {
     auto len = wcslen(wstr);
 
     size_t i;
-    PSTR str = new CHAR[len * 2 + 1];
+    std::vector<char> buffer(len * 2 + 1);
 
-    wcstombs_s(&i, str, len * 2 + 1, wstr, len);
+    wcstombs_s(&i, &buffer[0], len * 2 + 1, wstr, len);
 
-    return str;
+    return std::string(buffer.begin(), buffer.begin() + i);
 }
 
-PWSTR iis_lua_str_to_wstr(PCSTR str)
+std::wstring iis_lua_str_to_wstr(PCSTR str)
 {
     auto len = strlen(str);
 
     size_t i;
-    auto wstr = new WCHAR[len + 1];
+    std::vector<wchar_t> buffer(len + 1);
 
-    mbstowcs_s(&i, wstr, len + 1, str, len);
+    mbstowcs_s(&i, &buffer[0], len + 1, str, len);
 
-    return wstr;
+    return std::wstring(buffer.begin(), buffer.begin() + i);
 }
