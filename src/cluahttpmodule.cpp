@@ -82,6 +82,33 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthorizeRequest(IN IHttpContext *
     return iis_lua_close(L);
 }
 
+REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteRequestHandler(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
+{
+    UNREFERENCED_PARAMETER(pProvider);
+
+    auto config = iis_lua_get_config(pHttpContext);
+
+    if (config->GetExecuteRequest().empty())
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
+
+    auto L = iis_lua_newstate(pHttpContext);
+
+    if (luaL_dofile(L, config->GetExecuteRequest().c_str()))
+    {
+        auto error = lua_tostring(L, -1);
+
+        OutputDebugString(error);
+
+        pHttpContext->GetResponse()->SetStatus(500, "Internal Server Error");
+
+        return RQ_NOTIFICATION_FINISH_REQUEST;
+    }
+
+    return iis_lua_close(L);
+}
+
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnLogRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
 {
     UNREFERENCED_PARAMETER(pProvider);

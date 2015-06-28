@@ -9,6 +9,9 @@
     <element name="authorizeRequest">
       <attribute name="scriptPath" type="string" />
     </element>
+    <element name="executeRequest">
+      <attribute name="scriptPath" type="string" />
+    </element>
     <element name="logRequest">
       <attribute name="scriptPath" type="string" />
     </element>

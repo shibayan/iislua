@@ -16,6 +16,9 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
         return S_OK;
     }
 
+    // iislua element
+    this->enableCodeCache = false;
+
     // beginRequest element
     auto beginRequestElement = GetElement(section, L"beginRequest");
     this->beginRequest = GetString(beginRequestElement, L"scriptPath");
@@ -27,6 +30,10 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     // authorizeRequest element
     auto authorizeRequestElement = GetElement(section, L"authorizeRequest");
     this->authorizeRequest = GetString(authorizeRequestElement, L"scriptPath");
+
+    // executeRequest element
+    auto executeRequestElement = GetElement(section, L"executeRequest");
+    this->executeRequest = GetString(executeRequestElement, L"scriptPath");
 
     // logRequest element
     auto logRequestElement = GetElement(section, L"logRequest");

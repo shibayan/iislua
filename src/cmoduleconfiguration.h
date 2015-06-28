@@ -6,9 +6,12 @@ _COM_SMARTPTR_TYPEDEF(IAppHostProperty, __uuidof(IAppHostProperty));
 class CModuleConfiguration : public IHttpStoredContext
 {
 private:
+    bool enableCodeCache;
+
     std::string beginRequest;
     std::string authenticateRequest;
     std::string authorizeRequest;
+    std::string executeRequest;
     std::string logRequest;
     std::string mapPath;
 
@@ -18,6 +21,11 @@ public:
     HRESULT Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer);
 
     void CleanupStoredContext();
+
+    inline bool GetEnableCodeCache() const
+    {
+        return enableCodeCache;
+    };
 
     inline const std::string& GetBeginRequest() const
     {
@@ -30,6 +38,10 @@ public:
     inline const std::string& GetAuthorizeRequest() const
     {
         return authorizeRequest;
+    };
+    inline const std::string& GetExecuteRequest() const
+    {
+        return executeRequest;
     };
     inline const std::string& GetLogRequest() const
     {
