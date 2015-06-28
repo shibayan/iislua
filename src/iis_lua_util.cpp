@@ -81,7 +81,7 @@ lua_State *iis_lua_newstate(IHttpContext *ctx)
 
     // create iis.user
     luaL_newlib(L, iis_user);
-    lua_setfield(L, -2, "usr");
+    lua_setfield(L, -2, "user");
 
     // register iis
     lua_setglobal(L, "iis");
