@@ -258,6 +258,11 @@ std::string iis_lua_wstr_to_str(PCWSTR wstr)
 {
     auto len = wcslen(wstr);
 
+    if (len == 0)
+    {
+        return std::string();
+    }
+
     size_t i;
     std::vector<char> buffer(len * 2 + 1);
 
@@ -269,6 +274,11 @@ std::string iis_lua_wstr_to_str(PCWSTR wstr)
 std::wstring iis_lua_str_to_wstr(PCSTR str)
 {
     auto len = strlen(str);
+
+    if (len == 0)
+    {
+        return std::wstring();
+    }
 
     size_t i;
     std::vector<wchar_t> buffer(len + 1);
