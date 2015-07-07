@@ -39,6 +39,10 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     auto logRequestElement = GetElement(section, L"logRequest");
     this->logRequest = GetString(logRequestElement, L"scriptPath");
 
+    // endRequest element
+    auto endRequestElement = GetElement(section, L"endRequest");
+    this->endRequest = GetString(endRequestElement, L"scriptPath");
+
     // mapPath element
     auto mapPathElement = GetElement(section, L"mapPath");
     this->mapPath = GetString(mapPathElement, L"scriptPath");

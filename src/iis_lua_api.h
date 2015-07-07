@@ -16,6 +16,7 @@ IISLUA_API int iis_lua_say(lua_State *L);
 // iis.req module
 IISLUA_API int iis_lua_req_get_headers(lua_State *L);
 IISLUA_API int iis_lua_req_get_method(lua_State *L);
+IISLUA_API int iis_lua_req_get_post_args(lua_State *L);
 IISLUA_API int iis_lua_req_get_remote_addr(lua_State *L);
 IISLUA_API int iis_lua_req_get_url(lua_State *L);
 IISLUA_API int iis_lua_req_get_url_args(lua_State *L);

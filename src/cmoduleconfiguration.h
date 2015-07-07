@@ -13,6 +13,7 @@ private:
     std::string authorizeRequest;
     std::string executeRequest;
     std::string logRequest;
+    std::string endRequest;
     std::string mapPath;
 
     IAppHostElementPtr GetElement(IAppHostElementPtr &section, _bstr_t elementName);
@@ -46,6 +47,10 @@ public:
     inline const std::string& GetLogRequest() const
     {
         return logRequest;
+    };
+    inline const std::string& GetEndRequest() const
+    {
+        return endRequest;
     };
     inline const std::string& GetMapPath() const
     {

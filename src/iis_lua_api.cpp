@@ -13,7 +13,17 @@ int iis_lua_debug(lua_State *L)
 
 int iis_lua_exec(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto url = luaL_checkstring(L, 1);
 
@@ -45,7 +55,17 @@ int iis_lua_exec(lua_State *L)
 
 int iis_lua_exit(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto status = static_cast<USHORT>(luaL_checkinteger(L, 1));
 
@@ -60,6 +80,11 @@ int iis_lua_flush(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     DWORD sent;
 
     ctx->GetResponse()->Flush(FALSE, TRUE, &sent);
@@ -71,6 +96,11 @@ int iis_lua_headers_sent(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     lua_pushboolean(L, ctx->GetResponseHeadersSent());
 
     return 1;
@@ -78,7 +108,17 @@ int iis_lua_headers_sent(lua_State *L)
 
 int iis_lua_map_path(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto url = iis_lua_str_to_wstr(luaL_checkstring(L, 1));
 
@@ -101,7 +141,17 @@ int iis_lua_map_path(lua_State *L)
 
 int iis_lua_print(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto *ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto message = luaL_checkstring(L, 1);
 
@@ -119,7 +169,17 @@ int iis_lua_print(lua_State *L)
 
 int iis_lua_redirect(lua_State *L)
 {
+    if (lua_gettop(L) != 1 && lua_gettop(L) != 2)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto url = luaL_checkstring(L, 1);
 
@@ -139,7 +199,17 @@ int iis_lua_redirect(lua_State *L)
 
 int iis_lua_say(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto *ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto message = luaL_checkstring(L, 1);
 
@@ -162,6 +232,11 @@ int iis_lua_say(lua_State *L)
 int iis_lua_req_get_headers(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto headers = ctx->GetRequest()->GetRawHttpRequest()->Headers;
 
@@ -191,7 +266,26 @@ int iis_lua_req_get_method(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     lua_pushstring(L, ctx->GetRequest()->GetHttpMethod());
+
+    return 1;
+}
+
+int iis_lua_req_get_post_args(lua_State *L)
+{
+    auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
+    lua_createtable(L, 0, 0);
 
     return 1;
 }
@@ -199,6 +293,11 @@ int iis_lua_req_get_method(lua_State *L)
 int iis_lua_req_get_remote_addr(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto remoteAddr = ctx->GetRequest()->GetRemoteAddress();
 
@@ -222,6 +321,11 @@ int iis_lua_req_get_url(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     auto url = iis_lua_wstr_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pAbsPath);
 
     lua_pushstring(L, url.c_str());
@@ -232,6 +336,11 @@ int iis_lua_req_get_url(lua_State *L)
 int iis_lua_req_get_url_args(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     lua_createtable(L, 0, 0);
 
@@ -247,6 +356,11 @@ int iis_lua_req_http_version(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     USHORT major, minor;
     char version[4];
 
@@ -261,7 +375,17 @@ int iis_lua_req_http_version(lua_State *L)
 
 int iis_lua_req_set_header(lua_State *L)
 {
+    if (lua_gettop(L) != 2)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto name = luaL_checkstring(L, 1);
     auto value = luaL_checkstring(L, 2);
@@ -273,7 +397,17 @@ int iis_lua_req_set_header(lua_State *L)
 
 int iis_lua_req_set_method(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto method = luaL_checkstring(L, 1);
 
@@ -284,7 +418,17 @@ int iis_lua_req_set_method(lua_State *L)
 
 int iis_lua_req_set_url(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto url = luaL_checkstring(L, 1);
 
@@ -297,6 +441,11 @@ int iis_lua_resp_clear(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     ctx->GetResponse()->Clear();
 
     return 0;
@@ -306,6 +455,11 @@ int iis_lua_resp_clear_headers(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     ctx->GetResponse()->ClearHeaders();
 
     return 0;
@@ -314,6 +468,11 @@ int iis_lua_resp_clear_headers(lua_State *L)
 int iis_lua_resp_get_headers(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto headers = ctx->GetResponse()->GetRawHttpResponse()->Headers;
 
@@ -343,6 +502,11 @@ int iis_lua_resp_get_status(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     USHORT status;
     ctx->GetResponse()->GetStatus(&status);
 
@@ -353,7 +517,17 @@ int iis_lua_resp_get_status(lua_State *L)
 
 int iis_lua_resp_set_header(lua_State *L)
 {
+    if (lua_gettop(L) != 2)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto name = luaL_checkstring(L, 1);
     auto value = luaL_checkstring(L, 2);
@@ -365,7 +539,17 @@ int iis_lua_resp_set_header(lua_State *L)
 
 int iis_lua_resp_set_status(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto status = static_cast<USHORT>(luaL_checkinteger(L, 1));
 
@@ -376,7 +560,17 @@ int iis_lua_resp_set_status(lua_State *L)
 
 int iis_lua_srv_get_variable(lua_State *L)
 {
+    if (lua_gettop(L) != 1)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto name = luaL_checkstring(L, 1);
 
@@ -392,7 +586,17 @@ int iis_lua_srv_get_variable(lua_State *L)
 
 int iis_lua_srv_set_variable(lua_State *L)
 {
+    if (lua_gettop(L) != 2)
+    {
+        return luaL_error(L, "argument error");
+    }
+
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto name = luaL_checkstring(L, 1);
     auto value = iis_lua_str_to_wstr(luaL_checkstring(L, 2));
@@ -406,6 +610,11 @@ int iis_lua_user_get_name(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
 
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
+
     auto name = iis_lua_wstr_to_str(ctx->GetUser()->GetUserName());
 
     lua_pushstring(L, name.c_str());
@@ -416,6 +625,11 @@ int iis_lua_user_get_name(lua_State *L)
 int iis_lua_user_get_Type(lua_State *L)
 {
     auto ctx = iis_lua_get_http_ctx(L);
+
+    if (ctx == NULL)
+    {
+        return luaL_error(L, "context is null");
+    }
 
     auto name = iis_lua_wstr_to_str(ctx->GetUser()->GetAuthenticationType());
 

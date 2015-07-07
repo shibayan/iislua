@@ -15,6 +15,9 @@
     <element name="logRequest">
       <attribute name="scriptPath" type="string" />
     </element>
+    <element name="endRequest">
+      <attribute name="scriptPath" type="string" />
+    </element>
     <element name="mapPath">
       <attribute name="scriptPath" type="string" />
     </element>
