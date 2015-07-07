@@ -5,7 +5,7 @@ It brings the power of Lua scripting in your IIS.
 
 ## Install
 
-Download MSI file from following page. (now x64 only)
+Download MSI file from following page. (x86 & x64 version)
 
 https://github.com/shibayan/lua-iis-module/releases
 
