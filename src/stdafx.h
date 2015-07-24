@@ -12,6 +12,10 @@
 #include <httpserv.h>
 #include <lua.hpp>
 
+#if LUA_VERSION_NUM < 502
+# define luaL_newlib(L, l) (lua_newtable(L), luaL_register(L, NULL, l))
+#endif
+
 // iislua
 #include "iis_lua_const.h"
 #include "iis_lua_util.h"
