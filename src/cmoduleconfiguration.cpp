@@ -47,11 +47,16 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     auto mapPathElement = GetElement(section, L"mapPath");
     this->mapPath = GetString(mapPathElement, L"scriptPath");
 
+    // root lua state
+    this->L = iis_lua_newstate();
+
     return S_OK;
 }
 
 void CModuleConfiguration::CleanupStoredContext()
 {
+    iis_lua_close(this->L);
+
     delete this;
 }
 

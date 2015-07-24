@@ -12,9 +12,22 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate(pHttpContext);
+    if (!iis_lua_load_function(config->GetLuaState(), "beginrequest", config->GetBeginRequest().c_str()))
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
 
-    if (luaL_dofile(L, config->GetBeginRequest().c_str()))
+    auto L = iis_lua_newthread(config->GetLuaState());
+
+    lua_xmove(config->GetLuaState(), L, 1);
+
+    lua_pushvalue(L, LUA_GLOBALSINDEX);
+    lua_setfenv(L, -2);
+
+    iis_lua_set_http_ctx(L, pHttpContext);
+    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+
+    if (lua_pcall(L, 0, 1, 0))
     {
         auto error = lua_tostring(L, -1);
 
@@ -25,7 +38,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    return iis_lua_close(L);
+    return iis_lua_get_result(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthenticateRequest(IN IHttpContext *pHttpContext, IN IAuthenticationProvider *pProvider)
@@ -39,9 +52,22 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthenticateRequest(IN IHttpContex
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate(pHttpContext);
+    if (!iis_lua_load_function(config->GetLuaState(), "authenticaterequest", config->GetAuthenticateRequest().c_str()))
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
 
-    if (luaL_dofile(L, config->GetAuthenticateRequest().c_str()))
+    auto L = iis_lua_newthread(config->GetLuaState());
+
+    lua_xmove(config->GetLuaState(), L, 1);
+
+    lua_pushvalue(L, LUA_GLOBALSINDEX);
+    lua_setfenv(L, -2);
+
+    iis_lua_set_http_ctx(L, pHttpContext);
+    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+
+    if (lua_pcall(L, 0, 1, 0))
     {
         auto error = lua_tostring(L, -1);
 
@@ -52,7 +78,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthenticateRequest(IN IHttpContex
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    return iis_lua_close(L);
+    return iis_lua_get_result(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthorizeRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
@@ -66,9 +92,22 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthorizeRequest(IN IHttpContext *
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate(pHttpContext);
+    if (!iis_lua_load_function(config->GetLuaState(), "authorizerequest", config->GetAuthorizeRequest().c_str()))
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
 
-    if (luaL_dofile(L, config->GetAuthorizeRequest().c_str()))
+    auto L = iis_lua_newthread(config->GetLuaState());
+
+    lua_xmove(config->GetLuaState(), L, 1);
+
+    lua_pushvalue(L, LUA_GLOBALSINDEX);
+    lua_setfenv(L, -2);
+
+    iis_lua_set_http_ctx(L, pHttpContext);
+    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+
+    if (lua_pcall(L, 0, 1, 0))
     {
         auto error = lua_tostring(L, -1);
 
@@ -79,7 +118,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthorizeRequest(IN IHttpContext *
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    return iis_lua_close(L);
+    return iis_lua_get_result(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteRequestHandler(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
@@ -93,9 +132,22 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteRequestHandler(IN IHttpCont
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate(pHttpContext);
+    if (!iis_lua_load_function(config->GetLuaState(), "executerequest", config->GetExecuteRequest().c_str()))
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
 
-    if (luaL_dofile(L, config->GetExecuteRequest().c_str()))
+    auto L = iis_lua_newthread(config->GetLuaState());
+
+    lua_xmove(config->GetLuaState(), L, 1);
+
+    lua_pushvalue(L, LUA_GLOBALSINDEX);
+    lua_setfenv(L, -2);
+
+    iis_lua_set_http_ctx(L, pHttpContext);
+    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+
+    if (lua_pcall(L, 0, 1, 0))
     {
         auto error = lua_tostring(L, -1);
 
@@ -106,7 +158,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteRequestHandler(IN IHttpCont
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    return iis_lua_close(L);
+    return iis_lua_get_result(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnLogRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
@@ -120,9 +172,22 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnLogRequest(IN IHttpContext *pHttpC
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate(pHttpContext);
+    if (!iis_lua_load_function(config->GetLuaState(), "logrequest", config->GetLogRequest().c_str()))
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
 
-    if (luaL_dofile(L, config->GetLogRequest().c_str()))
+    auto L = iis_lua_newthread(config->GetLuaState());
+
+    lua_xmove(config->GetLuaState(), L, 1);
+
+    lua_pushvalue(L, LUA_GLOBALSINDEX);
+    lua_setfenv(L, -2);
+
+    iis_lua_set_http_ctx(L, pHttpContext);
+    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+
+    if (lua_pcall(L, 0, 1, 0))
     {
         auto error = lua_tostring(L, -1);
 
@@ -133,7 +198,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnLogRequest(IN IHttpContext *pHttpC
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    return iis_lua_close(L);
+    return iis_lua_get_result(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnEndRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
@@ -147,9 +212,22 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnEndRequest(IN IHttpContext *pHttpC
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate(pHttpContext);
+    if (!iis_lua_load_function(config->GetLuaState(), "endrequest", config->GetEndRequest().c_str()))
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
 
-    if (luaL_dofile(L, config->GetEndRequest().c_str()))
+    auto L = iis_lua_newthread(config->GetLuaState());
+
+    lua_xmove(config->GetLuaState(), L, 1);
+
+    lua_pushvalue(L, LUA_GLOBALSINDEX);
+    lua_setfenv(L, -2);
+
+    iis_lua_set_http_ctx(L, pHttpContext);
+    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+
+    if (lua_pcall(L, 0, 1, 0))
     {
         auto error = lua_tostring(L, -1);
 
@@ -160,7 +238,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnEndRequest(IN IHttpContext *pHttpC
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    return iis_lua_close(L);
+    return iis_lua_get_result(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpContext, IN IMapPathProvider *pProvider)
@@ -174,9 +252,22 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iis_lua_newstate(pHttpContext);
+    if (!iis_lua_load_function(config->GetLuaState(), "mappath", config->GetMapPath().c_str()))
+    {
+        return RQ_NOTIFICATION_CONTINUE;
+    }
 
-    if (luaL_dofile(L, config->GetMapPath().c_str()))
+    auto L = iis_lua_newthread(config->GetLuaState());
+
+    lua_xmove(config->GetLuaState(), L, 1);
+
+    lua_pushvalue(L, LUA_GLOBALSINDEX);
+    lua_setfenv(L, -2);
+
+    iis_lua_set_http_ctx(L, pHttpContext);
+    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+
+    if (lua_pcall(L, 0, 1, 0))
     {
         auto error = lua_tostring(L, -1);
 
@@ -187,7 +278,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
         return RQ_NOTIFICATION_FINISH_REQUEST;
     }
 
-    return iis_lua_close(L);
+    return iis_lua_get_result(L);
 }
 
 REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAsyncCompletion(IN IHttpContext *pHttpContext, IN DWORD dwNotification, IN BOOL fPostNotification, IN IHttpEventProvider *pProvider, IN IHttpCompletionInfo *pCompletionInfo)

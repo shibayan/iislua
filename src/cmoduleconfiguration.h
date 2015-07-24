@@ -6,6 +6,8 @@ _COM_SMARTPTR_TYPEDEF(IAppHostProperty, __uuidof(IAppHostProperty));
 class CModuleConfiguration : public IHttpStoredContext
 {
 private:
+    lua_State *L;
+
     bool enableCodeCache;
 
     std::string beginRequest;
@@ -22,6 +24,11 @@ public:
     HRESULT Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer);
 
     void CleanupStoredContext();
+
+    inline lua_State *GetLuaState() const
+    {
+        return L;
+    };
 
     inline bool GetEnableCodeCache() const
     {

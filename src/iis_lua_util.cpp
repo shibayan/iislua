@@ -59,7 +59,7 @@ static const luaL_Reg iis_user [] =
     { NULL, NULL }
 };
 
-lua_State *iis_lua_newstate(IHttpContext *ctx)
+lua_State *iis_lua_newstate()
 {
     auto L = luaL_newstate();
 
@@ -86,20 +86,15 @@ lua_State *iis_lua_newstate(IHttpContext *ctx)
     // register iis
     lua_setglobal(L, "iis");
 
-    // initialize context
-    iis_lua_set_http_ctx(L, ctx);
-    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+    // create cache table
+    iis_lua_create_cache_table(L);
 
     return L;
 }
 
-REQUEST_NOTIFICATION_STATUS iis_lua_close(lua_State *L)
+void iis_lua_close(lua_State *L)
 {
-    auto result = iis_lua_get_result(L);
-
     lua_close(L);
-
-    return result;
 }
 
 IHttpContext *iis_lua_get_http_ctx(lua_State *L)
@@ -286,4 +281,75 @@ std::wstring iis_lua_str_to_wstr(PCSTR str)
     mbstowcs_s(&i, &buffer[0], len + 1, str, len);
 
     return std::wstring(buffer.begin(), buffer.begin() + i);
+}
+
+static char cacheKey;
+
+bool iis_lua_load_function(lua_State *L, PCSTR name, PCSTR path)
+{
+    // load cache table
+    lua_pushlightuserdata(L, &cacheKey);
+    lua_rawget(L, LUA_REGISTRYINDEX);
+
+    if (!lua_istable(L, -1))
+    {
+        return false;
+    }
+
+    // load function from cache
+    lua_getfield(L, -1, name);
+
+    if (!lua_isfunction(L, -1))
+    {
+        // remove nil from stack top
+        lua_pop(L, 1);
+
+        // load from file into cache table
+        luaL_loadfile(L, path);
+        lua_setfield(L, -2, name);
+
+        // retry load function from cache
+        lua_getfield(L, -1, name);
+    }
+
+    // remove cache table
+    lua_remove(L, -2);
+
+    return true;
+}
+
+lua_State *iis_lua_newthread(lua_State *L)
+{
+    // create thread
+    auto co = lua_newthread(L);
+
+    // global table
+    lua_createtable(co, 0, 1);
+
+    lua_pushvalue(co, -1);
+    lua_setfield(co, -2, "_G");
+
+    // create metatable
+    lua_createtable(co, 0, 1);
+
+    lua_pushvalue(co, LUA_GLOBALSINDEX);
+    lua_setfield(co, -2, "__index");
+
+    // set metatable
+    lua_setmetatable(co, -2);
+
+    // replace global table
+    lua_replace(co, LUA_GLOBALSINDEX);
+
+    // restore stack
+    lua_pop(L, 1);
+
+    return co;
+}
+
+void iis_lua_create_cache_table(lua_State *L)
+{
+    lua_pushlightuserdata(L, &cacheKey);
+    lua_createtable(L, 0, 0);
+    lua_rawset(L, LUA_REGISTRYINDEX);
 }
