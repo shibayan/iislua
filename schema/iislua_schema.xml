@@ -1,5 +1,6 @@
 <configSchema>
   <sectionSchema name="system.webServer/iislua">
+    <attribute name="enableCodeCache" type="bool" defaultValue="false" />
     <element name="beginRequest">
       <attribute name="scriptPath" type="string" />
     </element>

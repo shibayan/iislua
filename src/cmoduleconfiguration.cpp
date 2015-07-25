@@ -17,7 +17,7 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     }
 
     // iislua element
-    this->enableCodeCache = false;
+    this->enableCodeCache = GetBoolean(section, L"enableCodeCache");
 
     // beginRequest element
     auto beginRequestElement = GetElement(section, L"beginRequest");
@@ -80,4 +80,17 @@ std::string CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t
     property->get_StringValue(&propertyValue.GetBSTR());
 
     return iis_lua_wstr_to_str(propertyValue);
+}
+
+bool CModuleConfiguration::GetBoolean(IAppHostElementPtr &section, _bstr_t propertyName)
+{
+    IAppHostPropertyPtr property;
+
+    section->GetPropertyByName(propertyName, &property);
+
+    _variant_t propertyValue;
+
+    property->get_Value(&propertyValue.GetVARIANT());
+
+    return propertyValue;
 }

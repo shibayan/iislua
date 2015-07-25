@@ -285,7 +285,7 @@ std::wstring iis_lua_str_to_wstr(PCSTR str)
 
 static char cacheKey;
 
-bool iis_lua_load_function(lua_State *L, PCSTR name, PCSTR path)
+bool iis_lua_load_function(lua_State *L, PCSTR name, PCSTR path, bool enableCodeCache)
 {
     // load cache table
     lua_pushlightuserdata(L, &cacheKey);
@@ -304,12 +304,17 @@ bool iis_lua_load_function(lua_State *L, PCSTR name, PCSTR path)
         // remove nil from stack top
         lua_pop(L, 1);
 
-        // load from file into cache table
+        // load from file
         luaL_loadfile(L, path);
-        lua_setfield(L, -2, name);
 
-        // retry load function from cache
-        lua_getfield(L, -1, name);
+        if (enableCodeCache)
+        {
+            // chunk into cache table
+            lua_setfield(L, -2, name);
+
+            // retry load function from cache
+            lua_getfield(L, -1, name);
+        }
     }
 
     // remove cache table

@@ -20,6 +20,6 @@ PCSTR iis_lua_util_get_status_reason(USHORT status);
 std::string iis_lua_wstr_to_str(PCWSTR wstr);
 std::wstring iis_lua_str_to_wstr(PCSTR str);
 
-bool iis_lua_load_function(lua_State *L, PCSTR name, PCSTR path);
+bool iis_lua_load_function(lua_State *L, PCSTR name, PCSTR path, bool enableCodeCache);
 lua_State *iis_lua_newthread(lua_State *L);
 void iis_lua_create_cache_table(lua_State *L);

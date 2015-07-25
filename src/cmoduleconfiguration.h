@@ -20,6 +20,7 @@ private:
 
     IAppHostElementPtr GetElement(IAppHostElementPtr &section, _bstr_t elementName);
     std::string GetString(IAppHostElementPtr &section, _bstr_t propertyName);
+    bool GetBoolean(IAppHostElementPtr &section, _bstr_t propertyName);
 public:
     HRESULT Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer);
 
