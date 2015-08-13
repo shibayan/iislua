@@ -24,9 +24,6 @@
     <ClInclude Include="iis_lua_api.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iis_lua_const.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="iis_lua_util.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -43,6 +40,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="cluahttpstoredcontext.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="iis_lua_core.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,7 +71,7 @@
     <ClCompile Include="cluahttpstoredcontext.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="iis_lua_const.cpp">
+    <ClCompile Include="iis_lua_core.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>

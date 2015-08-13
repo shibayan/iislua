@@ -12,7 +12,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iis_lua_load_function(config->GetLuaState(), "beginrequest", config->GetBeginRequest().c_str(), config->GetEnableCodeCache()))
+    if (!iis_lua_loadfile(config->GetLuaState(), config->GetBeginRequest().c_str(), config->GetEnableCodeCache()))
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
@@ -52,7 +52,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthenticateRequest(IN IHttpContex
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iis_lua_load_function(config->GetLuaState(), "authenticaterequest", config->GetAuthenticateRequest().c_str(), config->GetEnableCodeCache()))
+    if (!iis_lua_loadfile(config->GetLuaState(), config->GetAuthenticateRequest().c_str(), config->GetEnableCodeCache()))
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
@@ -92,7 +92,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthorizeRequest(IN IHttpContext *
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iis_lua_load_function(config->GetLuaState(), "authorizerequest", config->GetAuthorizeRequest().c_str(), config->GetEnableCodeCache()))
+    if (!iis_lua_loadfile(config->GetLuaState(), config->GetAuthorizeRequest().c_str(), config->GetEnableCodeCache()))
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
@@ -132,7 +132,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteRequestHandler(IN IHttpCont
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iis_lua_load_function(config->GetLuaState(), "executerequest", config->GetExecuteRequest().c_str(), config->GetEnableCodeCache()))
+    if (!iis_lua_loadfile(config->GetLuaState(), config->GetExecuteRequest().c_str(), config->GetEnableCodeCache()))
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
@@ -172,7 +172,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnLogRequest(IN IHttpContext *pHttpC
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iis_lua_load_function(config->GetLuaState(), "logrequest", config->GetLogRequest().c_str(), config->GetEnableCodeCache()))
+    if (!iis_lua_loadfile(config->GetLuaState(), config->GetLogRequest().c_str(), config->GetEnableCodeCache()))
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
@@ -212,7 +212,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnEndRequest(IN IHttpContext *pHttpC
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iis_lua_load_function(config->GetLuaState(), "endrequest", config->GetEndRequest().c_str(), config->GetEnableCodeCache()))
+    if (!iis_lua_loadfile(config->GetLuaState(), config->GetEndRequest().c_str(), config->GetEnableCodeCache()))
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
@@ -252,7 +252,7 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iis_lua_load_function(config->GetLuaState(), "mappath", config->GetMapPath().c_str(), config->GetEnableCodeCache()))
+    if (!iis_lua_loadfile(config->GetLuaState(), config->GetMapPath().c_str(), config->GetEnableCodeCache()))
     {
         return RQ_NOTIFICATION_CONTINUE;
     }

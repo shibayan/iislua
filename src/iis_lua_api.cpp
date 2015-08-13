@@ -120,7 +120,7 @@ int iis_lua_map_path(lua_State *L)
         return luaL_error(L, "context is null");
     }
 
-    auto url = iis_lua_str_to_wstr(luaL_checkstring(L, 1));
+    auto url = iis_lua_to_wstr(luaL_checkstring(L, 1));
 
     DWORD length = 0;
 
@@ -132,7 +132,7 @@ int iis_lua_map_path(lua_State *L)
     // convert path
     ctx->MapPath(url.c_str(), &physicalPath[0], &length);
 
-    auto path = iis_lua_wstr_to_str(&physicalPath[0]);
+    auto path = iis_lua_to_str(&physicalPath[0]);
 
     lua_pushstring(L, path.c_str());
 
@@ -326,7 +326,7 @@ int iis_lua_req_get_url(lua_State *L)
         return luaL_error(L, "context is null");
     }
 
-    auto url = iis_lua_wstr_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pAbsPath);
+    auto url = iis_lua_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pAbsPath);
 
     lua_pushstring(L, url.c_str());
 
@@ -346,7 +346,7 @@ int iis_lua_req_get_url_args(lua_State *L)
 
     if (ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pQueryString != NULL)
     {
-        auto queryString = iis_lua_wstr_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pQueryString);
+        auto queryString = iis_lua_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pQueryString);
     }
 
     return 1;
@@ -599,7 +599,7 @@ int iis_lua_srv_set_variable(lua_State *L)
     }
 
     auto name = luaL_checkstring(L, 1);
-    auto value = iis_lua_str_to_wstr(luaL_checkstring(L, 2));
+    auto value = iis_lua_to_wstr(luaL_checkstring(L, 2));
 
     ctx->SetServerVariable(name, value.c_str());
 
@@ -615,7 +615,7 @@ int iis_lua_user_get_name(lua_State *L)
         return luaL_error(L, "context is null");
     }
 
-    auto name = iis_lua_wstr_to_str(ctx->GetUser()->GetUserName());
+    auto name = iis_lua_to_str(ctx->GetUser()->GetUserName());
 
     lua_pushstring(L, name.c_str());
 
@@ -631,7 +631,7 @@ int iis_lua_user_get_Type(lua_State *L)
         return luaL_error(L, "context is null");
     }
 
-    auto name = iis_lua_wstr_to_str(ctx->GetUser()->GetAuthenticationType());
+    auto name = iis_lua_to_str(ctx->GetUser()->GetAuthenticationType());
 
     lua_pushstring(L, name.c_str());
 

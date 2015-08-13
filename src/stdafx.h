@@ -17,7 +17,7 @@
 #endif
 
 // iislua
-#include "iis_lua_const.h"
+#include "iis_lua_core.h"
 #include "iis_lua_util.h"
 
 #include "iis_lua_api.h"

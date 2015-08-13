@@ -79,7 +79,7 @@ std::string CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t
 
     property->get_StringValue(&propertyValue.GetBSTR());
 
-    return iis_lua_wstr_to_str(propertyValue);
+    return iis_lua_to_str(propertyValue);
 }
 
 bool CModuleConfiguration::GetBoolean(IAppHostElementPtr &section, _bstr_t propertyName)

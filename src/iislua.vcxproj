@@ -160,7 +160,7 @@
     <ClInclude Include="cluahttpstoredcontext.h" />
     <ClInclude Include="cmoduleconfiguration.h" />
     <ClInclude Include="iis_lua_api.h" />
-    <ClInclude Include="iis_lua_const.h" />
+    <ClInclude Include="iis_lua_core.h" />
     <ClInclude Include="iis_lua_util.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -171,7 +171,7 @@
     <ClCompile Include="cluahttpmodulefactory.cpp" />
     <ClCompile Include="cluahttpstoredcontext.cpp" />
     <ClCompile Include="cmoduleconfiguration.cpp" />
-    <ClCompile Include="iis_lua_const.cpp" />
+    <ClCompile Include="iis_lua_core.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="iis_lua_api.cpp" />
     <ClCompile Include="iis_lua_util.cpp" />
