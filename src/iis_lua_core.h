@@ -12,6 +12,7 @@ void iis_lua_create_cache_table(lua_State *L);
 bool iis_lua_load_function(lua_State *L, PCSTR scriptPath, PCSTR cacheKey, bool enableCodeCache);
 
 lua_State *iis_lua_newthread(lua_State *L);
+void iis_lua_set_sandbox(lua_State *root, lua_State *L);
 
 IHttpContext *iis_lua_get_http_ctx(lua_State *L);
 void iis_lua_set_http_ctx(lua_State *L, IHttpContext *ctx);

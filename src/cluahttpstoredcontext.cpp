@@ -2,18 +2,18 @@
 #include "stdafx.h"
 
 CLuaHttpStoredContext::CLuaHttpStoredContext()
-    : childContext(NULL)
+    : pHttpChildContext(NULL)
 {
 }
 
 IHttpContext *CLuaHttpStoredContext::GetChildContext() const
 {
-    return childContext;
+    return pHttpChildContext;
 }
 
-void CLuaHttpStoredContext::SetChildContext(IN IHttpContext *context)
+void CLuaHttpStoredContext::SetChildContext(IN IHttpContext *pHttpChildContext)
 {
-    childContext = context;
+    this->pHttpChildContext = pHttpChildContext;
 }
 
 void CLuaHttpStoredContext::CleanupStoredContext()

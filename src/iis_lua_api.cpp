@@ -70,7 +70,7 @@ int iis_lua_exit(lua_State *L)
     auto status = static_cast<USHORT>(luaL_checkinteger(L, 1));
 
     ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
-    
+
     iis_lua_set_result(L);
 
     return 0;

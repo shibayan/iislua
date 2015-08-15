@@ -31,7 +31,7 @@ public:
         return L;
     };
 
-    inline bool GetEnableCodeCache() const
+    inline bool IsEnableCodeCache() const
     {
         return enableCodeCache;
     };
