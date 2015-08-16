@@ -89,7 +89,7 @@ lua_State *iis_lua_newstate()
     lua_setglobal(L, "iis");
 
     // create cache table
-    iis_lua_create_cache_table(L);
+    iis_lua_create_cachetable(L);
 
     return L;
 }
@@ -99,11 +99,19 @@ void iis_lua_close(lua_State *L)
     lua_close(L);
 }
 
-void iis_lua_create_cache_table(lua_State *L)
+void iis_lua_create_cachetable(lua_State *L)
 {
     lua_pushlightuserdata(L, &iis_lua_cache_table_key);
     lua_createtable(L, 0, 0);
     lua_rawset(L, LUA_REGISTRYINDEX);
+}
+
+bool iis_lua_load_function(lua_State *L, PCSTR scriptPath)
+{
+    // load from file
+    luaL_loadfile(L, scriptPath);
+
+    return true;
 }
 
 bool iis_lua_load_function(lua_State *L, PCSTR scriptPath, PCSTR cacheKey, bool enableCodeCache)
@@ -182,6 +190,12 @@ void iis_lua_set_sandbox(lua_State *root, lua_State *L)
     lua_setfenv(L, -2);
 }
 
+void iis_lua_initialize(lua_State *L, IHttpContext *ctx)
+{
+    iis_lua_set_http_ctx(L, ctx);
+    iis_lua_set_result(L, RQ_NOTIFICATION_CONTINUE);
+}
+
 IHttpContext *iis_lua_get_http_ctx(lua_State *L)
 {
     lua_getglobal(L, iis_lua_ctx_key);
@@ -199,7 +213,7 @@ void iis_lua_set_http_ctx(lua_State *L, IHttpContext *ctx)
     lua_setglobal(L, iis_lua_ctx_key);
 }
 
-REQUEST_NOTIFICATION_STATUS iis_lua_get_result(lua_State *L)
+REQUEST_NOTIFICATION_STATUS iis_lua_finish_request(lua_State *L)
 {
     lua_getglobal(L, iis_lua_result_key);
 
