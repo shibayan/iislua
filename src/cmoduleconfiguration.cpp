@@ -1,6 +1,9 @@
 
 #include "stdafx.h"
 
+extern HTTP_MODULE_ID g_pModuleContext;
+extern IHttpServer *g_pHttpServer;
+
 static const _bstr_t sectionPath = L"system.webServer/iislua";
 
 HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer)
@@ -11,7 +14,7 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
 
     pHttpServer->GetAdminManager()->GetAdminSection(sectionPath, path, &section);
 
-    if (section == NULL)
+    if (!section)
     {
         return S_OK;
     }
@@ -48,16 +51,45 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     this->mapPath = GetString(mapPathElement, L"scriptPath");
 
     // root lua state
-    this->L = iis_lua_newstate();
+    this->L = iislua_newstate();
 
     return S_OK;
 }
 
 void CModuleConfiguration::CleanupStoredContext()
 {
-    iis_lua_close(this->L);
+    iislua_close(this->L);
 
     delete this;
+}
+
+CModuleConfiguration *CModuleConfiguration::GetContext(IN IHttpContext *pHttpContext)
+{
+    auto pModuleContextContainer = pHttpContext->GetMetadata()->GetModuleContextContainer();
+    auto pModuleConfig = reinterpret_cast<CModuleConfiguration *>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
+
+    if (!pModuleConfig)
+    {
+        return pModuleConfig;
+    }
+
+    pModuleConfig = new CModuleConfiguration();
+
+    if (FAILED(pModuleConfig->Initialize(pHttpContext, g_pHttpServer)))
+    {
+        pModuleConfig->CleanupStoredContext();
+
+        return nullptr;
+    }
+
+    if (FAILED(pModuleContextContainer->SetModuleContext(pModuleConfig, g_pModuleContext)))
+    {
+        pModuleConfig->CleanupStoredContext();
+
+        return nullptr;
+    }
+
+    return pModuleConfig;
 }
 
 IAppHostElementPtr CModuleConfiguration::GetElement(IAppHostElementPtr &section, _bstr_t elementName)
@@ -79,7 +111,7 @@ std::string CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t
 
     property->get_StringValue(&propertyValue.GetBSTR());
 
-    return iis_lua_to_str(propertyValue);
+    return iislua_to_str(propertyValue);
 }
 
 bool CModuleConfiguration::GetBoolean(IAppHostElementPtr &section, _bstr_t propertyName)

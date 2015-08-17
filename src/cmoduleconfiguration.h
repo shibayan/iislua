@@ -26,6 +26,8 @@ public:
 
     void CleanupStoredContext();
 
+    static CModuleConfiguration *GetContext(IN IHttpContext *pHttpContext);
+
     inline lua_State *GetLuaState() const
     {
         return L;

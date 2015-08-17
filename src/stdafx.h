@@ -17,10 +17,10 @@
 #endif
 
 // iislua
-#include "iis_lua_core.h"
-#include "iis_lua_util.h"
+#include "iislua_core.h"
+#include "iislua_util.h"
 
-#include "iis_lua_api.h"
+#include "iislua_api.h"
 
 // iis http module interface
 #include "cmoduleconfiguration.h"

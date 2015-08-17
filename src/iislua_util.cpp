@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-static PCSTR iis_lua_http_header_id_to_req_name[] =
+static PCSTR iislua_http_header_id_to_req_name[] =
 {
     "Cache-Control",
     "Connection",
@@ -46,7 +46,7 @@ static PCSTR iis_lua_http_header_id_to_req_name[] =
     "User-Agent"
 };
 
-static PCSTR iis_lua_http_header_id_to_resp_name[] =
+static PCSTR iislua_http_header_id_to_resp_name[] =
 {
     "Cache-Control",
     "Connection",
@@ -80,17 +80,17 @@ static PCSTR iis_lua_http_header_id_to_resp_name[] =
     "WWW-Authenticate"
 };
 
-PCSTR iis_lua_util_get_http_req_header(USHORT id)
+PCSTR iislua_util_get_http_req_header(USHORT id)
 {
-    return iis_lua_http_header_id_to_req_name[id];
+    return iislua_http_header_id_to_req_name[id];
 }
 
-PCSTR iis_lua_util_get_http_resp_header(USHORT id)
+PCSTR iislua_util_get_http_resp_header(USHORT id)
 {
-    return iis_lua_http_header_id_to_resp_name[id];
+    return iislua_http_header_id_to_resp_name[id];
 }
 
-PCSTR iis_lua_util_get_status_reason(USHORT status)
+PCSTR iislua_util_get_status_reason(USHORT status)
 {
     switch (status)
     {
@@ -157,7 +157,7 @@ PCSTR iis_lua_util_get_status_reason(USHORT status)
     }
 }
 
-std::string iis_lua_to_str(PCWSTR wstr)
+std::string iislua_to_str(PCWSTR wstr)
 {
     auto len = wcslen(wstr);
 
@@ -174,7 +174,7 @@ std::string iis_lua_to_str(PCWSTR wstr)
     return std::string(buffer.begin(), buffer.begin() + i);
 }
 
-std::wstring iis_lua_to_wstr(PCSTR str)
+std::wstring iislua_to_wstr(PCSTR str)
 {
     auto len = strlen(str);
 

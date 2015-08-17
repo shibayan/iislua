@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-int iis_lua_debug(lua_State *L)
+int iislua_debug(lua_State *L)
 {
     auto message = luaL_checkstring(L, 1);
 
@@ -11,14 +11,11 @@ int iis_lua_debug(lua_State *L)
     return 0;
 }
 
-int iis_lua_exec(lua_State *L)
+int iislua_exec(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -39,11 +36,11 @@ int iis_lua_exec(lua_State *L)
     if (completionExpected)
     {
         // for async operation
-        auto storedContext = iis_lua_get_stored_context(ctx);
+        auto storedContext = CLuaHttpStoredContext::GetContext(ctx);
 
         storedContext->SetChildContext(childContext);
 
-        iis_lua_set_result(L, RQ_NOTIFICATION_PENDING);
+        iislua_set_result(L, RQ_NOTIFICATION_PENDING);
 
         return 0;
     }
@@ -53,14 +50,11 @@ int iis_lua_exec(lua_State *L)
     return 0;
 }
 
-int iis_lua_exit(lua_State *L)
+int iislua_exit(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -69,16 +63,18 @@ int iis_lua_exit(lua_State *L)
 
     auto status = static_cast<USHORT>(luaL_checkinteger(L, 1));
 
-    ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
+    ctx->GetResponse()->SetStatus(status, iislua_util_get_status_reason(status));
 
-    iis_lua_set_result(L);
+    iislua_set_result(L);
+
+    lua_yield(L, 0);
 
     return 0;
 }
 
-int iis_lua_flush(lua_State *L)
+int iislua_flush(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -92,9 +88,9 @@ int iis_lua_flush(lua_State *L)
     return 0;
 }
 
-int iis_lua_headers_sent(lua_State *L)
+int iislua_headers_sent(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -106,21 +102,18 @@ int iis_lua_headers_sent(lua_State *L)
     return 1;
 }
 
-int iis_lua_map_path(lua_State *L)
+int iislua_map_path(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
         return luaL_error(L, "context is null");
     }
 
-    auto url = iis_lua_to_wstr(luaL_checkstring(L, 1));
+    auto url = iislua_to_wstr(luaL_checkstring(L, 1));
 
     DWORD length = 0;
 
@@ -132,21 +125,18 @@ int iis_lua_map_path(lua_State *L)
     // convert path
     ctx->MapPath(url.c_str(), &physicalPath[0], &length);
 
-    auto path = iis_lua_to_str(&physicalPath[0]);
+    auto path = iislua_to_str(&physicalPath[0]);
 
     lua_pushstring(L, path.c_str());
 
     return 1;
 }
 
-int iis_lua_print(lua_State *L)
+int iislua_print(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto *ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -167,14 +157,14 @@ int iis_lua_print(lua_State *L)
     return 0;
 }
 
-int iis_lua_redirect(lua_State *L)
+int iislua_redirect(lua_State *L)
 {
     if (lua_gettop(L) != 1 && lua_gettop(L) != 2)
     {
         return luaL_error(L, "argument error");
     }
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -189,22 +179,19 @@ int iis_lua_redirect(lua_State *L)
     {
         auto status = static_cast<USHORT>(luaL_checkinteger(L, 2));
 
-        ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
+        ctx->GetResponse()->SetStatus(status, iislua_util_get_status_reason(status));
     }
 
-    iis_lua_set_result(L);
+    iislua_set_result(L);
 
     return 0;
 }
 
-int iis_lua_say(lua_State *L)
+int iislua_say(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto *ctx = iis_lua_get_http_ctx(L);
+    auto *ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -229,9 +216,9 @@ int iis_lua_say(lua_State *L)
     return 0;
 }
 
-int iis_lua_req_get_headers(lua_State *L)
+int iislua_req_get_headers(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -246,7 +233,7 @@ int iis_lua_req_get_headers(lua_State *L)
     {
         if (headers.KnownHeaders[i].pRawValue != NULL)
         {
-            lua_pushstring(L, iis_lua_util_get_http_req_header(i));
+            lua_pushstring(L, iislua_util_get_http_req_header(i));
             lua_pushlstring(L, headers.KnownHeaders[i].pRawValue, headers.KnownHeaders[i].RawValueLength);
             lua_settable(L, -3);
         }
@@ -262,9 +249,9 @@ int iis_lua_req_get_headers(lua_State *L)
     return 1;
 }
 
-int iis_lua_req_get_method(lua_State *L)
+int iislua_req_get_method(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -276,9 +263,9 @@ int iis_lua_req_get_method(lua_State *L)
     return 1;
 }
 
-int iis_lua_req_get_post_args(lua_State *L)
+int iislua_req_get_post_args(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -290,9 +277,9 @@ int iis_lua_req_get_post_args(lua_State *L)
     return 1;
 }
 
-int iis_lua_req_get_remote_addr(lua_State *L)
+int iislua_req_get_remote_addr(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -317,25 +304,25 @@ int iis_lua_req_get_remote_addr(lua_State *L)
     return 1;
 }
 
-int iis_lua_req_get_url(lua_State *L)
+int iislua_req_get_url(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
         return luaL_error(L, "context is null");
     }
 
-    auto url = iis_lua_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pAbsPath);
+    auto url = iislua_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pAbsPath);
 
     lua_pushstring(L, url.c_str());
 
     return 1;
 }
 
-int iis_lua_req_get_url_args(lua_State *L)
+int iislua_req_get_url_args(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -346,15 +333,15 @@ int iis_lua_req_get_url_args(lua_State *L)
 
     if (ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pQueryString != NULL)
     {
-        auto queryString = iis_lua_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pQueryString);
+        auto queryString = iislua_to_str(ctx->GetRequest()->GetRawHttpRequest()->CookedUrl.pQueryString);
     }
 
     return 1;
 }
 
-int iis_lua_req_http_version(lua_State *L)
+int iislua_req_http_version(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -373,14 +360,11 @@ int iis_lua_req_http_version(lua_State *L)
     return 1;
 }
 
-int iis_lua_req_set_header(lua_State *L)
+int iislua_req_set_header(lua_State *L)
 {
-    if (lua_gettop(L) != 2)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 2);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -395,14 +379,11 @@ int iis_lua_req_set_header(lua_State *L)
     return 0;
 }
 
-int iis_lua_req_set_method(lua_State *L)
+int iislua_req_set_method(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -416,14 +397,11 @@ int iis_lua_req_set_method(lua_State *L)
     return 0;
 }
 
-int iis_lua_req_set_url(lua_State *L)
+int iislua_req_set_url(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -437,9 +415,9 @@ int iis_lua_req_set_url(lua_State *L)
     return 0;
 }
 
-int iis_lua_resp_clear(lua_State *L)
+int iislua_resp_clear(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -451,9 +429,9 @@ int iis_lua_resp_clear(lua_State *L)
     return 0;
 }
 
-int iis_lua_resp_clear_headers(lua_State *L)
+int iislua_resp_clear_headers(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -465,9 +443,9 @@ int iis_lua_resp_clear_headers(lua_State *L)
     return 0;
 }
 
-int iis_lua_resp_get_headers(lua_State *L)
+int iislua_resp_get_headers(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -482,7 +460,7 @@ int iis_lua_resp_get_headers(lua_State *L)
     {
         if (headers.KnownHeaders[i].pRawValue != NULL)
         {
-            lua_pushstring(L, iis_lua_util_get_http_resp_header(i));
+            lua_pushstring(L, iislua_util_get_http_resp_header(i));
             lua_pushlstring(L, headers.KnownHeaders[i].pRawValue, headers.KnownHeaders[i].RawValueLength);
             lua_settable(L, -3);
         }
@@ -498,9 +476,9 @@ int iis_lua_resp_get_headers(lua_State *L)
     return 1;
 }
 
-int iis_lua_resp_get_status(lua_State *L)
+int iislua_resp_get_status(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -515,14 +493,11 @@ int iis_lua_resp_get_status(lua_State *L)
     return 1;
 }
 
-int iis_lua_resp_set_header(lua_State *L)
+int iislua_resp_set_header(lua_State *L)
 {
-    if (lua_gettop(L) != 2)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 2);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -537,14 +512,11 @@ int iis_lua_resp_set_header(lua_State *L)
     return 0;
 }
 
-int iis_lua_resp_set_status(lua_State *L)
+int iislua_resp_set_status(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -553,19 +525,16 @@ int iis_lua_resp_set_status(lua_State *L)
 
     auto status = static_cast<USHORT>(luaL_checkinteger(L, 1));
 
-    ctx->GetResponse()->SetStatus(status, iis_lua_util_get_status_reason(status));
+    ctx->GetResponse()->SetStatus(status, iislua_util_get_status_reason(status));
 
     return 0;
 }
 
-int iis_lua_srv_get_variable(lua_State *L)
+int iislua_srv_get_variable(lua_State *L)
 {
-    if (lua_gettop(L) != 1)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 1);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -584,14 +553,11 @@ int iis_lua_srv_get_variable(lua_State *L)
     return 1;
 }
 
-int iis_lua_srv_set_variable(lua_State *L)
+int iislua_srv_set_variable(lua_State *L)
 {
-    if (lua_gettop(L) != 2)
-    {
-        return luaL_error(L, "argument error");
-    }
+    CHECK_ARGUMENT(L, 2);
 
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
@@ -599,39 +565,39 @@ int iis_lua_srv_set_variable(lua_State *L)
     }
 
     auto name = luaL_checkstring(L, 1);
-    auto value = iis_lua_to_wstr(luaL_checkstring(L, 2));
+    auto value = iislua_to_wstr(luaL_checkstring(L, 2));
 
     ctx->SetServerVariable(name, value.c_str());
 
     return 0;
 }
 
-int iis_lua_user_get_name(lua_State *L)
+int iislua_user_get_name(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
         return luaL_error(L, "context is null");
     }
 
-    auto name = iis_lua_to_str(ctx->GetUser()->GetUserName());
+    auto name = iislua_to_str(ctx->GetUser()->GetUserName());
 
     lua_pushstring(L, name.c_str());
 
     return 1;
 }
 
-int iis_lua_user_get_Type(lua_State *L)
+int iislua_user_get_Type(lua_State *L)
 {
-    auto ctx = iis_lua_get_http_ctx(L);
+    auto ctx = iislua_get_http_ctx(L);
 
     if (ctx == NULL)
     {
         return luaL_error(L, "context is null");
     }
 
-    auto name = iis_lua_to_str(ctx->GetUser()->GetAuthenticationType());
+    auto name = iislua_to_str(ctx->GetUser()->GetAuthenticationType());
 
     lua_pushstring(L, name.c_str());
 

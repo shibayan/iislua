@@ -159,9 +159,9 @@
     <ClInclude Include="cluahttpmodulefactory.h" />
     <ClInclude Include="cluahttpstoredcontext.h" />
     <ClInclude Include="cmoduleconfiguration.h" />
-    <ClInclude Include="iis_lua_api.h" />
-    <ClInclude Include="iis_lua_core.h" />
-    <ClInclude Include="iis_lua_util.h" />
+    <ClInclude Include="iislua_api.h" />
+    <ClInclude Include="iislua_core.h" />
+    <ClInclude Include="iislua_util.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -171,10 +171,10 @@
     <ClCompile Include="cluahttpmodulefactory.cpp" />
     <ClCompile Include="cluahttpstoredcontext.cpp" />
     <ClCompile Include="cmoduleconfiguration.cpp" />
-    <ClCompile Include="iis_lua_core.cpp" />
+    <ClCompile Include="iislua_core.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="iis_lua_api.cpp" />
-    <ClCompile Include="iis_lua_util.cpp" />
+    <ClCompile Include="iislua_api.cpp" />
+    <ClCompile Include="iislua_util.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

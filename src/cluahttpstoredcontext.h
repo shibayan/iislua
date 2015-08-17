@@ -11,4 +11,6 @@ public:
     void SetChildContext(IN IHttpContext *pHttpChildContext);
 
     void CleanupStoredContext();
+
+    static CLuaHttpStoredContext *GetContext(IN IHttpContext *pHttpContext);
 };
