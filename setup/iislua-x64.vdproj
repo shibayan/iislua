@@ -288,7 +288,7 @@
             "{836E08B8-0285-4809-BA42-01DB6754A45D}:_957B6084C34F4D89A0910B97279296D3"
             {
             "Name" = "8:Exist IIS"
-            "Condition" = "8:IISMAJORVERSION >= \"#7\""
+            "Condition" = "8:IISMAJORVERSION >= \"#7\" OR IISMAJORVERSION = \"#10\""
             "Message" = "8:iislua required for iis 7.x to up"
             "InstallUrl" = "8:"
             }
@@ -313,15 +313,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:iislua"
-        "ProductCode" = "8:{25A1D90F-565D-483E-84BF-841D51474789}"
-        "PackageCode" = "8:{E3968D31-0E64-4B4B-BF86-B21D74AC5E7B}"
+        "ProductCode" = "8:{67D9CEF9-6A1A-4102-B5DC-A4973D737350}"
+        "PackageCode" = "8:{41F1FBC7-9B10-434F-B8EC-8A3DBB2B908A}"
         "UpgradeCode" = "8:{1A16A4EB-F3C5-4C41-B2E0-21727DF396C9}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:0.4.1"
+        "ProductVersion" = "8:0.5.0"
         "Manufacturer" = "8:shibayan"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -779,7 +779,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CEB6309859654657B44877A9F7D496C2"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:x64\\Release\\iislua.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_068BCEF92D56425B8464D2F051F74660"

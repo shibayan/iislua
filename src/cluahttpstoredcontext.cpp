@@ -28,7 +28,7 @@ CLuaHttpStoredContext *CLuaHttpStoredContext::GetContext(IN IHttpContext *pHttpC
     auto pModuleContextContainer = pHttpContext->GetModuleContextContainer();
     auto pHttpStoredContext = reinterpret_cast<CLuaHttpStoredContext *>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
 
-    if (!pHttpStoredContext)
+    if (pHttpStoredContext)
     {
         return pHttpStoredContext;
     }

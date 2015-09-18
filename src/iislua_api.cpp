@@ -67,8 +67,6 @@ int iislua_exit(lua_State *L)
 
     iislua_set_result(L);
 
-    lua_yield(L, 0);
-
     return 0;
 }
 

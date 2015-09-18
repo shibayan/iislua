@@ -68,7 +68,7 @@ CModuleConfiguration *CModuleConfiguration::GetContext(IN IHttpContext *pHttpCon
     auto pModuleContextContainer = pHttpContext->GetMetadata()->GetModuleContextContainer();
     auto pModuleConfig = reinterpret_cast<CModuleConfiguration *>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
 
-    if (!pModuleConfig)
+    if (pModuleConfig)
     {
         return pModuleConfig;
     }
