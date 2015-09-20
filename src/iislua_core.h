@@ -3,17 +3,17 @@
 class CLuaHttpStoredContext;
 class CModuleConfiguration;
 
-#define iislua_loadfile(L, scriptPath, enableCodeCache) iislua_load_function(L, scriptPath, __FUNCTION__, enableCodeCache)
+#define iislua_loadfile(config, scriptPath) iislua_load_function(config, scriptPath, __FUNCTION__)
 
 lua_State *iislua_newstate();
 void iislua_close(lua_State *L);
 
 void iislua_create_cachetable(lua_State *L);
-bool iislua_load_function(lua_State *L, PCSTR scriptPath);
-bool iislua_load_function(lua_State *L, PCSTR scriptPath, PCSTR cacheKey, bool enableCodeCache);
+bool iislua_load_cachetable(lua_State *L);
+
+lua_State *iislua_load_function(CModuleConfiguration *config, PCSTR scriptPath, PCSTR cacheKey);
 
 lua_State *iislua_newthread(lua_State *L);
-void iislua_set_sandbox(lua_State *root, lua_State *L);
 void iislua_initialize(lua_State *L, IHttpContext *ctx);
 
 REQUEST_NOTIFICATION_STATUS iislua_finish_request(lua_State *L);

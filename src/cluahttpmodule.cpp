@@ -7,19 +7,18 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnBeginRequest(IN IHttpContext *pHtt
 
     auto config = CModuleConfiguration::GetContext(pHttpContext);
 
-    if (config->GetBeginRequest().empty())
+    if (!config || config->GetBeginRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iislua_loadfile(config->GetLuaState(), config->GetBeginRequest().c_str(), config->IsEnableCodeCache()))
+    auto L = iislua_loadfile(config, config->GetBeginRequest().c_str());
+
+    if (!L)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iislua_newthread(config->GetLuaState());
-
-    iislua_set_sandbox(config->GetLuaState(), L);
     iislua_initialize(L, pHttpContext);
 
     if (lua_pcall(L, 0, 1, 0))
@@ -42,19 +41,18 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthenticateRequest(IN IHttpContex
 
     auto config = CModuleConfiguration::GetContext(pHttpContext);
 
-    if (config->GetAuthenticateRequest().empty())
+    if (!config || config->GetAuthenticateRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iislua_loadfile(config->GetLuaState(), config->GetAuthenticateRequest().c_str(), config->IsEnableCodeCache()))
+    auto L = iislua_loadfile(config, config->GetAuthenticateRequest().c_str());
+
+    if (!L)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iislua_newthread(config->GetLuaState());
-
-    iislua_set_sandbox(config->GetLuaState(), L);
     iislua_initialize(L, pHttpContext);
 
     if (lua_pcall(L, 0, 1, 0))
@@ -77,19 +75,18 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnAuthorizeRequest(IN IHttpContext *
 
     auto config = CModuleConfiguration::GetContext(pHttpContext);
 
-    if (config->GetAuthorizeRequest().empty())
+    if (!config || config->GetAuthorizeRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iislua_loadfile(config->GetLuaState(), config->GetAuthorizeRequest().c_str(), config->IsEnableCodeCache()))
+    auto L = iislua_loadfile(config, config->GetAuthorizeRequest().c_str());
+
+    if (!L)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iislua_newthread(config->GetLuaState());
-
-    iislua_set_sandbox(config->GetLuaState(), L);
     iislua_initialize(L, pHttpContext);
 
     if (lua_pcall(L, 0, 1, 0))
@@ -112,19 +109,18 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteRequestHandler(IN IHttpCont
 
     auto config = CModuleConfiguration::GetContext(pHttpContext);
 
-    if (config->GetExecuteRequest().empty())
+    if (!config || config->GetExecuteRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iislua_loadfile(config->GetLuaState(), config->GetExecuteRequest().c_str(), config->IsEnableCodeCache()))
+    auto L = iislua_loadfile(config, config->GetExecuteRequest().c_str());
+
+    if (!L)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iislua_newthread(config->GetLuaState());
-
-    iislua_set_sandbox(config->GetLuaState(), L);
     iislua_initialize(L, pHttpContext);
 
     if (lua_pcall(L, 0, 1, 0))
@@ -147,18 +143,17 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnLogRequest(IN IHttpContext *pHttpC
 
     auto config = CModuleConfiguration::GetContext(pHttpContext);
 
-    if (config->GetLogRequest().empty())
+    if (!config || config->GetLogRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iislua_loadfile(config->GetLuaState(), config->GetLogRequest().c_str(), config->IsEnableCodeCache()))
+    auto L = iislua_loadfile(config, config->GetLogRequest().c_str());
+
+    if (!L)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
-
-    auto L = iislua_newthread(config->GetLuaState());
-    iislua_set_sandbox(config->GetLuaState(), L);
 
     iislua_initialize(L, pHttpContext);
 
@@ -182,19 +177,18 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnEndRequest(IN IHttpContext *pHttpC
 
     auto config = CModuleConfiguration::GetContext(pHttpContext);
 
-    if (config->GetEndRequest().empty())
+    if (!config || config->GetEndRequest().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iislua_loadfile(config->GetLuaState(), config->GetEndRequest().c_str(), config->IsEnableCodeCache()))
+    auto L = iislua_loadfile(config, config->GetEndRequest().c_str());
+
+    if (!L)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iislua_newthread(config->GetLuaState());
-
-    iislua_set_sandbox(config->GetLuaState(), L);
     iislua_initialize(L, pHttpContext);
 
     if (lua_pcall(L, 0, 1, 0))
@@ -217,19 +211,18 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnMapPath(IN IHttpContext *pHttpCont
 
     auto config = CModuleConfiguration::GetContext(pHttpContext);
 
-    if (config->GetMapPath().empty())
+    if (!config || config->GetMapPath().empty())
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    if (!iislua_loadfile(config->GetLuaState(), config->GetMapPath().c_str(), config->IsEnableCodeCache()))
+    auto L = iislua_loadfile(config, config->GetMapPath().c_str());
+
+    if (!L)
     {
         return RQ_NOTIFICATION_CONTINUE;
     }
 
-    auto L = iislua_newthread(config->GetLuaState());
-
-    iislua_set_sandbox(config->GetLuaState(), L);
     iislua_initialize(L, pHttpContext);
 
     if (lua_pcall(L, 0, 1, 0))

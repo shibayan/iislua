@@ -6,6 +6,8 @@ static PCSTR iislua_result_key = "__iislua_result";
 
 static char iislua_cache_table_key;
 
+static concurrency::critical_section critical_section;
+
 static const luaL_Reg iis[] =
 {
     { "debug", iislua_debug },
@@ -103,23 +105,26 @@ void iislua_create_cachetable(lua_State *L)
     lua_rawset(L, LUA_REGISTRYINDEX);
 }
 
-bool iislua_load_function(lua_State *L, PCSTR scriptPath)
+bool iislua_load_cachetable(lua_State *L)
 {
-    // load from file
-    luaL_loadfile(L, scriptPath);
-
-    return true;
-}
-
-bool iislua_load_function(lua_State *L, PCSTR scriptPath, PCSTR cacheKey, bool enableCodeCache)
-{
-    // load cache table
     lua_pushlightuserdata(L, &iislua_cache_table_key);
     lua_rawget(L, LUA_REGISTRYINDEX);
 
-    if (!lua_istable(L, -1))
+    return lua_istable(L, -1);
+}
+
+lua_State *iislua_load_function(CModuleConfiguration *config, PCSTR scriptPath, PCSTR cacheKey)
+{
+    critical_section.lock();
+
+    lua_State *L = config->GetLuaState();
+
+    // load cache table
+    if (!iislua_load_cachetable(L))
     {
-        return false;
+        critical_section.unlock();
+
+        return nullptr;
     }
 
     // load function from cache
@@ -134,7 +139,7 @@ bool iislua_load_function(lua_State *L, PCSTR scriptPath, PCSTR cacheKey, bool e
         luaL_loadfile(L, scriptPath);
 
         // check enable lua code cache
-        if (enableCodeCache)
+        if (config->IsEnableCodeCache())
         {
             // chunk into cache table
             lua_setfield(L, -2, cacheKey);
@@ -147,7 +152,17 @@ bool iislua_load_function(lua_State *L, PCSTR scriptPath, PCSTR cacheKey, bool e
     // remove cache table from stack
     lua_remove(L, -2);
 
-    return true;
+    // set sandboxing
+    auto co = iislua_newthread(L);
+    
+    lua_xmove(L, co, 1);
+
+    lua_pushvalue(co, LUA_GLOBALSINDEX);
+    lua_setfenv(co, -2);
+
+    critical_section.unlock();
+
+    return co;
 }
 
 lua_State *iislua_newthread(lua_State *L)
@@ -177,14 +192,6 @@ lua_State *iislua_newthread(lua_State *L)
     lua_pop(L, 1);
 
     return co;
-}
-
-void iislua_set_sandbox(lua_State *root, lua_State *L)
-{
-    lua_xmove(root, L, 1);
-
-    lua_pushvalue(L, LUA_GLOBALSINDEX);
-    lua_setfenv(L, -2);
 }
 
 void iislua_initialize(lua_State *L, IHttpContext *ctx)
