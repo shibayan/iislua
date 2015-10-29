@@ -161,6 +161,7 @@
     <ClInclude Include="cmoduleconfiguration.h" />
     <ClInclude Include="iislua_api.h" />
     <ClInclude Include="iislua_core.h" />
+    <ClInclude Include="iislua_tcp.h" />
     <ClInclude Include="iislua_util.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -172,6 +173,7 @@
     <ClCompile Include="cluahttpstoredcontext.cpp" />
     <ClCompile Include="cmoduleconfiguration.cpp" />
     <ClCompile Include="iislua_core.cpp" />
+    <ClCompile Include="iislua_tcp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="iislua_api.cpp" />
     <ClCompile Include="iislua_util.cpp" />

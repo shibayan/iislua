@@ -5,6 +5,7 @@ static PCSTR iislua_ctx_key = "__iislua_ctx";
 static PCSTR iislua_result_key = "__iislua_result";
 
 static char iislua_cache_table_key;
+extern char iislua_socket_tcp_metatable;
 
 static concurrency::critical_section critical_section;
 
@@ -60,6 +61,12 @@ static const luaL_Reg iis_user[] =
     { NULL, NULL }
 };
 
+static const luaL_Reg iis_socket[] =
+{
+    { "tcp", iislua_socket_tcp },
+    { NULL, NULL }
+};
+
 lua_State *iislua_newstate()
 {
     auto L = luaL_newstate();
@@ -84,11 +91,37 @@ lua_State *iislua_newstate()
     luaL_newlib(L, iis_user);
     lua_setfield(L, -2, "user");
 
+    // create iis.socket
+    luaL_newlib(L, iis_socket);
+    lua_setfield(L, -2, "socket");
+
     // register iis
     lua_setglobal(L, "iis");
 
     // create cache table
     iislua_create_cachetable(L);
+
+    // create metatable
+    lua_pushlightuserdata(L, &iislua_socket_tcp_metatable);
+    lua_createtable(L, 0, 0);
+
+    lua_pushcfunction(L, iislua_socket_tcp_connect);
+    lua_setfield(L, -2, "connect");
+
+    lua_pushcfunction(L, iislua_socket_tcp_send);
+    lua_setfield(L, -2, "send");
+
+    lua_pushcfunction(L, iislua_socket_tcp_receive);
+    lua_setfield(L, -2, "receive");
+
+    lua_pushcfunction(L, iislua_socket_tcp_close);
+    lua_setfield(L, -2, "close");
+
+    lua_pushvalue(L, -1);
+    lua_setfield(L, -2, "__index");
+
+    // save metatable
+    lua_rawset(L, LUA_REGISTRYINDEX);
 
     return L;
 }

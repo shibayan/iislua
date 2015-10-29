@@ -1,6 +1,11 @@
 <configSchema>
   <sectionSchema name="system.webServer/iislua">
     <attribute name="enableCodeCache" type="bool" defaultValue="false" />
+    <element name="socket">
+      <attribute name="connectTimeout" type="timeSpan" defaultValue="00:01:00" validationType="timeSpanRange" validationParameter="0,65535,1" />
+      <attribute name="sendTimeout" type="timeSpan" defaultValue="00:01:00" validationType="timeSpanRange" validationParameter="0,65535,1" />
+      <attribute name="readTimeout" type="timeSpan" defaultValue="00:01:00" validationType="timeSpanRange" validationParameter="0,65535,1" />
+    </element>
     <element name="beginRequest">
       <attribute name="scriptPath" type="string" />
     </element>

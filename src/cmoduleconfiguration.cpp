@@ -22,6 +22,12 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     // iislua element
     this->enableCodeCache = GetBoolean(section, L"enableCodeCache");
 
+    // socket element
+    auto socketElement = GetElement(section, "socket");
+    this->connectTimeout = GetInteger(socketElement, "connectTimeout") / 1000;
+    this->sendTimeout = GetInteger(socketElement, "sendTimeout") / 1000;
+    this->readTimeout = GetInteger(socketElement, "readTimeout") / 1000;
+
     // beginRequest element
     auto beginRequestElement = GetElement(section, L"beginRequest");
     this->beginRequest = GetString(beginRequestElement, L"scriptPath");
@@ -115,6 +121,19 @@ std::string CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t
 }
 
 bool CModuleConfiguration::GetBoolean(IAppHostElementPtr &section, _bstr_t propertyName)
+{
+    IAppHostPropertyPtr property;
+
+    section->GetPropertyByName(propertyName, &property);
+
+    _variant_t propertyValue;
+
+    property->get_Value(&propertyValue.GetVARIANT());
+
+    return propertyValue;
+}
+
+int CModuleConfiguration::GetInteger(IAppHostElementPtr &section, _bstr_t propertyName)
 {
     IAppHostPropertyPtr property;
 

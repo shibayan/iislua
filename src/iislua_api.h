@@ -1,9 +1,5 @@
 #pragma once
 
-#define IISLUA_API extern "C"
-
-#define CHECK_ARGUMENT(L, top) if (lua_gettop(L) != top) { return luaL_error(L, "argument error"); }
-
 // iis module
 IISLUA_API int iislua_debug(lua_State *L);
 IISLUA_API int iislua_exec(lua_State *L);

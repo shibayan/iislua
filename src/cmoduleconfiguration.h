@@ -10,6 +10,10 @@ private:
 
     bool enableCodeCache;
 
+    int connectTimeout;
+    int sendTimeout;
+    int readTimeout;
+
     std::string beginRequest;
     std::string authenticateRequest;
     std::string authorizeRequest;
@@ -21,6 +25,7 @@ private:
     IAppHostElementPtr GetElement(IAppHostElementPtr &section, _bstr_t elementName);
     std::string GetString(IAppHostElementPtr &section, _bstr_t propertyName);
     bool GetBoolean(IAppHostElementPtr &section, _bstr_t propertyName);
+    int GetInteger(IAppHostElementPtr &section, _bstr_t propertyName);
 public:
     HRESULT Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer);
 
@@ -36,6 +41,19 @@ public:
     inline bool IsEnableCodeCache() const
     {
         return enableCodeCache;
+    };
+
+    inline int GetConnectTimeout() const
+    {
+        return connectTimeout;
+    };
+    inline int GetSendTimeout() const
+    {
+        return sendTimeout;
+    };
+    inline int GetReadTimeout() const
+    {
+        return readTimeout;
     };
 
     inline const std::string& GetBeginRequest() const
