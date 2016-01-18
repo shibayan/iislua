@@ -5,7 +5,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <comdef.h>
-#include <concrt.h>
 #include <winsock2.h>
 
 #include <string>
@@ -16,10 +15,6 @@
 
 #pragma comment(lib, "ws2_32.lib")
 
-#if LUA_VERSION_NUM < 502
-# define luaL_newlib(L, l) (lua_newtable(L), luaL_register(L, NULL, l))
-#endif
-
 #define IISLUA_API extern "C"
 #define CHECK_ARGUMENT(L, top) if (lua_gettop(L) != top) { return luaL_error(L, "argument error"); }
 
@@ -29,6 +24,9 @@
 
 #include "iislua_api.h"
 #include "iislua_tcp.h"
+
+// lua pooling
+#include "cluastatepool.h"
 
 // iis http module interface
 #include "cmoduleconfiguration.h"

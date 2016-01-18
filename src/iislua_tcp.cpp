@@ -47,7 +47,7 @@ int iislua_socket_tcp_connect(lua_State *L)
         return luaL_error(L, "context is null");
     }
 
-    auto config = CModuleConfiguration::GetContext(ctx);
+    auto config = CModuleConfiguration::GetConfig(ctx);
 
     luaL_checktype(L, 1, LUA_TTABLE);
 
@@ -85,14 +85,14 @@ int iislua_socket_tcp_connect(lua_State *L)
     hints.ai_family = AF_INET;
 
     char service[6];
-    sprintf_s(service, "%d", port);
+    sprintf_s(service, "%d", (int)port);
 
     if (getaddrinfo(host, service, &hints, &list) != 0)
     {
         return 0;
     }
 
-    connect(sock, list->ai_addr, list->ai_addrlen);
+    connect(sock, list->ai_addr, (int)list->ai_addrlen);
 
     if (WSAWaitForMultipleEvents(1, &h, FALSE, config->GetConnectTimeout(), FALSE) == WSA_WAIT_EVENT_0)
     {
@@ -126,7 +126,7 @@ int iislua_socket_tcp_send(lua_State *L)
         return luaL_error(L, "context is null");
     }
 
-    auto config = CModuleConfiguration::GetContext(ctx);
+    auto config = CModuleConfiguration::GetConfig(ctx);
 
     luaL_checktype(L, 1, LUA_TTABLE);
 
@@ -153,7 +153,7 @@ int iislua_socket_tcp_send(lua_State *L)
         }
         else if (events.lNetworkEvents & FD_WRITE)
         {
-            send(data->sock, sendData, strlen(sendData), 0);
+            send(data->sock, sendData, (int)strlen(sendData), 0);
         }
     }
 
@@ -177,7 +177,7 @@ int iislua_socket_tcp_receive(lua_State *L)
         return luaL_error(L, "context is null");
     }
 
-    auto config = CModuleConfiguration::GetContext(ctx);
+    auto config = CModuleConfiguration::GetConfig(ctx);
 
     luaL_checktype(L, 1, LUA_TTABLE);
 
@@ -208,7 +208,7 @@ int iislua_socket_tcp_receive(lua_State *L)
         {
             std::vector<char> buffer(size);
 
-            int len = recv(data->sock, &buffer[0], size, 0);
+            int len = recv(data->sock, &buffer[0], (int)size, 0);
 
             lua_pushlstring(L, &buffer[0], len);
         }

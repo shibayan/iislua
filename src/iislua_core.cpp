@@ -1,13 +1,11 @@
 
 #include "stdafx.h"
 
-static PCSTR iislua_ctx_key = "__iislua_ctx";
-static PCSTR iislua_result_key = "__iislua_result";
+static const char *iislua_ctx_key = "__iislua_ctx";
+static const char *iislua_result_key = "__iislua_result";
 
 static char iislua_cache_table_key;
 extern char iislua_socket_tcp_metatable;
-
-static concurrency::critical_section critical_section;
 
 static const luaL_Reg iis[] =
 {
@@ -99,7 +97,9 @@ lua_State *iislua_newstate()
     lua_setglobal(L, "iis");
 
     // create cache table
-    iislua_create_cachetable(L);
+    lua_pushlightuserdata(L, &iislua_cache_table_key);
+    lua_createtable(L, 0, 0);
+    lua_rawset(L, LUA_REGISTRYINDEX);
 
     // create metatable
     lua_pushlightuserdata(L, &iislua_socket_tcp_metatable);
@@ -131,103 +131,13 @@ void iislua_close(lua_State *L)
     lua_close(L);
 }
 
-void iislua_create_cachetable(lua_State *L)
+void iislua_load_file(lua_State *L, const char *name, const char *file)
 {
-    lua_pushlightuserdata(L, &iislua_cache_table_key);
-    lua_createtable(L, 0, 0);
-    lua_rawset(L, LUA_REGISTRYINDEX);
+    luaL_loadfile(L, file);
+    lua_setglobal(L, name);
 }
 
-bool iislua_load_cachetable(lua_State *L)
-{
-    lua_pushlightuserdata(L, &iislua_cache_table_key);
-    lua_rawget(L, LUA_REGISTRYINDEX);
-
-    return lua_istable(L, -1);
-}
-
-lua_State *iislua_load_function(CModuleConfiguration *config, PCSTR scriptPath, PCSTR cacheKey)
-{
-    critical_section.lock();
-
-    lua_State *L = config->GetLuaState();
-
-    // load cache table
-    if (!iislua_load_cachetable(L))
-    {
-        critical_section.unlock();
-
-        return nullptr;
-    }
-
-    // load function from cache
-    lua_getfield(L, -1, cacheKey);
-
-    if (!lua_isfunction(L, -1))
-    {
-        // remove nil from stack top
-        lua_pop(L, 1);
-
-        // load from file
-        luaL_loadfile(L, scriptPath);
-
-        // check enable lua code cache
-        if (config->IsEnableCodeCache())
-        {
-            // chunk into cache table
-            lua_setfield(L, -2, cacheKey);
-
-            // retry load function from cache
-            lua_getfield(L, -1, cacheKey);
-        }
-    }
-
-    // remove cache table from stack
-    lua_remove(L, -2);
-
-    // set sandboxing
-    auto co = iislua_newthread(L);
-    
-    lua_xmove(L, co, 1);
-
-    lua_pushvalue(co, LUA_GLOBALSINDEX);
-    lua_setfenv(co, -2);
-
-    critical_section.unlock();
-
-    return co;
-}
-
-lua_State *iislua_newthread(lua_State *L)
-{
-    // create thread
-    auto co = lua_newthread(L);
-
-    // global table
-    lua_createtable(co, 0, 1);
-
-    lua_pushvalue(co, -1);
-    lua_setfield(co, -2, "_G");
-
-    // create metatable
-    lua_createtable(co, 0, 1);
-
-    lua_pushvalue(co, LUA_GLOBALSINDEX);
-    lua_setfield(co, -2, "__index");
-
-    // set metatable
-    lua_setmetatable(co, -2);
-
-    // replace global table
-    lua_replace(co, LUA_GLOBALSINDEX);
-
-    // restore stack
-    lua_pop(L, 1);
-
-    return co;
-}
-
-void iislua_initialize(lua_State *L, IHttpContext *ctx)
+void iislua_init(lua_State *L, IHttpContext *ctx)
 {
     iislua_set_http_ctx(L, ctx);
     iislua_set_result(L, RQ_NOTIFICATION_CONTINUE);

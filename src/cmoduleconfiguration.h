@@ -6,8 +6,6 @@ _COM_SMARTPTR_TYPEDEF(IAppHostProperty, __uuidof(IAppHostProperty));
 class CModuleConfiguration : public IHttpStoredContext
 {
 private:
-    lua_State *L;
-
     bool enableCodeCache;
 
     int connectTimeout;
@@ -31,30 +29,12 @@ public:
 
     void CleanupStoredContext();
 
-    static CModuleConfiguration *GetContext(IN IHttpContext *pHttpContext);
-
-    inline lua_State *GetLuaState() const
-    {
-        return L;
-    };
+    static CModuleConfiguration *GetConfig(IN IHttpContext *pHttpContext);
 
     inline bool IsEnableCodeCache() const
     {
         return enableCodeCache;
-    };
-
-    inline int GetConnectTimeout() const
-    {
-        return connectTimeout;
-    };
-    inline int GetSendTimeout() const
-    {
-        return sendTimeout;
-    };
-    inline int GetReadTimeout() const
-    {
-        return readTimeout;
-    };
+    }
 
     inline const std::string& GetBeginRequest() const
     {
@@ -83,5 +63,18 @@ public:
     inline const std::string& GetMapPath() const
     {
         return mapPath;
+    };
+
+    inline int GetConnectTimeout() const
+    {
+        return connectTimeout;
+    };
+    inline int GetSendTimeout() const
+    {
+        return sendTimeout;
+    };
+    inline int GetReadTimeout() const
+    {
+        return readTimeout;
     };
 };

@@ -23,10 +23,10 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     this->enableCodeCache = GetBoolean(section, L"enableCodeCache");
 
     // socket element
-    auto socketElement = GetElement(section, "socket");
-    this->connectTimeout = GetInteger(socketElement, "connectTimeout") / 1000;
-    this->sendTimeout = GetInteger(socketElement, "sendTimeout") / 1000;
-    this->readTimeout = GetInteger(socketElement, "readTimeout") / 1000;
+    auto socketElement = GetElement(section, L"socket");
+    this->connectTimeout = GetInteger(socketElement, L"connectTimeout") / 1000;
+    this->sendTimeout = GetInteger(socketElement, L"sendTimeout") / 1000;
+    this->readTimeout = GetInteger(socketElement, L"readTimeout") / 1000;
 
     // beginRequest element
     auto beginRequestElement = GetElement(section, L"beginRequest");
@@ -56,20 +56,15 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
     auto mapPathElement = GetElement(section, L"mapPath");
     this->mapPath = GetString(mapPathElement, L"scriptPath");
 
-    // root lua state
-    this->L = iislua_newstate();
-
     return S_OK;
 }
 
 void CModuleConfiguration::CleanupStoredContext()
 {
-    iislua_close(this->L);
-
     delete this;
 }
 
-CModuleConfiguration *CModuleConfiguration::GetContext(IN IHttpContext *pHttpContext)
+CModuleConfiguration *CModuleConfiguration::GetConfig(IN IHttpContext *pHttpContext)
 {
     auto pModuleContextContainer = pHttpContext->GetMetadata()->GetModuleContextContainer();
     auto pModuleConfig = reinterpret_cast<CModuleConfiguration *>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
