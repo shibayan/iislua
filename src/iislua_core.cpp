@@ -133,6 +133,11 @@ void iislua_close(lua_State *L)
 
 void iislua_load_file(lua_State *L, const char *name, const char *file)
 {
+    if (strlen(file) == 0)
+    {
+        return;
+    }
+
     luaL_loadfile(L, file);
     lua_setglobal(L, name);
 }
