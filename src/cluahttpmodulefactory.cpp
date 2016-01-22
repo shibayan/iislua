@@ -16,6 +16,8 @@ CLuaHttpModuleFactory::~CLuaHttpModuleFactory()
         delete pLuaStatePool;
         pLuaStatePool = nullptr;
     }
+
+    WSACleanup();
 }
 
 HRESULT CLuaHttpModuleFactory::GetHttpModule(OUT CHttpModule **ppModule, IN IModuleAllocator *pAllocator)

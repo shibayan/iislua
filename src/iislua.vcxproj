@@ -92,7 +92,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>iislua.def</ModuleDefinitionFile>
-      <AdditionalDependencies>$(SolutionDir)..\lua\lib\lua53_32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;$(SolutionDir)..\lua\lib\lua53_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -109,7 +109,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ModuleDefinitionFile>iislua.def</ModuleDefinitionFile>
-      <AdditionalDependencies>$(SolutionDir)..\lua\lib\lua53_64.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;$(SolutionDir)..\lua\lib\lua53_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -130,7 +130,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>iislua.def</ModuleDefinitionFile>
-      <AdditionalDependencies>$(SolutionDir)..\lua\lib\lua53_32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;$(SolutionDir)..\lua\lib\lua53_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -151,7 +151,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ModuleDefinitionFile>iislua.def</ModuleDefinitionFile>
-      <AdditionalDependencies>$(SolutionDir)..\lua\lib\lua53_64.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;$(SolutionDir)..\lua\lib\lua53_64.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -162,7 +162,11 @@
     <ClInclude Include="cmoduleconfiguration.h" />
     <ClInclude Include="iislua_api.h" />
     <ClInclude Include="iislua_core.h" />
-    <ClInclude Include="iislua_tcp.h" />
+    <ClInclude Include="iislua_req.h" />
+    <ClInclude Include="iislua_resp.h" />
+    <ClInclude Include="iislua_socket_tcp.h" />
+    <ClInclude Include="iislua_srv.h" />
+    <ClInclude Include="iislua_user.h" />
     <ClInclude Include="iislua_util.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -175,7 +179,11 @@
     <ClCompile Include="cluastatepool.cpp" />
     <ClCompile Include="cmoduleconfiguration.cpp" />
     <ClCompile Include="iislua_core.cpp" />
-    <ClCompile Include="iislua_tcp.cpp" />
+    <ClCompile Include="iislua_req.cpp" />
+    <ClCompile Include="iislua_resp.cpp" />
+    <ClCompile Include="iislua_socket_tcp.cpp" />
+    <ClCompile Include="iislua_srv.cpp" />
+    <ClCompile Include="iislua_user.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="iislua_api.cpp" />
     <ClCompile Include="iislua_util.cpp" />

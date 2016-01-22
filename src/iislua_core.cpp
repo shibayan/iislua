@@ -4,7 +4,6 @@
 static const char *iislua_ctx_key = "__iislua_ctx";
 static const char *iislua_result_key = "__iislua_result";
 
-static char iislua_cache_table_key;
 extern char iislua_socket_tcp_metatable;
 
 static const luaL_Reg iis[] =
@@ -56,6 +55,7 @@ static const luaL_Reg iis_srv[] =
 static const luaL_Reg iis_user[] =
 {
     { "get_name", iislua_user_get_name },
+    { "get_type", iislua_user_get_type },
     { NULL, NULL }
 };
 
@@ -96,12 +96,7 @@ lua_State *iislua_newstate()
     // register iis
     lua_setglobal(L, "iis");
 
-    // create cache table
-    lua_pushlightuserdata(L, &iislua_cache_table_key);
-    lua_createtable(L, 0, 0);
-    lua_rawset(L, LUA_REGISTRYINDEX);
-
-    // create metatable
+    // create iis.socket.tcp
     lua_pushlightuserdata(L, &iislua_socket_tcp_metatable);
     lua_createtable(L, 0, 0);
 

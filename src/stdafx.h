@@ -13,8 +13,6 @@
 #include <httpserv.h>
 #include <lua.hpp>
 
-#pragma comment(lib, "ws2_32.lib")
-
 #define IISLUA_API extern "C"
 #define CHECK_ARGUMENT(L, top) if (lua_gettop(L) != top) { return luaL_error(L, "argument error"); }
 
@@ -22,8 +20,14 @@
 #include "iislua_core.h"
 #include "iislua_util.h"
 
+// iislua libs
 #include "iislua_api.h"
-#include "iislua_tcp.h"
+#include "iislua_req.h"
+#include "iislua_resp.h"
+#include "iislua_srv.h"
+#include "iislua_user.h"
+
+#include "iislua_socket_tcp.h"
 
 // lua pooling
 #include "cluastatepool.h"

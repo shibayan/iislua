@@ -26,6 +26,8 @@ REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteCore(IN IHttpContext *pHttp
 
     if (!lua_isfunction(L, -1))
     {
+        lua_pop(L, 1);
+
         return RQ_NOTIFICATION_CONTINUE;
     }
 
