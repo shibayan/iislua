@@ -30,7 +30,7 @@ CLuaStatePool::~CLuaStatePool()
     _aligned_free(pListHead);
 }
 
-lua_State * CLuaStatePool::Acquire(IHttpContext *pHttpContext)
+lua_State *CLuaStatePool::Acquire(IHttpContext *pHttpContext, IHttpEventProvider *pProvider)
 {
     lua_State *L;
 
@@ -64,7 +64,7 @@ lua_State * CLuaStatePool::Acquire(IHttpContext *pHttpContext)
         _aligned_free(pListEntry);
     }
 
-    iislua_init(L, pHttpContext);
+    iislua_init(L, pHttpContext, pProvider);
 
     return L;
 }

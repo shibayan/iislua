@@ -18,6 +18,6 @@ public:
     CLuaStatePool();
     ~CLuaStatePool();
 
-    lua_State * Acquire(IHttpContext *pHttpContext);
+    lua_State *Acquire(IHttpContext *pHttpContext, IHttpEventProvider *pProvider);
     void Release(lua_State *L);
 };

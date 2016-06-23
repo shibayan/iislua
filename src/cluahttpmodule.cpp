@@ -15,11 +15,11 @@ CLuaHttpModule::~CLuaHttpModule()
     }
 }
 
-REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteCore(IN IHttpContext *pHttpContext, IN const char *name)
+REQUEST_NOTIFICATION_STATUS CLuaHttpModule::OnExecuteCore(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider, IN const char *name)
 {
     if (L == nullptr)
     {
-        L = pLuaStatePool->Acquire(pHttpContext);
+        L = pLuaStatePool->Acquire(pHttpContext, pProvider);
     }
 
     lua_getglobal(L, name);
