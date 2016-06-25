@@ -34,11 +34,6 @@ public:
         return OnExecuteCore(pHttpContext, pProvider, "ExecuteRequest");
     }
     
-    REQUEST_NOTIFICATION_STATUS OnLogRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
-    {
-        return OnExecuteCore(pHttpContext, pProvider, "LogRequest");
-    }
-
     REQUEST_NOTIFICATION_STATUS OnEndRequest(IN IHttpContext *pHttpContext, IN IHttpEventProvider *pProvider)
     {
         return OnExecuteCore(pHttpContext, pProvider, "EndRequest");
