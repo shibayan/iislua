@@ -22,6 +22,7 @@
 
 // iislua libs
 #include "iislua_api.h"
+#include "iislua_log.h"
 #include "iislua_req.h"
 #include "iislua_resp.h"
 #include "iislua_srv.h"

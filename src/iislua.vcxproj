@@ -162,6 +162,7 @@
     <ClInclude Include="cmoduleconfiguration.h" />
     <ClInclude Include="iislua_api.h" />
     <ClInclude Include="iislua_core.h" />
+    <ClInclude Include="iislua_log.h" />
     <ClInclude Include="iislua_req.h" />
     <ClInclude Include="iislua_resp.h" />
     <ClInclude Include="iislua_socket_tcp.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="cluastatepool.cpp" />
     <ClCompile Include="cmoduleconfiguration.cpp" />
     <ClCompile Include="iislua_core.cpp" />
+    <ClCompile Include="iislua_log.cpp" />
     <ClCompile Include="iislua_req.cpp" />
     <ClCompile Include="iislua_resp.cpp" />
     <ClCompile Include="iislua_socket_tcp.cpp" />

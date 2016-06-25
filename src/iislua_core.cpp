@@ -21,6 +21,12 @@ static const luaL_Reg iis[] =
     { NULL, NULL }
 };
 
+static const luaL_Reg iis_log[] =
+{
+    { "read_entry", iislua_log_read_entry },
+    { "write_entry", iislua_log_write_entry }
+};
+
 static const luaL_Reg iis_req[] =
 {
     { "get_headers", iislua_req_get_headers },
@@ -72,7 +78,12 @@ lua_State *iislua_newstate()
 
     luaL_openlibs(L);
 
+    // create iis
     luaL_newlib(L, iis);
+
+    // create iis.log
+    luaL_newlib(L, iis_log);
+    lua_setfield(L, -2, "log");
 
     // create iis.req
     luaL_newlib(L, iis_req);
