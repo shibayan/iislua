@@ -13,7 +13,7 @@ class CLuaStatePool
     PSLIST_HEADER pListHead;
     unsigned int count;
     unsigned int maxPoolSize;
-    bool enableCodeCache;
+    bool codeCacheEnabled;
 public:
     CLuaStatePool();
     ~CLuaStatePool();

@@ -1,6 +1,6 @@
 <configSchema>
-  <sectionSchema name="system.webServer/iislua">
-    <attribute name="enableCodeCache" type="bool" defaultValue="false" />
+  <sectionSchema name="system.webServer/lua">
+    <attribute name="codeCacheEnabled" type="bool" defaultValue="false" />
     <element name="socket">
       <attribute name="connectTimeout" type="timeSpan" defaultValue="00:01:00" validationType="timeSpanRange" validationParameter="0,65535,1" />
       <attribute name="sendTimeout" type="timeSpan" defaultValue="00:01:00" validationType="timeSpanRange" validationParameter="0,65535,1" />

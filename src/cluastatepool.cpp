@@ -51,7 +51,7 @@ lua_State *CLuaStatePool::Acquire(IHttpContext *pHttpContext, IHttpEventProvider
         iislua_load_file(L, "EndRequest", config->GetEndRequest().c_str());
         iislua_load_file(L, "MapPath", config->GetMapPath().c_str());
 
-        this->enableCodeCache = config->IsEnableCodeCache();
+        this->codeCacheEnabled = config->IsCodeCacheEnabled();
     }
     else
     {
@@ -71,7 +71,7 @@ lua_State *CLuaStatePool::Acquire(IHttpContext *pHttpContext, IHttpEventProvider
 
 void CLuaStatePool::Release(lua_State *L)
 {
-    if (count >= maxPoolSize || !this->enableCodeCache)
+    if (count >= maxPoolSize || !this->codeCacheEnabled)
     {
         iislua_close(L);
 

@@ -4,7 +4,7 @@
 extern HTTP_MODULE_ID g_pModuleContext;
 extern IHttpServer *g_pHttpServer;
 
-static const _bstr_t sectionPath = L"system.webServer/iislua";
+static const _bstr_t sectionPath = L"system.webServer/lua";
 
 HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer)
 {
@@ -19,8 +19,8 @@ HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttp
         return S_OK;
     }
 
-    // iislua element
-    this->enableCodeCache = GetBoolean(section, L"enableCodeCache");
+    // lua element
+    this->codeCacheEnabled = GetBoolean(section, L"codeCacheEnabled");
 
     // socket element
     auto socketElement = GetElement(section, L"socket");

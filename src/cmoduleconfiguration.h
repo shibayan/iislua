@@ -6,7 +6,7 @@ _COM_SMARTPTR_TYPEDEF(IAppHostProperty, __uuidof(IAppHostProperty));
 class CModuleConfiguration : public IHttpStoredContext
 {
 private:
-    bool enableCodeCache;
+    bool codeCacheEnabled;
 
     int connectTimeout;
     int sendTimeout;
@@ -31,9 +31,9 @@ public:
 
     static CModuleConfiguration *GetConfig(IN IHttpContext *pHttpContext);
 
-    inline bool IsEnableCodeCache() const
+    inline bool IsCodeCacheEnabled() const
     {
-        return enableCodeCache;
+        return codeCacheEnabled;
     }
 
     inline const std::string& GetBeginRequest() const
