@@ -21,49 +21,49 @@
     <ClInclude Include="targetver.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="cmoduleconfiguration.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="cluahttpmodule.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="cluahttpmodulefactory.h">
+    <ClInclude Include="cluahttpmodule.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="cluahttpstoredcontext.h">
+    <ClInclude Include="cluahttpmodulefactory.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_api.h">
+    <ClInclude Include="cluahttpstoredcontext.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_core.h">
+    <ClInclude Include="cluastatepool.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_util.h">
+    <ClInclude Include="cmoduleconfiguration.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="cluastatepool.h">
+    <ClInclude Include="iislua_api.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_socket_tcp.h">
+    <ClInclude Include="iislua_core.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_req.h">
+    <ClInclude Include="iislua_log.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_resp.h">
+    <ClInclude Include="iislua_req.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_srv.h">
+    <ClInclude Include="iislua_resp.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_user.h">
+    <ClInclude Include="iislua_socket_tcp.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="iislua_log.h">
+    <ClInclude Include="iislua_srv.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="iislua_user.hpp">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="iislua_util.hpp">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

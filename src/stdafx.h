@@ -17,24 +17,24 @@
 #define CHECK_ARGUMENT(L, top) if (lua_gettop(L) != top) { return luaL_error(L, "argument error"); }
 
 // iislua
-#include "iislua_core.h"
-#include "iislua_util.h"
+#include "iislua_core.hpp"
+#include "iislua_util.hpp"
 
 // iislua libs
-#include "iislua_api.h"
-#include "iislua_log.h"
-#include "iislua_req.h"
-#include "iislua_resp.h"
-#include "iislua_srv.h"
-#include "iislua_user.h"
+#include "iislua_api.hpp"
+#include "iislua_log.hpp"
+#include "iislua_req.hpp"
+#include "iislua_resp.hpp"
+#include "iislua_srv.hpp"
+#include "iislua_user.hpp"
 
-#include "iislua_socket_tcp.h"
+#include "iislua_socket_tcp.hpp"
 
 // lua pooling
-#include "cluastatepool.h"
+#include "cluastatepool.hpp"
 
 // iis http module interface
-#include "cmoduleconfiguration.h"
-#include "cluahttpmodule.h"
-#include "cluahttpmodulefactory.h"
-#include "cluahttpstoredcontext.h"
+#include "cmoduleconfiguration.hpp"
+#include "cluahttpmodule.hpp"
+#include "cluahttpmodulefactory.hpp"
+#include "cluahttpstoredcontext.hpp"
