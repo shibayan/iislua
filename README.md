@@ -1,7 +1,7 @@
 iislua
 ================
 
-[![Build status](https://ci.appveyor.com/api/projects/status/76ulkhlfpjkqav74?svg=true)](https://ci.appveyor.com/project/shibayan/iislua)
+[![Build Status](https://dev.azure.com/shibayan/iislua/_apis/build/status/Build%20iislua?branchName=master)](https://dev.azure.com/shibayan/iislua/_build/latest?definitionId=31&branchName=master)
 [![Release](https://img.shields.io/github/release/shibayan/iislua.svg)](https://github.com/shibayan/iislua/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/shibayan/iislua/total.svg)](https://github.com/shibayan/iislua/releases/latest)
 [![License](https://img.shields.io/github/license/shibayan/iislua.svg)](https://github.com/shibayan/iislua/blob/master/LICENSE)
