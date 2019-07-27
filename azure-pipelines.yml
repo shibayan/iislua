@@ -1,0 +1,25 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'vs2017-win2016'
+
+strategy:
+  matrix:
+    x86:
+      platform: 'x86'
+    x64:
+      platform: 'x64'
+
+steps:
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: 'src/*.sln'
+
+- task: MSBuild@1
+  inputs:
+    solution: 'src/*.sln'
+    platform: '$(platform)'
+    configuration: 'Release'
+    msbuildArguments: '/v:m'
