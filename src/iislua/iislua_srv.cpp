@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-int iislua_srv_get_variable(lua_State *L)
+int iislua_srv_get_variable(lua_State* L)
 {
     CHECK_ARGUMENT(L, 1);
 
@@ -24,7 +24,7 @@ int iislua_srv_get_variable(lua_State *L)
     return 1;
 }
 
-int iislua_srv_set_variable(lua_State *L)
+int iislua_srv_set_variable(lua_State* L)
 {
     CHECK_ARGUMENT(L, 2);
 

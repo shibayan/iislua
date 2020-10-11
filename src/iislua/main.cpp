@@ -2,9 +2,9 @@
 #include "stdafx.h"
 
 HTTP_MODULE_ID g_pModuleContext;
-IHttpServer *g_pHttpServer;
+IHttpServer* g_pHttpServer;
 
-HRESULT APIENTRY RegisterModule(DWORD dwServerVersion, IHttpModuleRegistrationInfo *pModuleInfo, IHttpServer *pHttpServer)
+HRESULT APIENTRY RegisterModule(DWORD dwServerVersion, IHttpModuleRegistrationInfo* pModuleInfo, IHttpServer* pHttpServer)
 {
     UNREFERENCED_PARAMETER(dwServerVersion);
 

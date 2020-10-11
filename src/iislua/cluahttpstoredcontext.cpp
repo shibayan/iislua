@@ -8,12 +8,12 @@ CLuaHttpStoredContext::CLuaHttpStoredContext()
 {
 }
 
-IHttpContext *CLuaHttpStoredContext::GetChildContext() const
+IHttpContext* CLuaHttpStoredContext::GetChildContext() const
 {
     return pHttpChildContext;
 }
 
-void CLuaHttpStoredContext::SetChildContext(IN IHttpContext *pHttpChildContext)
+void CLuaHttpStoredContext::SetChildContext(IN IHttpContext* pHttpChildContext)
 {
     this->pHttpChildContext = pHttpChildContext;
 }
@@ -23,10 +23,10 @@ void CLuaHttpStoredContext::CleanupStoredContext()
     delete this;
 }
 
-CLuaHttpStoredContext *CLuaHttpStoredContext::GetContext(IN IHttpContext *pHttpContext)
+CLuaHttpStoredContext* CLuaHttpStoredContext::GetContext(IN IHttpContext* pHttpContext)
 {
     auto pModuleContextContainer = pHttpContext->GetModuleContextContainer();
-    auto pHttpStoredContext = reinterpret_cast<CLuaHttpStoredContext *>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
+    auto pHttpStoredContext = reinterpret_cast<CLuaHttpStoredContext*>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
 
     if (pHttpStoredContext)
     {

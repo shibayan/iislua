@@ -1,9 +1,9 @@
 
 #include "stdafx.h"
 
-int iislua_log_read_entry(lua_State *L)
+int iislua_log_read_entry(lua_State* L)
 {
-    auto provider = reinterpret_cast<ISendResponseProvider *>(iislua_get_http_provider(L));
+    auto provider = reinterpret_cast<ISendResponseProvider*>(iislua_get_http_provider(L));
 
     if (!provider->GetReadyToLogData())
     {
@@ -19,10 +19,10 @@ int iislua_log_read_entry(lua_State *L)
     return 0;
 }
 
-int iislua_log_write_entry(lua_State *L)
+int iislua_log_write_entry(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
-    auto provider = reinterpret_cast<ISendResponseProvider *>(iislua_get_http_provider(L));
+    auto provider = reinterpret_cast<ISendResponseProvider*>(iislua_get_http_provider(L));
 
     if (!provider->GetReadyToLogData())
     {

@@ -3,14 +3,14 @@
 class CLuaHttpStoredContext : public IHttpStoredContext
 {
 private:
-    IHttpContext *pHttpChildContext;
+    IHttpContext* pHttpChildContext;
 public:
     CLuaHttpStoredContext();
 
-    IHttpContext *GetChildContext() const;
-    void SetChildContext(IN IHttpContext *pHttpChildContext);
+    IHttpContext* GetChildContext() const;
+    void SetChildContext(IN IHttpContext* pHttpChildContext);
 
     void CleanupStoredContext();
 
-    static CLuaHttpStoredContext *GetContext(IN IHttpContext *pHttpContext);
+    static CLuaHttpStoredContext* GetContext(IN IHttpContext* pHttpContext);
 };

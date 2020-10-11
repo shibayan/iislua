@@ -1,9 +1,9 @@
 
 #include "stdafx.h"
 
-static const char *iislua_ctx_key = "__iislua_ctx";
-static const char *iialua_provider_key = "__iislua_provider";
-static const char *iislua_result_key = "__iislua_result";
+static const char* iislua_ctx_key = "__iislua_ctx";
+static const char* iialua_provider_key = "__iislua_provider";
+static const char* iislua_result_key = "__iislua_result";
 
 extern char iislua_socket_tcp_metatable;
 
@@ -72,7 +72,7 @@ static const luaL_Reg iis_socket[] =
     { NULL, NULL }
 };
 
-lua_State *iislua_newstate()
+lua_State* iislua_newstate()
 {
     auto L = luaL_newstate();
 
@@ -133,12 +133,12 @@ lua_State *iislua_newstate()
     return L;
 }
 
-void iislua_close(lua_State *L)
+void iislua_close(lua_State* L)
 {
     lua_close(L);
 }
 
-void iislua_load_file(lua_State *L, const char *name, const char *file)
+void iislua_load_file(lua_State* L, const char* name, const char* file)
 {
     if (strlen(file) == 0)
     {
@@ -149,7 +149,7 @@ void iislua_load_file(lua_State *L, const char *name, const char *file)
     lua_setglobal(L, name);
 }
 
-void iislua_init(lua_State *L, IHttpContext *ctx, IHttpEventProvider *provider)
+void iislua_init(lua_State* L, IHttpContext* ctx, IHttpEventProvider* provider)
 {
     iislua_set_http_ctx(L, ctx);
     iislua_set_http_provider(L, provider);
@@ -157,41 +157,41 @@ void iislua_init(lua_State *L, IHttpContext *ctx, IHttpEventProvider *provider)
     iislua_set_result(L, RQ_NOTIFICATION_CONTINUE);
 }
 
-IHttpContext *iislua_get_http_ctx(lua_State *L)
+IHttpContext* iislua_get_http_ctx(lua_State* L)
 {
     lua_getglobal(L, iislua_ctx_key);
 
-    auto ctx = reinterpret_cast<IHttpContext *>(lua_touserdata(L, -1));
+    auto ctx = reinterpret_cast<IHttpContext*>(lua_touserdata(L, -1));
 
     lua_pop(L, 1);
 
     return ctx;
 }
 
-void iislua_set_http_ctx(lua_State *L, IHttpContext *ctx)
+void iislua_set_http_ctx(lua_State* L, IHttpContext* ctx)
 {
     lua_pushlightuserdata(L, ctx);
     lua_setglobal(L, iislua_ctx_key);
 }
 
-IHttpEventProvider *iislua_get_http_provider(lua_State *L)
+IHttpEventProvider* iislua_get_http_provider(lua_State* L)
 {
     lua_getglobal(L, iialua_provider_key);
 
-    auto provider = reinterpret_cast<IHttpEventProvider *>(lua_touserdata(L, -1));
+    auto provider = reinterpret_cast<IHttpEventProvider*>(lua_touserdata(L, -1));
 
     lua_pop(L, 1);
 
     return provider;
 }
 
-void iislua_set_http_provider(lua_State *L, IHttpEventProvider *provider)
+void iislua_set_http_provider(lua_State* L, IHttpEventProvider* provider)
 {
     lua_pushlightuserdata(L, provider);
     lua_setglobal(L, iialua_provider_key);
 }
 
-REQUEST_NOTIFICATION_STATUS iislua_finish_request(lua_State *L)
+REQUEST_NOTIFICATION_STATUS iislua_finish_request(lua_State* L)
 {
     lua_getglobal(L, iislua_result_key);
 
@@ -202,7 +202,7 @@ REQUEST_NOTIFICATION_STATUS iislua_finish_request(lua_State *L)
     return result;
 }
 
-void iislua_set_result(lua_State *L, REQUEST_NOTIFICATION_STATUS result)
+void iislua_set_result(lua_State* L, REQUEST_NOTIFICATION_STATUS result)
 {
     lua_pushinteger(L, result);
     lua_setglobal(L, iislua_result_key);

@@ -20,16 +20,16 @@ private:
     std::string endRequest;
     std::string mapPath;
 
-    IAppHostElementPtr GetElement(IAppHostElementPtr &section, _bstr_t elementName);
-    std::string GetString(IAppHostElementPtr &section, _bstr_t propertyName);
-    bool GetBoolean(IAppHostElementPtr &section, _bstr_t propertyName);
-    int GetInteger(IAppHostElementPtr &section, _bstr_t propertyName);
+    IAppHostElementPtr GetElement(IAppHostElementPtr& section, _bstr_t elementName);
+    std::string GetString(IAppHostElementPtr& section, _bstr_t propertyName);
+    bool GetBoolean(IAppHostElementPtr& section, _bstr_t propertyName);
+    int GetInteger(IAppHostElementPtr& section, _bstr_t propertyName);
 public:
-    HRESULT Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer);
+    HRESULT Initialize(IN IHttpContext* pHttpContext, IN IHttpServer* pHttpServer);
 
     void CleanupStoredContext();
 
-    static CModuleConfiguration *GetConfig(IN IHttpContext *pHttpContext);
+    static CModuleConfiguration* GetConfig(IN IHttpContext* pHttpContext);
 
     inline bool IsCodeCacheEnabled() const
     {

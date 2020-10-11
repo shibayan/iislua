@@ -20,7 +20,7 @@ CLuaHttpModuleFactory::~CLuaHttpModuleFactory()
     WSACleanup();
 }
 
-HRESULT CLuaHttpModuleFactory::GetHttpModule(OUT CHttpModule **ppModule, IN IModuleAllocator *pAllocator)
+HRESULT CLuaHttpModuleFactory::GetHttpModule(OUT CHttpModule** ppModule, IN IModuleAllocator* pAllocator)
 {
     UNREFERENCED_PARAMETER(pAllocator);
 

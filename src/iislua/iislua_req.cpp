@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-int iislua_req_get_headers(lua_State *L)
+int iislua_req_get_headers(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -34,7 +34,7 @@ int iislua_req_get_headers(lua_State *L)
     return 1;
 }
 
-int iislua_req_get_method(lua_State *L)
+int iislua_req_get_method(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -48,7 +48,7 @@ int iislua_req_get_method(lua_State *L)
     return 1;
 }
 
-int iislua_req_get_post_args(lua_State *L)
+int iislua_req_get_post_args(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -62,7 +62,7 @@ int iislua_req_get_post_args(lua_State *L)
     return 1;
 }
 
-int iislua_req_get_remote_addr(lua_State *L)
+int iislua_req_get_remote_addr(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -77,11 +77,11 @@ int iislua_req_get_remote_addr(lua_State *L)
 
     if (remoteAddr->sa_family == AF_INET)
     {
-        inet_ntop(AF_INET, &reinterpret_cast<SOCKADDR_IN *>(remoteAddr)->sin_addr, ipAddress, sizeof(ipAddress));
+        inet_ntop(AF_INET, &reinterpret_cast<SOCKADDR_IN*>(remoteAddr)->sin_addr, ipAddress, sizeof(ipAddress));
     }
     else
     {
-        inet_ntop(AF_INET6, &reinterpret_cast<SOCKADDR_IN6 *>(remoteAddr)->sin6_addr, ipAddress, sizeof(ipAddress));
+        inet_ntop(AF_INET6, &reinterpret_cast<SOCKADDR_IN6*>(remoteAddr)->sin6_addr, ipAddress, sizeof(ipAddress));
     }
 
     lua_pushstring(L, ipAddress);
@@ -89,7 +89,7 @@ int iislua_req_get_remote_addr(lua_State *L)
     return 1;
 }
 
-int iislua_req_get_url(lua_State *L)
+int iislua_req_get_url(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -105,7 +105,7 @@ int iislua_req_get_url(lua_State *L)
     return 1;
 }
 
-int iislua_req_get_url_args(lua_State *L)
+int iislua_req_get_url_args(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -124,7 +124,7 @@ int iislua_req_get_url_args(lua_State *L)
     return 1;
 }
 
-int iislua_req_http_version(lua_State *L)
+int iislua_req_http_version(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -145,7 +145,7 @@ int iislua_req_http_version(lua_State *L)
     return 1;
 }
 
-int iislua_req_set_header(lua_State *L)
+int iislua_req_set_header(lua_State* L)
 {
     CHECK_ARGUMENT(L, 2);
 
@@ -164,7 +164,7 @@ int iislua_req_set_header(lua_State *L)
     return 0;
 }
 
-int iislua_req_set_method(lua_State *L)
+int iislua_req_set_method(lua_State* L)
 {
     CHECK_ARGUMENT(L, 1);
 
@@ -182,7 +182,7 @@ int iislua_req_set_method(lua_State *L)
     return 0;
 }
 
-int iislua_req_set_url(lua_State *L)
+int iislua_req_set_url(lua_State* L)
 {
     CHECK_ARGUMENT(L, 1);
 
