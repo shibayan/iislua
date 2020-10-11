@@ -1,0 +1,35 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  NUGET_CLI_VERSION: 5.x
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    strategy:
+      matrix:
+        platform: [x86, x64]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Use NuGet CLI ${{ env.NUGET_CLI_VERSION }}
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: ${{ env.NUGET_CLI_VERSION }}
+
+    - name: Use MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Restore NuGet packages
+      run: nuget restore .\src\iislua.sln
+
+    - name: Build application
+      run: msbuild .\src\iislua.sln /p:Platform=${{ matrix.platform }} /p:Configuration=Release /verbosity:minimal
