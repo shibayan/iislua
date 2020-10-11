@@ -10,9 +10,9 @@ struct socket_data
 
 char iislua_socket_tcp_metatable;
 
-int iislua_socket_tcp_release(lua_State *L)
+int iislua_socket_tcp_release(lua_State* L)
 {
-    auto data = reinterpret_cast<socket_data *>(lua_touserdata(L, -1));
+    auto data = reinterpret_cast<socket_data*>(lua_touserdata(L, -1));
 
     if (!data->closed)
     {
@@ -22,7 +22,7 @@ int iislua_socket_tcp_release(lua_State *L)
     return 0;
 }
 
-int iislua_socket_tcp(lua_State *L)
+int iislua_socket_tcp(lua_State* L)
 {
     // create new object
     lua_createtable(L, 0, 0);
@@ -33,7 +33,7 @@ int iislua_socket_tcp(lua_State *L)
     return 1;
 }
 
-int iislua_socket_tcp_connect(lua_State *L)
+int iislua_socket_tcp_connect(lua_State* L)
 {
     if (lua_gettop(L) != 3)
     {
@@ -57,7 +57,7 @@ int iislua_socket_tcp_connect(lua_State *L)
     auto sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 
     // create socket_data
-    auto data = reinterpret_cast<socket_data *>(lua_newuserdata(L, sizeof(socket_data)));
+    auto data = reinterpret_cast<socket_data*>(lua_newuserdata(L, sizeof(socket_data)));
 
     data->sock = sock;
     data->connected = false;
@@ -112,7 +112,7 @@ int iislua_socket_tcp_connect(lua_State *L)
     return 0;
 }
 
-int iislua_socket_tcp_send(lua_State *L)
+int iislua_socket_tcp_send(lua_State* L)
 {
     if (lua_gettop(L) != 2)
     {
@@ -133,7 +133,7 @@ int iislua_socket_tcp_send(lua_State *L)
     auto sendData = luaL_checkstring(L, 2);
 
     lua_rawgeti(L, 1, 1);
-    auto data = reinterpret_cast<socket_data *>(lua_touserdata(L, -1));
+    auto data = reinterpret_cast<socket_data*>(lua_touserdata(L, -1));
     lua_pop(L, 1);
 
     auto h = WSACreateEvent();
@@ -163,7 +163,7 @@ int iislua_socket_tcp_send(lua_State *L)
     return 0;
 }
 
-int iislua_socket_tcp_receive(lua_State *L)
+int iislua_socket_tcp_receive(lua_State* L)
 {
     if (lua_gettop(L) != 2)
     {
@@ -184,7 +184,7 @@ int iislua_socket_tcp_receive(lua_State *L)
     auto size = luaL_checkinteger(L, 2);
 
     lua_rawgeti(L, 1, 1);
-    auto data = reinterpret_cast<socket_data *>(lua_touserdata(L, -1));
+    auto data = reinterpret_cast<socket_data*>(lua_touserdata(L, -1));
     lua_pop(L, 1);
 
     auto h = WSACreateEvent();
@@ -224,13 +224,13 @@ int iislua_socket_tcp_receive(lua_State *L)
     return 1;
 }
 
-int iislua_socket_tcp_close(lua_State *L)
+int iislua_socket_tcp_close(lua_State* L)
 {
     luaL_checktype(L, 1, LUA_TTABLE);
 
     lua_rawgeti(L, 1, 1);
 
-    auto data = reinterpret_cast<socket_data *>(lua_touserdata(L, -1));
+    auto data = reinterpret_cast<socket_data*>(lua_touserdata(L, -1));
 
     lua_pop(L, 1);
 

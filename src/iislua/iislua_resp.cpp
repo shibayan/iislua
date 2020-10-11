@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-int iislua_resp_clear(lua_State *L)
+int iislua_resp_clear(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -15,7 +15,7 @@ int iislua_resp_clear(lua_State *L)
     return 0;
 }
 
-int iislua_resp_clear_headers(lua_State *L)
+int iislua_resp_clear_headers(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -29,7 +29,7 @@ int iislua_resp_clear_headers(lua_State *L)
     return 0;
 }
 
-int iislua_resp_get_headers(lua_State *L)
+int iislua_resp_get_headers(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -62,7 +62,7 @@ int iislua_resp_get_headers(lua_State *L)
     return 1;
 }
 
-int iislua_resp_get_status(lua_State *L)
+int iislua_resp_get_status(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -79,7 +79,7 @@ int iislua_resp_get_status(lua_State *L)
     return 1;
 }
 
-int iislua_resp_set_header(lua_State *L)
+int iislua_resp_set_header(lua_State* L)
 {
     CHECK_ARGUMENT(L, 2);
 
@@ -98,7 +98,7 @@ int iislua_resp_set_header(lua_State *L)
     return 0;
 }
 
-int iislua_resp_set_status(lua_State *L)
+int iislua_resp_set_status(lua_State* L)
 {
     CHECK_ARGUMENT(L, 1);
 

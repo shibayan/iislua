@@ -4,7 +4,7 @@
 CLuaStatePool::CLuaStatePool()
     : count(0), maxPoolSize(64), pListHead(nullptr)
 {
-    pListHead = static_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
+    pListHead = reinterpret_cast<PSLIST_HEADER>(_aligned_malloc(sizeof(SLIST_HEADER), MEMORY_ALLOCATION_ALIGNMENT));
 
     InitializeSListHead(pListHead);
 }
@@ -30,9 +30,9 @@ CLuaStatePool::~CLuaStatePool()
     _aligned_free(pListHead);
 }
 
-lua_State *CLuaStatePool::Acquire(IHttpContext *pHttpContext, IHttpEventProvider *pProvider)
+lua_State* CLuaStatePool::Acquire(IHttpContext* pHttpContext, IHttpEventProvider* pProvider)
 {
-    lua_State *L;
+    lua_State* L;
 
     auto pListEntry = InterlockedPopEntrySList(pListHead);
 
@@ -69,7 +69,7 @@ lua_State *CLuaStatePool::Acquire(IHttpContext *pHttpContext, IHttpEventProvider
     return L;
 }
 
-void CLuaStatePool::Release(lua_State *L)
+void CLuaStatePool::Release(lua_State* L)
 {
     if (count >= maxPoolSize || !this->codeCacheEnabled)
     {
@@ -78,7 +78,7 @@ void CLuaStatePool::Release(lua_State *L)
         return;
     }
 
-    auto pLuaStateEntry = static_cast<PLUA_STATE_ENTRY>(_aligned_malloc(sizeof(LUA_STATE_ENTRY), MEMORY_ALLOCATION_ALIGNMENT));
+    auto pLuaStateEntry = reinterpret_cast<PLUA_STATE_ENTRY>(_aligned_malloc(sizeof(LUA_STATE_ENTRY), MEMORY_ALLOCATION_ALIGNMENT));
 
     pLuaStateEntry->L = L;
 

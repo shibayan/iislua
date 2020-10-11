@@ -2,11 +2,11 @@
 #include "stdafx.h"
 
 extern HTTP_MODULE_ID g_pModuleContext;
-extern IHttpServer *g_pHttpServer;
+extern IHttpServer* g_pHttpServer;
 
-static const _bstr_t sectionPath = L"system.webServer/lua";
+static const _bstr_t sectionPath = L"system.webServer/iislua";
 
-HRESULT CModuleConfiguration::Initialize(IN IHttpContext *pHttpContext, IN IHttpServer *pHttpServer)
+HRESULT CModuleConfiguration::Initialize(IN IHttpContext* pHttpContext, IN IHttpServer* pHttpServer)
 {
     IAppHostElementPtr section;
 
@@ -64,10 +64,10 @@ void CModuleConfiguration::CleanupStoredContext()
     delete this;
 }
 
-CModuleConfiguration *CModuleConfiguration::GetConfig(IN IHttpContext *pHttpContext)
+CModuleConfiguration* CModuleConfiguration::GetConfig(IN IHttpContext* pHttpContext)
 {
     auto pModuleContextContainer = pHttpContext->GetMetadata()->GetModuleContextContainer();
-    auto pModuleConfig = reinterpret_cast<CModuleConfiguration *>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
+    auto pModuleConfig = reinterpret_cast<CModuleConfiguration*>(pModuleContextContainer->GetModuleContext(g_pModuleContext));
 
     if (pModuleConfig)
     {
@@ -93,7 +93,7 @@ CModuleConfiguration *CModuleConfiguration::GetConfig(IN IHttpContext *pHttpCont
     return pModuleConfig;
 }
 
-IAppHostElementPtr CModuleConfiguration::GetElement(IAppHostElementPtr &section, _bstr_t elementName)
+IAppHostElementPtr CModuleConfiguration::GetElement(IAppHostElementPtr& section, _bstr_t elementName)
 {
     IAppHostElementPtr element;
 
@@ -102,7 +102,7 @@ IAppHostElementPtr CModuleConfiguration::GetElement(IAppHostElementPtr &section,
     return element;
 }
 
-std::string CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t propertyName)
+std::string CModuleConfiguration::GetString(IAppHostElementPtr& section, _bstr_t propertyName)
 {
     IAppHostPropertyPtr property;
 
@@ -115,7 +115,7 @@ std::string CModuleConfiguration::GetString(IAppHostElementPtr &section, _bstr_t
     return iislua_to_str(propertyValue);
 }
 
-bool CModuleConfiguration::GetBoolean(IAppHostElementPtr &section, _bstr_t propertyName)
+bool CModuleConfiguration::GetBoolean(IAppHostElementPtr& section, _bstr_t propertyName)
 {
     IAppHostPropertyPtr property;
 
@@ -128,7 +128,7 @@ bool CModuleConfiguration::GetBoolean(IAppHostElementPtr &section, _bstr_t prope
     return propertyValue;
 }
 
-int CModuleConfiguration::GetInteger(IAppHostElementPtr &section, _bstr_t propertyName)
+int CModuleConfiguration::GetInteger(IAppHostElementPtr& section, _bstr_t propertyName)
 {
     IAppHostPropertyPtr property;
 

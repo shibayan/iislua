@@ -1,7 +1,7 @@
 
 #include "stdafx.h"
 
-int iislua_user_get_name(lua_State *L)
+int iislua_user_get_name(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
@@ -17,7 +17,7 @@ int iislua_user_get_name(lua_State *L)
     return 1;
 }
 
-int iislua_user_get_type(lua_State *L)
+int iislua_user_get_type(lua_State* L)
 {
     auto ctx = iislua_get_http_ctx(L);
 
